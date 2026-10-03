@@ -5060,7 +5060,9 @@ setInterval(() => {
     const deliveryFeeTxt = `${deliveryFee.toLocaleString()} IQD (${deliveryLocationLabel})`;
     const finalTotalTxt = `${(itemsTotal + deliveryFee).toLocaleString()} IQD${hasUnknownPrice ? " (+ کاڵای نرخی دیارنەکراو)" : ""}`;
 
+    const gsdeOrderNo = gsdeMakeOrderNo();
     let msg = `سڵاو، داواکارییەکی نوێ هەیە بۆ ناردن:%0A%0A`;
+    msg += `*ژمارەی داواکاری:* ${gsdeOrderNo}%0A`;
     msg += `*ناوی تەواو:* ${name}%0A`;
     if (shopName) msg += `*ناوی دوکان یان مارکە:* ${shopName}%0A`;
     msg += `*ژمارەی سەرەکی پەیوەندی:* ${primaryCC} ${primaryPhone}%0A`;
@@ -5074,7 +5076,7 @@ setInterval(() => {
     msg += `*شێوازی گەیاندن:* ${DELIVERY_METHOD_KU[delivery] || delivery}`;
     if (note) msg += `%0A%0A*تێبینی:* ${note}`;
 
-    try { gsdeSaveOrderCopy({ orderItems, itemsTotal, hasUnknownPrice, deliveryFee, deliveryLocationLabel, name, primaryPhone, secondaryPhone, city }).catch(e => console.warn("GSDE order copy skipped", e)); } catch (e) { console.warn("GSDE order copy skipped", e); }
+    try { gsdeSaveOrderCopy({ orderNumber: gsdeOrderNo, orderItems, itemsTotal, hasUnknownPrice, deliveryFee, deliveryLocationLabel, name, primaryPhone, secondaryPhone, city }).catch(e => console.warn("GSDE order copy skipped", e)); } catch (e) { console.warn("GSDE order copy skipped", e); }
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
     window.open(url, "_blank");
     document.getElementById("checkoutOverlay").classList.remove("active");
@@ -5258,7 +5260,6 @@ setInterval(() => {
     }, 800);
   }
 
-  function gsdeStatusLabel(t, st) { return st === "submitted" || !st ? t.acctOrderSent : t.acctOrderConfirmed; }
   async function gsdeLoadOrders() {
     if (!gsdeUid) return;
     try {
@@ -5266,7 +5267,7 @@ setInterval(() => {
       const q = fb.fsM.query(fb.fsM.collection(fb.db, "orders"), fb.fsM.where("customerUid", "==", gsdeUid), fb.fsM.limit(50));
       const snap = await fb.fsM.getDocs(q);
       const rows = [];
-      snap.forEach(d => { const o = d.data(); rows.push({ id: d.id, createdAt: o.createdAt && o.createdAt.toMillis ? o.createdAt.toMillis() : 0, total: o.total, items: Array.isArray(o.items) ? o.items.length : 0, status: o.status }); });
+      snap.forEach(d => { const o = d.data(); rows.push({ id: d.id, createdAt: o.createdAt && o.createdAt.toMillis ? o.createdAt.toMillis() : 0, total: o.total, items: Array.isArray(o.items) ? o.items.length : 0, status: o.status, orderNumber: o.orderNumber || "" }); });
       rows.sort((a, b) => b.createdAt - a.createdAt);
       gsdeOrders = rows;
     } catch (e) { console.warn("GSDE: orders not loaded", e); gsdeOrders = []; }
@@ -5287,6 +5288,7 @@ setInterval(() => {
       email: user.email || "",
       delivery: { country: "Iraq", governorate: "", city: o.deliveryLocationLabel || "", addressOrLandmark: o.city || "" },
       items, subtotal: o.itemsTotal, deliveryFee: o.deliveryFee, total: o.itemsTotal + o.deliveryFee,
+      orderNumber: o.orderNumber || null,
       status: "submitted", paymentMethod: "cod", channel: "website-whatsapp",
       createdAt: fb.fsM.serverTimestamp(), erpReference: null
     };
@@ -5368,6 +5370,12 @@ setInterval(() => {
   document.getElementById("acctForgot").addEventListener("click", gsdeForgot);
 
   const AUTH_METHOD_LABEL_KEY_V34 = { Google: "authMethodGoogle", Apple: "authMethodApple", Email: "authMethodEmail" };
+  function gsdeMakeOrderNo() {
+    const d = new Date(), p2 = n => String(n).padStart(2, "0");
+    const A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", r = new Uint8Array(4);
+    (window.crypto || window.msCrypto).getRandomValues(r);
+    return "GSW-" + p2(d.getFullYear() % 100) + p2(d.getMonth() + 1) + p2(d.getDate()) + "-" + Array.from(r, x => A[x % A.length]).join("");
+  }
   function gsdeUpdateHomeWelcome() {
     let el = document.getElementById("gsdeHomeWelcome");
     if (!loggedInUser || !loggedInUser.name) { if (el) el.remove(); return; }
@@ -5437,10 +5445,9 @@ setInterval(() => {
         const d = o.createdAt ? new Date(o.createdAt).toLocaleDateString(loc, { year: "numeric", month: "short", day: "numeric" }) : "";
         const totalTxt = typeof o.total === "number" ? `${t.acctTotalWord}: ${o.total.toLocaleString()} IQD` : "";
         return `<div class="order-row">
-          <div><div class="id">${escapeHtml(t.orderIdPrefix)}${escapeHtml(o.id.slice(-6).toUpperCase())}</div>
+          <div><div class="id">${escapeHtml(o.orderNumber || (t.orderIdPrefix + o.id.slice(-6).toUpperCase()))}</div>
           <div class="date">${escapeHtml(d)}</div>
-          <div class="acct-sub">${escapeHtml(t.acctItemsCount.replace("{n}", o.items))} · ${escapeHtml(totalTxt)}</div></div>
-          <span class="order-status ${(!o.status || o.status === "submitted") ? "status-progress" : "status-done"}">${escapeHtml(gsdeStatusLabel(t, o.status))}</span></div>`;
+          <div class="acct-sub">${escapeHtml(t.acctItemsCount.replace("{n}", o.items))} · ${escapeHtml(totalTxt)}</div></div></div>`;
       }).join("");
     }
   }
