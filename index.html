@@ -5486,8 +5486,11 @@ setInterval(() => {
     if (!window.confirm(t.acctDeleteConfirm)) return;
     try {
       const fb = await gsdeFb(); const uid = gsdeUid, user = fb.auth.currentUser;
-      await fb.authM.deleteUser(user); // needs a recent sign-in; fails first, before anything is erased
-      try { await fb.fsM.deleteDoc(fb.fsM.doc(fb.db, "accounts", uid)); } catch (e) { console.warn("profile erase pending", e); }
+      // v37 (M1 fix): erase the profile FIRST (rules only allow it while signed in), then the Auth user.
+      const last = user.metadata && user.metadata.lastSignInTime ? Date.parse(user.metadata.lastSignInTime) : 0;
+      if (!last || Date.now() - last > 4 * 60 * 1000) { showToast(t.acctNeedRelogin); return; } // sign-in not recent: erase nothing
+      await fb.fsM.deleteDoc(fb.fsM.doc(fb.db, "accounts", uid));
+      await fb.authM.deleteUser(user); // if this still fails the profile is re-created on next sign-in (gsdeLoadProfile)
       showToast(t.acctDeleted);
     } catch (e) {
       if (e && e.code === "auth/requires-recent-login") showToast(t.acctNeedRelogin); else gsdeAuthError(e);
