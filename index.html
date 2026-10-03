@@ -826,14 +826,22 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
   .info-ticker .it-text{font-size:13px; line-height:1.5; color:var(--text); font-weight:600;}
   .info-ticker.cat .it-text{font-size:18px; font-weight:800;}
   .info-ticker.sub .it-text{font-size:15px; font-weight:800;}
-  .info-ticker.anim .it-label{animation:itL .4s ease-out both;}
-  .info-ticker.anim .it-text{animation:itT .7s .15s ease-out both;}
-  @keyframes itL{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-  @keyframes itT{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  /* round 16: ticker enters from one side and leaves through the other (direction follows the reading direction) */
+  .info-ticker{--d:1;}
+  .info-ticker.rtl{--d:-1;}
+  .info-ticker.tk-in .it-label{animation:tkIn .55s cubic-bezier(.2,.8,.2,1) both;}
+  .info-ticker.tk-in .it-text{animation:tkIn .7s .08s cubic-bezier(.2,.8,.2,1) both;}
+  .info-ticker.tk-out .it-label,.info-ticker.tk-out .it-text{animation:tkOut .32s ease-in both;}
+  @keyframes tkIn{from{opacity:0;transform:translateX(calc(var(--d)*38px));filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
+  @keyframes tkOut{from{opacity:1;transform:none;filter:none}to{opacity:0;transform:translateX(calc(var(--d)*-38px));filter:blur(3px)}}
   @media (prefers-reduced-motion:reduce){.hb-slide *,.info-ticker *{animation:none!important}.hb-slide.out{visibility:hidden}}
 
   .hb-wrap{margin:16px auto 10px;max-width:980px;}
   .info-ticker{max-width:980px;margin-left:auto;margin-right:auto;}
+  /* round 16: Featured Products = four cards (one per family) in one row on wide screens */
+  #featuredGrid{grid-template-columns:repeat(4,minmax(0,1fr));max-width:1180px;margin-left:auto;margin-right:auto;}
+  @media (max-width:1100px){#featuredGrid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:620px;}}
+  @media (max-width:430px){#featuredGrid{gap:12px;}}
 </style>
 </head>
 <body>
@@ -912,7 +920,6 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
           </svg>
           <span>کوردیی سۆرانی</span>
         </button>
-        <div class="draft-note">Draft translations — pending CEO review before launch.</div>
       </div>
     </div>
     <button class="cart-btn" id="openCart">
@@ -3135,18 +3142,21 @@ const HOME_MASTER_COLOR_LABELS = {
     });
 
     document.body.dataset.gsdeRuntimeStatus = "maintenance";
+    const brandNode = document.querySelector(".brand svg, .brand img");
+    const brandClone = brandNode ? (brandNode.tagName === "IMG" ? Object.assign(new Image(), { src: brandNode.src, alt: "Golden Scissors" }) : brandNode.cloneNode(true)) : null;
+    document.documentElement.style.background = "#000";
     document.body.style.margin = "0";
+    document.body.style.background = "#000";
     document.body.replaceChildren();
 
     const shell = document.createElement("main");
-    shell.style.cssText = "min-height:100vh;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:32px;background:#090909;color:#f4f0e6;font-family:Arial,sans-serif;text-align:center";
+    shell.style.cssText = "min-height:100vh;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:32px;background:#000;color:#f4f0e6;font-family:Arial,sans-serif;text-align:center";
     const card = document.createElement("section");
-    card.style.cssText = "width:min(680px,100%);padding:40px 28px;border:1px solid #8f7a45;border-radius:18px;background:#111;box-shadow:0 18px 60px rgba(0,0,0,.35)";
+    card.style.cssText = "width:min(680px,100%);padding:24px 12px;background:transparent";
 
-    const existingLogo = document.querySelector(".brand svg, .brand img");
     const logoWrap = document.createElement("div");
-    logoWrap.style.cssText = "max-width:220px;max-height:120px;margin:0 auto 28px";
-    if (existingLogo) logoWrap.appendChild(existingLogo.cloneNode(true));
+    logoWrap.style.cssText = "width:min(560px,92vw);margin:0 auto 4px";
+    if (brandClone) { brandClone.removeAttribute("class"); brandClone.style.cssText = "width:100%;height:auto;max-width:none;display:block"; logoWrap.appendChild(brandClone); }
 
     const title = document.createElement("h1");
     title.style.cssText = "margin:0 0 14px;font-size:clamp(26px,5vw,40px);font-weight:700;color:#d7bd72";
@@ -3519,7 +3529,7 @@ const HOME_MASTER_COLOR_LABELS = {
   // Categories not listed here (سەر دەلنگ, دەرسوک today) have their photos flat in the category folder,
   // so they skip straight to the items+prices grid. Add an entry here whenever a category grows subfolders.
   const SUBCATEGORY_ORDER = {
-    "قوتک": ["قوتکێ سادە", "قوتکێ قاش", "قوتکێ ستیکەرو قاش", "قوتکێ ئویە"],
+    "قوتک": ["قوتکێ سادە", "قوتکێ قاش", "قوتکێ ستیکەرو قاش", "قوتکێ شريط كريستال", "قوتکێ ئویە"],
     "دەرسوک": ["دەرسوک سادە", "دەرسوک قاش قەدیفە"],
     "دەلنگ": ["دەلنگ سادە", "دەلنگ قاش"],
   };
@@ -3551,6 +3561,7 @@ const HOME_MASTER_COLOR_LABELS = {
     "قوتکێ قاش":           { en: "Stone-Studded Vest",       ar: "یلک مرصع بالأحجار",         ku_sor: "هێلەکی نقێم",       ku_bad: "قوتکێ قاش" },
     "قوتکێ ستیکەرو قاش":   { en: "Rhinestone Vest",          ar: "یلک بالأحجار اللامعة",      ku_sor: "هێلەکی ستیکەردار",  ku_bad: "قوتکێ ستیکەرو قاش" },
     "قوتکێ ئویە":          { en: "Owya Vest",                ar: "یلک أويە",                  ku_sor: "هێلەکی ئۆیە",       ku_bad: "قوتکێ ئویە" },
+    "قوتکێ شريط كريستال":  { en: "Crystal Ribbon Vest",      ar: "یلک بشريط كريستال",        ku_sor: "هێلەکی شريط كريستال", ku_bad: "قوتکێ شريط كريستال" },
     "دەرسوک سادە":         { en: "Simple Headscarf",             ar: "طرحة بسيط",                 ku_sor: "سەرپۆشی سادە",      ku_bad: "دەرسوک سادە" },
     "دەرسوک قاش قەدیفە":   { en: "Stone-Studded Velvet Headscarf", ar: "طرحة مخملي مرصع بالأحجار", ku_sor: "سەرپۆشی قەدیفە نقێم", ku_bad: "دەرسوک قاش قەدیفە" },
     "دەلنگ سادە":          { en: "Simple Traditional Kurdish Under-Trousers", ar: "سروال کردي",                  ku_sor: "ژێر کراسی سادە",    ku_bad: "دەلنگ سادە" },
@@ -3767,11 +3778,17 @@ const HOME_MASTER_COLOR_LABELS = {
   }
 
   function renderFeatured() {
-    const order = getAllCategories();
-    const cards = generalDiscoveryCards(PRODUCTS)
-      .sort((a, b) => order.indexOf(a.product.category) - order.indexOf(b.product.category));
-    document.getElementById("featuredGrid").innerHTML =
-      cards.slice(0, 3).map(c => productCard(c.product, c.color)).join("");
+    // round 16 (CEO 2026-10-01): first impression = one product from each family in this order: QTK, DLG, DRS, KLV;
+    // the product shown in each family rotates daily (Iraq time, same day index as the banner album).
+    const day = Math.floor((Date.now() + 3 * 3600 * 1000) / 86400000);
+    const cards = generalDiscoveryCards(PRODUCTS);
+    const picked = [];
+    ["قوتک", "دەلنگ", "دەرسوک", "کولاڤ"].forEach(cat => {
+      const list = cards.filter(c => c.product.category === cat)
+        .sort((x, y) => String(x.product.id).localeCompare(String(y.product.id)) || String(x.color || "").localeCompare(String(y.color || "")));
+      if (list.length) picked.push(list[day % list.length]);
+    });
+    document.getElementById("featuredGrid").innerHTML = picked.map(c => productCard(c.product, c.color)).join("");
   }
 
   // Single source of truth for "what categories exist right now" — known ones in the fixed display
@@ -3842,6 +3859,16 @@ function buildTickerItems() {
   });
   return items;
 }
+function tkIsRtl() { return (typeof wLang === "function" ? wLang() : currentLang) !== "en"; }
+function tkApply(el, it) {
+  el.className = "info-ticker " + it.kind + (tkIsRtl() ? " rtl" : "") + " tk-in";
+  el.querySelector(".it-label").textContent = it.label;
+  el.querySelector(".it-text").textContent = it.text;
+}
+function tkSwap(el, it) {
+  el.classList.remove("tk-in"); el.classList.add("tk-out");
+  setTimeout(() => { const e2 = document.getElementById("infoTicker"); if (e2) tkApply(e2, it); }, 330);
+}
 function tickerHtml() { return `<div class="info-ticker" id="infoTicker"><div class="it-label"></div><div class="it-text"></div></div>`; }
 setInterval(() => {
   const el = document.getElementById("infoTicker"); if (!el || typeof PRODUCTS === "undefined" || !PRODUCTS.length) return;
@@ -3852,10 +3879,10 @@ setInterval(() => {
   const it = tkItems[tkIdx];
   if (!tkNextAt) tkNextAt = now + it.ms;
   if (tkShown !== tkIdx || !el.querySelector(".it-text").textContent) {
-    const fresh = tkShown !== tkIdx; tkShown = tkIdx;
-    el.className = "info-ticker " + it.kind + (fresh ? " anim" : "");
-    el.querySelector(".it-label").textContent = it.label;
-    el.querySelector(".it-text").textContent = it.text;
+    const first = !el.querySelector(".it-text").textContent;
+    tkShown = tkIdx;
+    if (first || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) tkApply(el, it);
+    else tkSwap(el, it);
   }
 }, 250);
 
@@ -3897,6 +3924,7 @@ setInterval(() => {
     { code: "QTKs", rawKey: "قوتکێ سادە" },
     { code: "QTKq", rawKey: "قوتکێ قاش" },
     { code: "QTKst", rawKey: "قوتکێ ستیکەرو قاش" },
+    { code: "QTKsc", rawKey: "قوتکێ شريط كريستال" },
     { code: "QTKw", rawKey: "قوتکێ ئویە" },
   ];
   function productNavCode(p) {
