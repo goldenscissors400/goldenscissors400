@@ -868,6 +868,21 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
     nav.mainnav button svg{width:24px;height:24px}
     nav.mainnav button span{position:static!important;width:auto!important;height:auto!important;margin:0!important;clip:auto!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;border:0}
   }
+  /* GSDE round20: accounts */
+  .acct-note{font-size:12px;color:var(--gray,#777);line-height:1.6;margin:10px 0 0;text-align:center}
+  .acct-note a{color:var(--gold-dark,#b8860b);text-decoration:underline;cursor:pointer}
+  .acct-check{display:flex;align-items:flex-start;gap:8px;margin:10px 0 4px;font-size:13px;line-height:1.5;cursor:pointer}
+  .acct-check input{margin-top:3px;flex:none;width:18px;height:18px}
+  .acct-forgot{margin:2px 0 10px;text-align:start}
+  .acct-forgot a{font-size:13px;color:var(--gold-dark,#b8860b);text-decoration:underline;cursor:pointer}
+  .acct-h{margin:22px 0 8px;font-size:17px}
+  .acct-mini-btn{background:transparent;border:1.5px solid var(--gold,#EFB921);color:var(--gold-dark,#b8860b);border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:700;cursor:pointer}
+  .acct-edit{margin:14px 0;border:1px solid var(--line,#e6e0d4);border-radius:12px;padding:10px 14px}
+  .acct-edit summary{cursor:pointer;font-weight:700;padding:4px 0}
+  .acct-edit .form-group{margin-top:10px}
+  .acct-danger{display:block;margin:26px auto 0;background:transparent;border:1.5px solid #b42318;color:#b42318;border-radius:8px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer}
+  .acct-verify-ok{color:#1a7f37;font-weight:700}.acct-verify-no{color:#b45309;font-weight:700}
+  .order-row .acct-sub{font-size:12px;color:var(--gray,#777);margin-top:2px}
   @media (prefers-reduced-motion:reduce){.hb-slide *,.info-ticker *{animation:none!important}.hb-slide.out{visibility:hidden}}
 
   .hb-wrap{margin:16px auto 10px;max-width:980px;}
@@ -1009,7 +1024,7 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
   <section class="view" id="view-account">
     <div id="loginBox" class="account-card">
       <h2 data-i18n="loginTitle">چوونەژوورەوە بۆ هەژمار</h2>
-      <p class="sub" data-i18n="loginSubtitle">پێویستت بە هەژمار نییە بۆ گەڕان یان داواکردن — دروستکردنی هەژمار تەنها زانیارییەکانت بۆ جارێکی دیکە هەڵدەگرێت. (هەژمارێکی نموونەیی — هیچ شتێک بۆ سێرڤەرێکی ڕاستەقینە نانێردرێت)</p>
+      <p class="sub" data-i18n="acctSubtitle">پێویستت بە هەژمار نییە بۆ گەڕان یان داواکردن — دروستکردنی هەژمار تەنها زانیارییەکانت بۆ جارێکی دیکە هەڵدەگرێت. (هەژمارێکی نموونەیی — هیچ شتێک بۆ سێرڤەرێکی ڕاستەقینە نانێردرێت)</p>
 
       <div class="auth-provider-col">
         <button type="button" class="auth-provider-btn google" id="authGoogleBtn">
@@ -1022,6 +1037,7 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
         </button>
       </div>
 
+      <p class="acct-note" id="acctConsentNote"></p>
       <div class="auth-divider"><span data-i18n="authOrEmail">یان ئیمەیل بەکاربهێنە</span></div>
 
       <div class="auth-tabs" role="tablist">
@@ -1032,17 +1048,19 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
       <div id="authSignupForm">
         <div class="form-group"><label data-i18n="loginNameLabel">ناو</label><input id="loginName" data-i18n-placeholder="loginNamePlaceholder" placeholder="ناوی تۆ"></div>
         <div class="form-group"><label data-i18n="authEmailLabel">ئیمەیل</label><input id="loginEmail" type="email" data-i18n-placeholder="authEmailPlaceholder" placeholder="you@example.com"></div>
-        <div class="form-group"><label data-i18n="authPasswordLabel">وشەی نهێنی</label><input id="loginPassword" type="password" data-i18n-placeholder="authPasswordPlaceholder" placeholder="لانیکەم 6 پیت"></div>
+        <div class="form-group"><label data-i18n="authPasswordLabel">وشەی نهێنی</label><input id="loginPassword" type="password" data-i18n-placeholder="acctPasswordHint" placeholder="لانیکەم 6 پیت"></div>
         <div class="form-group"><label data-i18n="loginShopLabel">ناوی دوکان یان مارکە (ئەگەر هەبێت)</label><input id="loginShop" data-i18n-placeholder="loginShopPlaceholder" placeholder="ئەگەر دوکان یان مارکەیەکت هەیە بینووسە"></div>
         <div class="form-group"><label data-i18n="authPrimaryPhoneLabel">ژمارەی سەرەکی پەیوەندی (ئارەزوومەندانە)</label><div class="phone-input-group"><span class="phone-cc">+964</span><input id="loginPrimaryPhone" placeholder="7XX XXX XXXX"></div></div>
         <div class="form-group"><label data-i18n="authSecondaryPhoneLabel">ژمارەی دووەمی پەیوەندی (ئارەزوومەندانە)</label><div class="phone-input-group"><span class="phone-cc">+964</span><input id="loginSecondaryPhone" placeholder="7XX XXX XXXX"></div></div>
         <div class="form-group"><label data-i18n="loginAddressLabel">ناونیشانی گەیاندن (ئارەزوومەندانە)</label><textarea id="loginAddress" rows="2" data-i18n-placeholder="loginAddressPlaceholder" placeholder="شار، ناوچە، نزیکەی کوێ (نیشانەیەک بنووسە)"></textarea></div>
+        <label class="acct-check"><input type="checkbox" id="acctMarketingSignup"><span data-i18n="acctMarketingLabel"></span></label>
         <button class="login-btn" id="doLogin" data-i18n="authCreateAccountBtn">هەژمار دروستبکە</button>
       </div>
 
       <div id="authSigninForm" style="display:none;">
         <div class="form-group"><label data-i18n="authEmailLabel">ئیمەیل</label><input id="signinEmail" type="email" data-i18n-placeholder="authEmailPlaceholder" placeholder="you@example.com"></div>
-        <div class="form-group"><label data-i18n="authPasswordLabel">وشەی نهێنی</label><input id="signinPassword" type="password" data-i18n-placeholder="authPasswordPlaceholder" placeholder="لانیکەم 6 پیت"></div>
+        <div class="form-group"><label data-i18n="authPasswordLabel">وشەی نهێنی</label><input id="signinPassword" type="password" data-i18n-placeholder="acctPasswordHint" placeholder="لانیکەم 6 پیت"></div>
+        <div class="acct-forgot"><a id="acctForgot" role="button" tabindex="0" data-i18n="acctForgot"></a></div>
         <button class="login-btn" id="doSignin" data-i18n="authSigninBtn">چوونەژوورەوە</button>
       </div>
     </div>
@@ -1067,7 +1085,23 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
         <div class="id" data-i18n="savedAddressLabel">ناونیشانی گەیاندن</div>
         <div class="date" id="savedAddress" style="font-size:13px; color:var(--ink);"></div>
       </div>
+      <div class="order-row" id="acctVerifyRow" style="align-items:center;gap:8px;">
+        <div class="id" id="acctVerifyText"></div>
+        <button type="button" class="acct-mini-btn" id="acctResendVerify" data-i18n="acctResendVerify"></button>
+      </div>
+      <details class="acct-edit" id="acctEditBox">
+        <summary data-i18n="acctEditTitle"></summary>
+        <div class="form-group"><label data-i18n="loginNameLabel"></label><input id="acctEditName" maxlength="100"></div>
+        <div class="form-group"><label data-i18n="loginShopLabel"></label><input id="acctEditShop" maxlength="100"></div>
+        <div class="form-group"><label data-i18n="authPrimaryPhoneLabel"></label><div class="phone-input-group"><span class="phone-cc">+964</span><input id="acctEditPhone1" type="tel" inputmode="tel" maxlength="20"></div></div>
+        <div class="form-group"><label data-i18n="authSecondaryPhoneLabel"></label><div class="phone-input-group"><span class="phone-cc">+964</span><input id="acctEditPhone2" type="tel" inputmode="tel" maxlength="20"></div></div>
+        <div class="form-group"><label data-i18n="loginAddressLabel"></label><textarea id="acctEditAddress" rows="2" maxlength="300"></textarea></div>
+        <label class="acct-check"><input type="checkbox" id="acctEditMarketing"><span data-i18n="acctMarketingLabel"></span></label>
+        <button class="login-btn" id="acctSaveBtn" type="button" data-i18n="acctSave"></button>
+      </details>
+      <h3 class="acct-h" data-i18n="acctOrdersTitle"></h3>
       <div id="ordersList"></div>
+      <button type="button" class="acct-danger" id="acctDeleteBtn" data-i18n="acctDeleteBtn"></button>
     </div>
   </section>
 
@@ -2358,6 +2392,8 @@ const LIVE_HOME_MASTER_CORE_UI={"en":{"dir":"ltr","pageTitle":"Golden Store | On
 // normal pipeline run + publish, same as colors/sizes -- this static blob is no longer the
 // source of truth and does not need manual upkeep.
 for(const _l of ['en','ar','ku_bad','ku_sor']){if(TRANSLATIONS[_l])Object.assign(TRANSLATIONS[_l],LIVE_HOME_MASTER_CORE_UI[_l]);}
+const GSDE_ACCT_I18N={"en": {"acctSubtitle": "You never need an account to browse or order. An account saves your details, language and cart, and keeps your order history on the website and the mobile app.", "acctPasswordHint": "At least 8 characters", "acctConsentNote": "By continuing you agree to the {terms} and acknowledge the {privacy}.", "acctTermsLink": "Terms & Conditions", "acctPrivacyLink": "Privacy Policy", "acctMarketingLabel": "Send me news and offers (optional)", "acctForgot": "Forgot your password?", "acctVerifySent": "Account created. We sent you a verification email — please check your inbox.", "acctResetSent": "If an account exists for this email, a password reset link has been sent.", "acctErrExists": "This email is already registered — please sign in instead.", "acctErrWeak": "Password must be at least 8 characters.", "acctErrBadLogin": "Incorrect email or password.", "acctErrInvalidEmail": "Please enter a valid email address.", "acctErrNetwork": "Network problem — please try again.", "acctErrTooMany": "Too many attempts — please try again later.", "acctErrGeneric": "Something went wrong — please try again.", "acctErrPopup": "The sign-in window was closed or blocked — please try again.", "acctAppleSoon": "Apple sign-in will be available with the iPhone app.", "acctVerified": "Email verified", "acctNotVerified": "Email not verified yet", "acctResendVerify": "Resend verification email", "acctVerifyResent": "Verification email sent.", "acctEditTitle": "Edit my details", "acctSave": "Save", "acctSaved": "Details saved.", "acctDeleteBtn": "Delete my account", "acctDeleteConfirm": "Delete your account permanently? Your saved details will be erased. Past orders are kept for our records.", "acctDeleted": "Your account was deleted.", "acctNeedRelogin": "For security, please sign out, sign in again, then retry.", "acctOrdersTitle": "My orders", "acctNoOrders": "No saved orders yet. Orders you send while signed in will appear here. We confirm every order with you on WhatsApp.", "acctOrderSent": "Sent — awaiting confirmation", "acctItemsCount": "{n} item(s)", "acctTotalWord": "Total", "acctCartRestored": "Your saved cart was added to this session."}, "ar": {"acctSubtitle": "لا تحتاج إلى حساب للتصفح أو الطلب. الحساب يحفظ بياناتك ولغتك وسلتك ويحتفظ بسجل طلباتك في الموقع وتطبيق الجوال.", "acctPasswordHint": "8 أحرف على الأقل", "acctConsentNote": "بالمتابعة فإنك توافق على {terms} وتقرّ بـ{privacy}.", "acctTermsLink": "الشروط والأحكام", "acctPrivacyLink": "سياسة الخصوصية", "acctMarketingLabel": "أرغب بتلقي الأخبار والعروض (اختياري)", "acctForgot": "نسيت كلمة المرور؟", "acctVerifySent": "تم إنشاء الحساب. أرسلنا إليك رسالة تحقق على بريدك الإلكتروني — يرجى مراجعة صندوق الوارد.", "acctResetSent": "إذا كان هناك حساب بهذا البريد فقد أُرسل رابط لإعادة تعيين كلمة المرور.", "acctErrExists": "هذا البريد مسجّل مسبقاً — يرجى تسجيل الدخول.", "acctErrWeak": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.", "acctErrBadLogin": "البريد الإلكتروني أو كلمة المرور غير صحيحة.", "acctErrInvalidEmail": "يرجى إدخال بريد إلكتروني صالح.", "acctErrNetwork": "مشكلة في الاتصال — يرجى المحاولة مرة أخرى.", "acctErrTooMany": "محاولات كثيرة — يرجى المحاولة لاحقاً.", "acctErrGeneric": "حدث خطأ — يرجى المحاولة مرة أخرى.", "acctErrPopup": "تم إغلاق نافذة تسجيل الدخول أو حجبها — يرجى المحاولة مرة أخرى.", "acctAppleSoon": "تسجيل الدخول عبر Apple سيتوفر مع تطبيق الآيفون.", "acctVerified": "تم توثيق البريد", "acctNotVerified": "البريد غير موثّق بعد", "acctResendVerify": "إعادة إرسال رسالة التوثيق", "acctVerifyResent": "تم إرسال رسالة التوثيق.", "acctEditTitle": "تعديل بياناتي", "acctSave": "حفظ", "acctSaved": "تم حفظ البيانات.", "acctDeleteBtn": "حذف حسابي", "acctDeleteConfirm": "هل تريد حذف حسابك نهائياً؟ سيتم مسح بياناتك المحفوظة، وتبقى الطلبات السابقة ضمن سجلاتنا.", "acctDeleted": "تم حذف حسابك.", "acctNeedRelogin": "لأسباب أمنية، يرجى تسجيل الخروج ثم الدخول مجدداً ثم إعادة المحاولة.", "acctOrdersTitle": "طلباتي", "acctNoOrders": "لا توجد طلبات محفوظة بعد. الطلبات التي ترسلها وأنت مسجّل الدخول ستظهر هنا. نؤكد كل طلب معك عبر واتساب.", "acctOrderSent": "أُرسل — بانتظار التأكيد", "acctItemsCount": "{n} صنف", "acctTotalWord": "المجموع", "acctCartRestored": "تمت إضافة سلتك المحفوظة إلى هذه الجلسة."}, "ku_sor": {"acctSubtitle": "پێویستت بە هەژمار نییە بۆ گەڕان یان داواکردن. هەژمار زانیارییەکانت و زمان و سەبەتەکەت دەپارێزێت و مێژووی داواکارییەکانت لە ماڵپەڕ و ئەپی مۆبایلدا هەڵدەگرێت.", "acctPasswordHint": "لانیکەم 8 پیت", "acctConsentNote": "بە بەردەوامبوون ڕازیدەبیت بە {terms} و ئاگادار دەبیت لە {privacy}.", "acctTermsLink": "مەرج و ڕێساکان", "acctPrivacyLink": "سیاسەتی تایبەتێتی", "acctMarketingLabel": "دەمەوێت هەواڵ و ئۆفەرەکان وەربگرم (ئارەزوومەندانە)", "acctForgot": "وشەی نهێنیت لەبیرچووە؟", "acctVerifySent": "هەژمارەکە دروستکرا. ئیمەیلێکی پشتڕاستکردنەوەمان بۆ ناردیت — تکایە سەیری ئیمەیلەکەت بکە.", "acctResetSent": "ئەگەر هەژمارێک بەم ئیمەیلە هەبێت، بەستەرێکی گۆڕینی وشەی نهێنی نێردرا.", "acctErrExists": "ئەم ئیمەیلە پێشتر تۆمارکراوە — تکایە بچۆرەژوورەوە.", "acctErrWeak": "وشەی نهێنی دەبێت لانیکەم 8 پیت بێت.", "acctErrBadLogin": "ئیمەیل یان وشەی نهێنی هەڵەیە.", "acctErrInvalidEmail": "تکایە ئیمەیلێکی دروست بنووسە.", "acctErrNetwork": "کێشەی هێڵ هەیە — تکایە دووبارە هەوڵبدەرەوە.", "acctErrTooMany": "هەوڵی زۆر درا — تکایە دواتر هەوڵبدەرەوە.", "acctErrGeneric": "هەڵەیەک ڕوویدا — تکایە دووبارە هەوڵبدەرەوە.", "acctErrPopup": "پەنجەرەی چوونەژوورەوە داخرا یان ڕێگری لێکرا — تکایە دووبارە هەوڵبدەرەوە.", "acctAppleSoon": "چوونەژوورەوە بە Apple لەگەڵ ئەپی ئایفۆن بەردەست دەبێت.", "acctVerified": "ئیمەیل پشتڕاستکراوەتەوە", "acctNotVerified": "ئیمەیل هێشتا پشتڕاست نەکراوەتەوە", "acctResendVerify": "ناردنەوەی ئیمەیلی پشتڕاستکردنەوە", "acctVerifyResent": "ئیمەیلی پشتڕاستکردنەوە نێردرا.", "acctEditTitle": "دەستکاریکردنی زانیارییەکانم", "acctSave": "پاشەکەوتکردن", "acctSaved": "زانیارییەکان پاشەکەوتکران.", "acctDeleteBtn": "سڕینەوەی هەژمارەکەم", "acctDeleteConfirm": "دەتەوێت هەژمارەکەت بۆ هەمیشە بسڕدرێتەوە؟ زانیارییە پاشەکەوتکراوەکانت دەسڕدرێنەوە. داواکارییە پێشووەکان لە تۆمارەکانماندا دەمێننەوە.", "acctDeleted": "هەژمارەکەت سڕایەوە.", "acctNeedRelogin": "لەبەر ئاسایش، تکایە بچۆرەدەرەوە و دووبارە بچۆرەژوورەوە، پاشان هەوڵبدەرەوە.", "acctOrdersTitle": "داواکارییەکانم", "acctNoOrders": "هێشتا هیچ داواکارییەک پاشەکەوت نەکراوە. ئەو داواکارییانەی لە کاتی چوونەژوورەوە دەینێریت لێرە دەردەکەون. هەموو داواکارییەک لە ڕێگەی واتساپەوە لەگەڵت پشتڕاست دەکەینەوە.", "acctOrderSent": "نێردرا — چاوەڕێی پشتڕاستکردنەوە", "acctItemsCount": "{n} کاڵا", "acctTotalWord": "کۆی گشتی", "acctCartRestored": "سەبەتە پاشەکەوتکراوەکەت زیادکرا."}, "ku_bad": {"acctSubtitle": "پێدڤی ب هەژمارەکێ نینە بو گەڕان یان داخازکرنێ. هەژمار زانیارییێن تە و زمان و سەبەتا تە دپارێزیت و مێژویا داخازکرنێن تە د ماڵپەڕ و ئەپا مۆبایلێ دا دهێلیت.", "acctPasswordHint": "لانیکەم 8 پیت", "acctConsentNote": "ب بەردەوامبوونێ تو ڕازی دبی ب {terms} و ئاگەهدار دبی ژ {privacy}.", "acctTermsLink": "مەرج و ڕێسایێن", "acctPrivacyLink": "سیاسەتا تایبەتیێ", "acctMarketingLabel": "دڤێت هەوال و ئۆفەران وەرگرم (ب ئارەزوو)", "acctForgot": "پارولێ تە ژبیر کریە؟", "acctVerifySent": "هەژمار هاتە چێکرن. مە ئیمەیلەکا پشتڕاستکرنێ بو تە هنارت — تکایە ئیمەیلا خو ببینە.", "acctResetSent": "ئەگەر هەژمارەک ب ڤی ئیمەیلی هەبیت، لینکەکێ بو گوهورینا پارولێ هاتە هنارتن.", "acctErrExists": "ئەڤ ئیمەیلە ب ڕێکرییێ هەیە — تکایە بچە ژوور.", "acctErrWeak": "پارولێ دڤێت لانیکەم 8 پیت بن.", "acctErrBadLogin": "ئیمەیل یان پارول خەلەتە.", "acctErrInvalidEmail": "تکایە ئیمەیلەکا دروست بنڤیسە.", "acctErrNetwork": "کێشەیا ئینتەرنێتێ هەیە — تکایە دووبارە هەوڵ بدە.", "acctErrTooMany": "گەلەک هەوڵ هاتنە دان — تکایە پاشتر هەوڵ بدە.", "acctErrGeneric": "خەلەتییەک ڕویدا — تکایە دووبارە هەوڵ بدە.", "acctErrPopup": "پەنجەرا چوونا ژوور هاتە گرتن یان بلۆککرن — تکایە دووبارە هەوڵ بدە.", "acctAppleSoon": "چوونا ژوور ب Apple دێ دگەل ئەپا ئایفۆنێ بەردەست بیت.", "acctVerified": "ئیمەیل هاتیە پشتڕاستکرن", "acctNotVerified": "ئیمەیل هێشتا نەهاتیە پشتڕاستکرن", "acctResendVerify": "ڤەگەڕاندنا ئیمەیلا پشتڕاستکرنێ", "acctVerifyResent": "ئیمەیلا پشتڕاستکرنێ هاتە هنارتن.", "acctEditTitle": "دەستکاریکرنا زانیارییێن من", "acctSave": "پاراستن", "acctSaved": "زانیاری هاتنە پاراستن.", "acctDeleteBtn": "ژێبرنا هەژمارا من", "acctDeleteConfirm": "تە دڤێت هەژمارا خو ب هەمیشەیی ژێببەی؟ زانیاریێن پاراستی دێ هێنە ژێبرن. داخازکرنێن بهری نها د تۆمارێن مە دا دمینن.", "acctDeleted": "هەژمارا تە هاتە ژێبرن.", "acctNeedRelogin": "ژبەر ئاسایشێ، تکایە بچە دەر و دووبارە بچە ژوور، پاشی هەوڵ بدە.", "acctOrdersTitle": "داخازکرنێن من", "acctNoOrders": "هێشتا چ داخازکرن نەهاتینە پاراستن. ئەو داخازکرنێن تو د دەمێ چوونا ژوور دا دهنێری دێ ل ڤێرە دیار بن. مە هەمی داخازکرن ب واتساپێ دگەل تە پشتڕاست دکەین.", "acctOrderSent": "هاتە هنارتن — چاڤەرێی پشتڕاستکرنێ", "acctItemsCount": "{n} کاڵا", "acctTotalWord": "کۆمێ گشتی", "acctCartRestored": "سەبەتا پاراستی هاتە زێدەکرن."}};
+for(const _l of ['en','ar','ku_bad','ku_sor']){if(TRANSLATIONS[_l])Object.assign(TRANSLATIONS[_l],GSDE_ACCT_I18N[_l]);}
 
   const LANG_LABELS = { en: "EN", ar: "AR", ku_bad: "BAD", ku_sor: "SOR" };
 
@@ -2607,6 +2643,13 @@ const HOME_MASTER_COLOR_LABELS = {
       : `<span class="pending-badge">${escapeHtml(tr.aboutPendingBadge || "")}</span><p>${escapeHtml(tr.aboutPendingNote || "")}</p>`;
   }
   function applyLanguage(lang, opts) {
+    opts = opts || {};
+    if (opts.remember !== false) { gsdeLangPickedThisSession = true; }
+    applyLanguageCore(lang, opts);
+    if (typeof gsdeRenderConsent === "function") gsdeRenderConsent();
+    if (opts.remember !== false && typeof gsdeQueueLangSave === "function") gsdeQueueLangSave();
+  }
+  function applyLanguageCore(lang, opts) {
     opts = opts || {};
     const t = TRANSLATIONS[lang];
     if (!t) return;
@@ -4775,7 +4818,8 @@ setInterval(() => {
     });
     return { total, hasUnknownPrice };
   }
-  function renderCart() {
+  function renderCart() { renderCartCore(); if (typeof gsdeQueueCartSave === "function") gsdeQueueCartSave(); }
+  function renderCartCore() {
     // GSDE (added 2026-08-10, part of the site-wide language audit): this whole drawer used to be
     // built with hardcoded Kurdish strings baked into the template literals below -- it was missed in
     // the first retrofit pass because it's JS-rendered, not static markup, so the data-i18n sweep never
@@ -5024,6 +5068,7 @@ setInterval(() => {
     msg += `*شێوازی گەیاندن:* ${DELIVERY_METHOD_KU[delivery] || delivery}`;
     if (note) msg += `%0A%0A*تێبینی:* ${note}`;
 
+    try { gsdeSaveOrderCopy({ orderItems, itemsTotal, hasUnknownPrice, deliveryFee, deliveryLocationLabel, name, primaryPhone, secondaryPhone, city }).catch(e => console.warn("GSDE order copy skipped", e)); } catch (e) { console.warn("GSDE order copy skipped", e); }
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
     window.open(url, "_blank");
     document.getElementById("checkoutOverlay").classList.remove("active");
@@ -5042,8 +5087,8 @@ setInterval(() => {
   function authProviderComingSoon(providerLabel) {
     showToast(TRANSLATIONS[currentLang].authProviderDemoNote.replace("{provider}", providerLabel));
   }
-  document.getElementById("authGoogleBtn").addEventListener("click", () => authProviderComingSoon("Google"));
-  document.getElementById("authAppleBtn").addEventListener("click", () => authProviderComingSoon("Apple"));
+  document.getElementById("authGoogleBtn").addEventListener("click", () => gsdeAuthGoogle());
+  document.getElementById("authAppleBtn").addEventListener("click", () => showToast(TRANSLATIONS[currentLang].acctAppleSoon));
 
   function setAuthTab(tab) {
     const isSignup = tab === "signup";
@@ -5055,71 +5100,373 @@ setInterval(() => {
   document.getElementById("authTabSignup").addEventListener("click", () => setAuthTab("signup"));
   document.getElementById("authTabSignin").addEventListener("click", () => setAuthTab("signin"));
 
-  // MOBILE-09 SS6: PrimaryContactNumber and SecondaryContactNumber are both OPTIONAL at
-  // registration -- they only become required later, at checkout (see the sendWhatsapp handler
-  // above). RegistrationMethod mirrors the vocabulary CRM_02_Customers.RegistrationMethod will use
-  // (Google / Apple / Email), matching lib/core/models/customer.dart on mobile.
-  document.getElementById("doLogin").addEventListener("click", () => {
-    const t = TRANSLATIONS[currentLang];
-    const name = document.getElementById("loginName").value.trim();
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
-    const shopName = document.getElementById("loginShop").value.trim();
-    const primaryPhone = document.getElementById("loginPrimaryPhone").value.trim();
-    const secondaryPhone = document.getElementById("loginSecondaryPhone").value.trim();
-    const address = document.getElementById("loginAddress").value.trim();
-    if (!name) { showToast(t.toastEnterName); return; }
-    if (!email || !password) { showToast(t.toastEnterEmailPassword); return; }
-    if (password.length < 6) { showToast(t.toastPasswordTooShort); return; }
-    loggedInUser = { name, email, shopName, primaryPhone, secondaryPhone, address, registrationMethod: "Email" };
-    renderLoggedInAccount();
-  });
-
-  document.getElementById("doSignin").addEventListener("click", () => {
-    const t = TRANSLATIONS[currentLang];
-    const email = document.getElementById("signinEmail").value.trim();
-    const password = document.getElementById("signinPassword").value;
-    if (!email || !password) { showToast(t.toastEnterEmailPassword); return; }
-    // Demo only -- no real backend/account lookup exists yet, same disclosed limitation as the rest
-    // of this form -- so this simply signs the visitor back in as a sample profile built from the
-    // email they typed, rather than pretending to verify a password against nothing.
-    loggedInUser = loggedInUser && loggedInUser.email === email
-      ? loggedInUser
-      : { name: email.split("@")[0], email, shopName: "", primaryPhone: "", secondaryPhone: "", address: "", registrationMethod: "Email" };
-    renderLoggedInAccount();
-  });
-
   const AUTH_METHOD_LABEL_KEY = { Google: "authMethodGoogle", Apple: "authMethodApple", Email: "authMethodEmail" };
   // GSDE (added 2026-08-10, part of the site-wide language audit): pulled out of the doLogin click
   // handler so a language switch while already logged in (see applyLanguage()) can repaint the same
   // welcome text / saved fields / demo orders list without re-doing the login.
+
+  // ===================== GSDE v34: real accounts (GSDE-ACCT-01 v0.2) =====================
+  // Firebase Authentication (same project as the mobile app => one login for website + app) and a
+  // per-account profile document accounts/{uid} (owner-only, field-whitelisted by Firestore rules).
+  // ACCOUNT != CUSTOMER: the CRM customer record (group/verification/ERP id) is team-owned and lives
+  // elsewhere; nothing here can set it. Guests can still order exactly as before (WhatsApp).
+  const GSDE_CONSENT_VERSION = "web-v34-2026-10";
+  const GSDE_LOCALES = ["en", "ar", "ku_bad", "ku_sor"];
+  let gsdeFbPromise = null, gsdeUid = null, gsdePendingSignup = false, gsdeApplying = false;
+  let gsdeProfile = null, gsdeOrders = null, gsdePendingCart = null, gsdeCartTimer = null, gsdeLangTimer = null;
+  let gsdeLangPickedThisSession = false;
+
+  function gsdeFb() {
+    if (!gsdeFbPromise) gsdeFbPromise = (async () => {
+      const base = "https://www.gstatic.com/firebasejs/10.13.0/";
+      const [appM, authM, fsM] = await Promise.all([import(base + "firebase-app.js"), import(base + "firebase-auth.js"), import(base + "firebase-firestore.js")]);
+      const app = appM.getApps().length ? appM.getApp() : appM.initializeApp(GSDE_FIREBASE_CONFIG);
+      return { appM, authM, fsM, app, auth: authM.getAuth(app), db: fsM.getFirestore(app) };
+    })();
+    return gsdeFbPromise;
+  }
+  function gsdeE164(local) { const d = String(local || "").replace(/\D/g, "").replace(/^964/, "").replace(/^0+/, ""); return d ? "+964" + d : ""; }
+  function gsdeLocalPhone(e) { return String(e || "").replace(/^\+964/, ""); }
+  function gsdeEmailLang(fb) { fb.auth.languageCode = currentLang === "ar" ? "ar" : "en"; }
+
+  function gsdeAuthError(e) {
+    const t = TRANSLATIONS[currentLang];
+    const c = (e && e.code) || "";
+    let k = "acctErrGeneric";
+    if (c === "auth/email-already-in-use") k = "acctErrExists";
+    else if (c === "auth/weak-password") k = "acctErrWeak";
+    else if (c === "auth/invalid-email") k = "acctErrInvalidEmail";
+    else if (c === "auth/invalid-credential" || c === "auth/wrong-password" || c === "auth/user-not-found" || c === "auth/invalid-login-credentials") k = "acctErrBadLogin";
+    else if (c === "auth/network-request-failed") k = "acctErrNetwork";
+    else if (c === "auth/too-many-requests") k = "acctErrTooMany";
+    else if (c === "auth/popup-closed-by-user" || c === "auth/popup-blocked" || c === "auth/cancelled-popup-request") k = "acctErrPopup";
+    console.warn("GSDE auth:", c, e && e.message);
+    showToast(t[k]);
+  }
+
+  function gsdeMethodOf(user) {
+    const id = (user.providerData && user.providerData[0] && user.providerData[0].providerId) || "";
+    return id === "google.com" ? "Google" : id === "apple.com" ? "Apple" : "Email";
+  }
+  function gsdeNewProfile(fb, user, method, x) {
+    x = x || {};
+    const sv = fb.fsM.serverTimestamp;
+    return {
+      displayName: String(x.displayName || user.displayName || "").slice(0, 100),
+      email: user.email || "",
+      preferredLocale: currentLang,
+      registrationMethod: method,
+      marketingConsent: !!x.marketingConsent,
+      consentVersion: GSDE_CONSENT_VERSION,
+      consentAt: sv(),
+      createdAt: sv(),
+      savedCart: [],
+      shopName: String(x.shopName || "").slice(0, 100),
+      primaryPhone: x.primaryPhone || "",
+      secondaryPhone: x.secondaryPhone || "",
+      address: String(x.address || "").slice(0, 300)
+    };
+  }
+
+  async function gsdeLoadProfile(user) {
+    let p = null;
+    try {
+      const fb = await gsdeFb();
+      const ref = fb.fsM.doc(fb.db, "accounts", user.uid);
+      let snap = await fb.fsM.getDoc(ref);
+      if (!snap.exists()) {
+        await fb.fsM.setDoc(ref, gsdeNewProfile(fb, user, gsdeMethodOf(user)));
+        snap = await fb.fsM.getDoc(ref);
+      }
+      p = snap.data();
+    } catch (e) {
+      console.warn("GSDE: account profile unavailable (continuing with sign-in data only)", e);
+    }
+    gsdeProfile = p || {};
+    loggedInUser = {
+      uid: user.uid,
+      name: gsdeProfile.displayName || user.displayName || user.email || "",
+      email: user.email || gsdeProfile.email || "",
+      shopName: gsdeProfile.shopName || "",
+      primaryPhone: gsdeLocalPhone(gsdeProfile.primaryPhone),
+      secondaryPhone: gsdeLocalPhone(gsdeProfile.secondaryPhone),
+      address: gsdeProfile.address || "",
+      registrationMethod: gsdeProfile.registrationMethod || gsdeMethodOf(user),
+      emailVerified: !!user.emailVerified,
+      isPasswordUser: gsdeMethodOf(user) === "Email"
+    };
+    // Language preference: restore it when the visitor has not picked a language this session;
+    // otherwise their fresh choice wins and is saved to the account.
+    const pref = gsdeProfile.preferredLocale;
+    if (!gsdeLangPickedThisSession && GSDE_LOCALES.includes(pref) && pref !== currentLang) {
+      gsdeApplying = true; try { applyLanguage(pref, { remember: false }); } finally { gsdeApplying = false; }
+    } else if (GSDE_LOCALES.includes(pref) && pref !== currentLang) {
+      gsdeQueueLangSave();
+    }
+    gsdePendingCart = Array.isArray(gsdeProfile.savedCart) ? gsdeProfile.savedCart : [];
+    gsdeApplyPendingCart();
+    renderLoggedInAccount();
+    gsdeLoadOrders();
+  }
+
+  function gsdeApplyPendingCart() {
+    if (!gsdePendingCart || !gsdeUid || typeof PRODUCTS === "undefined" || !PRODUCTS.length) return;
+    const saved = gsdePendingCart; gsdePendingCart = null;
+    let added = 0;
+    gsdeApplying = true;
+    try {
+      saved.forEach(s => {
+        if (!s || !s.id) return;
+        const prod = liveProductFor({ id: s.id });
+        if (!prod || !isCustomerPurchasable(prod)) return;
+        const qty = Math.max(1, Math.min(99, parseInt(s.qty, 10) || 1));
+        const ex = cart.find(c => c.id === s.id && (c.size || null) === (s.size || null) && (c.color || null) === (s.color || null));
+        if (ex) { if (qty > ex.qty) { ex.qty = qty; added++; } }
+        else { cart.push({ ...prod, size: s.size || null, color: s.color || null, qty }); added++; }
+      });
+      if (added) { renderCart(); showToast(TRANSLATIONS[currentLang].acctCartRestored); }
+    } finally { gsdeApplying = false; }
+    gsdeQueueCartSave();
+  }
+
+  function gsdeQueueCartSave() {
+    if (!gsdeUid || gsdeApplying) return;
+    clearTimeout(gsdeCartTimer);
+    gsdeCartTimer = setTimeout(async () => {
+      try {
+        if (gsdePendingCart) return; // do not overwrite the saved cart before it has been merged
+        const fb = await gsdeFb();
+        const lines = cart.slice(0, 50).map(c => ({ id: String(c.id), size: c.size || null, color: c.color || null, qty: Math.max(1, Math.min(99, c.qty | 0)) }));
+        await fb.fsM.updateDoc(fb.fsM.doc(fb.db, "accounts", gsdeUid), { savedCart: lines, updatedAt: fb.fsM.serverTimestamp() });
+      } catch (e) { console.warn("GSDE: cart not saved", e); }
+    }, 1500);
+  }
+  function gsdeQueueLangSave() {
+    if (!gsdeUid || gsdeApplying) return;
+    clearTimeout(gsdeLangTimer);
+    gsdeLangTimer = setTimeout(async () => {
+      try {
+        const fb = await gsdeFb();
+        await fb.fsM.updateDoc(fb.fsM.doc(fb.db, "accounts", gsdeUid), { preferredLocale: currentLang, updatedAt: fb.fsM.serverTimestamp() });
+      } catch (e) { console.warn("GSDE: language not saved", e); }
+    }, 800);
+  }
+
+  async function gsdeLoadOrders() {
+    if (!gsdeUid) return;
+    try {
+      const fb = await gsdeFb();
+      const q = fb.fsM.query(fb.fsM.collection(fb.db, "orders"), fb.fsM.where("customerUid", "==", gsdeUid), fb.fsM.limit(50));
+      const snap = await fb.fsM.getDocs(q);
+      const rows = [];
+      snap.forEach(d => { const o = d.data(); rows.push({ id: d.id, createdAt: o.createdAt && o.createdAt.toMillis ? o.createdAt.toMillis() : 0, total: o.total, items: Array.isArray(o.items) ? o.items.length : 0, status: o.status }); });
+      rows.sort((a, b) => b.createdAt - a.createdAt);
+      gsdeOrders = rows;
+    } catch (e) { console.warn("GSDE: orders not loaded", e); gsdeOrders = []; }
+    renderLoggedInAccount();
+  }
+
+  async function gsdeSaveOrderCopy(o) {
+    if (!gsdeUid || o.hasUnknownPrice || o.orderItems.length === 0 || o.orderItems.length > 10) return;
+    const fb = await gsdeFb();
+    const user = fb.auth.currentUser;
+    if (!user || user.isAnonymous) return;
+    const items = o.orderItems.map(c => ({ productId: String(c.id), name: productName(c), size: c.size || null, color: c.color || null, qty: c.qty | 0, unitPrice: c.price }));
+    const doc = {
+      customerUid: user.uid,
+      customerName: o.name,
+      primaryContactNumber: gsdeE164(o.primaryPhone),
+      secondaryContactNumber: gsdeE164(o.secondaryPhone),
+      email: user.email || "",
+      delivery: { country: "Iraq", governorate: "", city: o.deliveryLocationLabel || "", addressOrLandmark: o.city || "" },
+      items, subtotal: o.itemsTotal, deliveryFee: o.deliveryFee, total: o.itemsTotal + o.deliveryFee,
+      status: "submitted", paymentMethod: "cod", channel: "website-whatsapp",
+      createdAt: fb.fsM.serverTimestamp(), erpReference: null
+    };
+    await fb.fsM.addDoc(fb.fsM.collection(fb.db, "orders"), doc);
+    gsdeLoadOrders();
+  }
+
+  async function gsdeAuthGoogle() {
+    try {
+      const fb = await gsdeFb();
+      await fb.authM.signInWithPopup(fb.auth, new fb.authM.GoogleAuthProvider());
+    } catch (e) { gsdeAuthError(e); }
+  }
+
+  function gsdeRenderConsent() {
+    const el = document.getElementById("acctConsentNote");
+    if (!el) return;
+    const t = TRANSLATIONS[currentLang];
+    const hasPrivacy = typeof POLICIES !== "undefined" && POLICIES["GS-POL-02"];
+    const terms = `<a role="button" tabindex="0" onclick="openPolicyModal('GS-POL-01')">${escapeHtml(t.acctTermsLink)}</a>`;
+    const privacy = hasPrivacy ? `<a role="button" tabindex="0" onclick="openPolicyModal('GS-POL-02')">${escapeHtml(t.acctPrivacyLink)}</a>` : escapeHtml(t.acctPrivacyLink);
+    el.innerHTML = t.acctConsentNote.replace("{terms}", terms).replace("{privacy}", privacy);
+  }
+
+  function gsdeShowSignedOut() {
+    document.getElementById("loginBox").style.display = "block";
+    document.getElementById("ordersBox").style.display = "none";
+    ["loginName","loginEmail","loginPassword","loginShop","loginPrimaryPhone","loginSecondaryPhone","loginAddress","signinEmail","signinPassword"].forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+    const mk = document.getElementById("acctMarketingSignup"); if (mk) mk.checked = false;
+    setAuthTab("signup");
+  }
+
+  document.getElementById("doLogin").addEventListener("click", async (ev) => {
+    const t = TRANSLATIONS[currentLang], btn = ev.currentTarget;
+    const name = document.getElementById("loginName").value.trim();
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+    if (!name) { showToast(t.toastEnterName); return; }
+    if (!email || !password) { showToast(t.toastEnterEmailPassword); return; }
+    if (password.length < 8) { showToast(t.acctErrWeak); return; }
+    btn.disabled = true; gsdePendingSignup = true;
+    try {
+      const fb = await gsdeFb(); gsdeEmailLang(fb);
+      const cred = await fb.authM.createUserWithEmailAndPassword(fb.auth, email, password);
+      try { await fb.authM.updateProfile(cred.user, { displayName: name }); } catch (e) { /* non-fatal */ }
+      gsdeUid = cred.user.uid;
+      await fb.fsM.setDoc(fb.fsM.doc(fb.db, "accounts", cred.user.uid), gsdeNewProfile(fb, cred.user, "Email", {
+        displayName: name, shopName: document.getElementById("loginShop").value.trim(),
+        primaryPhone: gsdeE164(document.getElementById("loginPrimaryPhone").value), secondaryPhone: gsdeE164(document.getElementById("loginSecondaryPhone").value),
+        address: document.getElementById("loginAddress").value.trim(), marketingConsent: document.getElementById("acctMarketingSignup").checked
+      }));
+      try { await fb.authM.sendEmailVerification(cred.user); } catch (e) { console.warn("verification email not sent", e); }
+      gsdePendingSignup = false;
+      await gsdeLoadProfile(cred.user);
+      showToast(t.acctVerifySent);
+    } catch (e) { gsdePendingSignup = false; gsdeAuthError(e); }
+    finally { btn.disabled = false; }
+  });
+
+  document.getElementById("doSignin").addEventListener("click", async (ev) => {
+    const t = TRANSLATIONS[currentLang], btn = ev.currentTarget;
+    const email = document.getElementById("signinEmail").value.trim();
+    const password = document.getElementById("signinPassword").value;
+    if (!email || !password) { showToast(t.toastEnterEmailPassword); return; }
+    btn.disabled = true;
+    try { const fb = await gsdeFb(); await fb.authM.signInWithEmailAndPassword(fb.auth, email, password); }
+    catch (e) { gsdeAuthError(e); }
+    finally { btn.disabled = false; }
+  });
+
+  async function gsdeForgot() {
+    const t = TRANSLATIONS[currentLang];
+    const email = document.getElementById("signinEmail").value.trim();
+    if (!email) { showToast(t.toastEnterEmailPassword); return; }
+    try { const fb = await gsdeFb(); gsdeEmailLang(fb); await fb.authM.sendPasswordResetEmail(fb.auth, email); }
+    catch (e) { if (!e || e.code !== "auth/user-not-found") { if (e && e.code === "auth/invalid-email") { gsdeAuthError(e); return; } console.warn("reset", e && e.code); } }
+    showToast(t.acctResetSent); // same message whether or not the account exists (no account enumeration)
+  }
+  document.getElementById("acctForgot").addEventListener("click", gsdeForgot);
+
+  const AUTH_METHOD_LABEL_KEY_V34 = { Google: "authMethodGoogle", Apple: "authMethodApple", Email: "authMethodEmail" };
   function renderLoggedInAccount() {
+    gsdeRenderConsent();
     if (!loggedInUser) return;
     const t = TRANSLATIONS[currentLang];
     document.getElementById("welcomeName").textContent = `${t.welcomePrefix}${loggedInUser.name}`;
-    document.getElementById("savedMethodBadge").textContent = t[AUTH_METHOD_LABEL_KEY[loggedInUser.registrationMethod]] || loggedInUser.registrationMethod;
+    document.getElementById("savedMethodBadge").textContent = t[AUTH_METHOD_LABEL_KEY_V34[loggedInUser.registrationMethod]] || loggedInUser.registrationMethod;
     document.getElementById("savedShopRow").style.display = loggedInUser.shopName ? "flex" : "none";
     document.getElementById("savedShop").textContent = loggedInUser.shopName;
     const contactParts = [loggedInUser.primaryPhone, loggedInUser.secondaryPhone].filter(Boolean).map(p => `+964 ${p}`);
     document.getElementById("savedContact").textContent = contactParts.length ? contactParts.join("   /   ") : t.authNoContactYet;
     document.getElementById("savedAddress").textContent = loggedInUser.address || "—";
+    const vrow = document.getElementById("acctVerifyRow");
+    vrow.style.display = loggedInUser.isPasswordUser ? "flex" : "none";
+    const vt = document.getElementById("acctVerifyText");
+    vt.textContent = loggedInUser.emailVerified ? t.acctVerified : t.acctNotVerified;
+    vt.className = "id " + (loggedInUser.emailVerified ? "acct-verify-ok" : "acct-verify-no");
+    document.getElementById("acctResendVerify").style.display = loggedInUser.emailVerified ? "none" : "";
+    const box = document.getElementById("acctEditBox");
+    if (!box.open) {
+      document.getElementById("acctEditName").value = loggedInUser.name || "";
+      document.getElementById("acctEditShop").value = loggedInUser.shopName || "";
+      document.getElementById("acctEditPhone1").value = loggedInUser.primaryPhone || "";
+      document.getElementById("acctEditPhone2").value = loggedInUser.secondaryPhone || "";
+      document.getElementById("acctEditAddress").value = loggedInUser.address || "";
+      document.getElementById("acctEditMarketing").checked = !!(gsdeProfile && gsdeProfile.marketingConsent);
+    }
     document.getElementById("loginBox").style.display = "none";
     document.getElementById("ordersBox").style.display = "block";
-    document.getElementById("ordersList").innerHTML = DEMO_ORDERS.map(o => `
-      <div class="order-row">
-        <div><div class="id">${t.orderIdPrefix}${o.id}</div><div class="date">${o.date}</div></div>
-        <span class="order-status ${o.status==='done'?'status-done':'status-progress'}">${o.status==='done'?t.orderStatusDone:t.orderStatusProgress}</span>
-      </div>`).join("") + `<p class="note" style="text-align:center;margin-top:10px;">${t.demoOrdersNote}</p>`;
+    const loc = currentLang === "en" ? "en-GB" : currentLang === "ar" ? "ar-IQ" : "ckb-IQ";
+    const list = document.getElementById("ordersList");
+    if (!gsdeOrders || gsdeOrders.length === 0) {
+      list.innerHTML = `<p class="note" style="text-align:center;margin-top:10px;">${escapeHtml(t.acctNoOrders)}</p>`;
+    } else {
+      list.innerHTML = gsdeOrders.map(o => {
+        const d = o.createdAt ? new Date(o.createdAt).toLocaleDateString(loc, { year: "numeric", month: "short", day: "numeric" }) : "";
+        const totalTxt = typeof o.total === "number" ? `${t.acctTotalWord}: ${o.total.toLocaleString()} IQD` : "";
+        return `<div class="order-row">
+          <div><div class="id">${escapeHtml(t.orderIdPrefix)}${escapeHtml(o.id.slice(-6).toUpperCase())}</div>
+          <div class="date">${escapeHtml(d)}</div>
+          <div class="acct-sub">${escapeHtml(t.acctItemsCount.replace("{n}", o.items))} · ${escapeHtml(totalTxt)}</div></div>
+          <span class="order-status status-progress">${escapeHtml(t.acctOrderSent)}</span></div>`;
+      }).join("");
+    }
   }
-  document.getElementById("doLogout").addEventListener("click", () => {
-    loggedInUser = null;
-    document.getElementById("loginBox").style.display = "block";
-    document.getElementById("ordersBox").style.display = "none";
-    setAuthTab("signup");
-    document.getElementById("loginName").value = ""; document.getElementById("loginEmail").value = ""; document.getElementById("loginPassword").value = "";
-    document.getElementById("loginShop").value = ""; document.getElementById("loginPrimaryPhone").value = ""; document.getElementById("loginSecondaryPhone").value = ""; document.getElementById("loginAddress").value = "";
-    document.getElementById("signinEmail").value = ""; document.getElementById("signinPassword").value = "";
+
+  document.getElementById("acctResendVerify").addEventListener("click", async () => {
+    try { const fb = await gsdeFb(); gsdeEmailLang(fb); await fb.authM.sendEmailVerification(fb.auth.currentUser); showToast(TRANSLATIONS[currentLang].acctVerifyResent); }
+    catch (e) { gsdeAuthError(e); }
   });
+
+  document.getElementById("acctSaveBtn").addEventListener("click", async (ev) => {
+    const btn = ev.currentTarget, t = TRANSLATIONS[currentLang];
+    const name = document.getElementById("acctEditName").value.trim();
+    if (!name) { showToast(t.toastEnterName); return; }
+    btn.disabled = true;
+    try {
+      const fb = await gsdeFb();
+      const fields = {
+        displayName: name.slice(0, 100), shopName: document.getElementById("acctEditShop").value.trim().slice(0, 100),
+        primaryPhone: gsdeE164(document.getElementById("acctEditPhone1").value), secondaryPhone: gsdeE164(document.getElementById("acctEditPhone2").value),
+        address: document.getElementById("acctEditAddress").value.trim().slice(0, 300), marketingConsent: document.getElementById("acctEditMarketing").checked,
+        updatedAt: fb.fsM.serverTimestamp()
+      };
+      await fb.fsM.updateDoc(fb.fsM.doc(fb.db, "accounts", gsdeUid), fields);
+      try { await fb.authM.updateProfile(fb.auth.currentUser, { displayName: fields.displayName }); } catch (e) { /* non-fatal */ }
+      Object.assign(gsdeProfile, fields);
+      loggedInUser.name = fields.displayName; loggedInUser.shopName = fields.shopName; loggedInUser.address = fields.address;
+      loggedInUser.primaryPhone = gsdeLocalPhone(fields.primaryPhone); loggedInUser.secondaryPhone = gsdeLocalPhone(fields.secondaryPhone);
+      document.getElementById("acctEditBox").open = false;
+      renderLoggedInAccount(); showToast(t.acctSaved);
+    } catch (e) { gsdeAuthError(e); }
+    finally { btn.disabled = false; }
+  });
+
+  document.getElementById("acctDeleteBtn").addEventListener("click", async () => {
+    const t = TRANSLATIONS[currentLang];
+    if (!window.confirm(t.acctDeleteConfirm)) return;
+    try {
+      const fb = await gsdeFb(); const uid = gsdeUid, user = fb.auth.currentUser;
+      await fb.authM.deleteUser(user); // needs a recent sign-in; fails first, before anything is erased
+      try { await fb.fsM.deleteDoc(fb.fsM.doc(fb.db, "accounts", uid)); } catch (e) { console.warn("profile erase pending", e); }
+      showToast(t.acctDeleted);
+    } catch (e) {
+      if (e && e.code === "auth/requires-recent-login") showToast(t.acctNeedRelogin); else gsdeAuthError(e);
+    }
+  });
+
+  document.getElementById("doLogout").addEventListener("click", async () => {
+    try { const fb = await gsdeFb(); await fb.authM.signOut(fb.auth); } catch (e) { console.warn("signOut", e); }
+  });
+
+  async function gsdeInitAccounts() {
+    try {
+      const fb = await gsdeFb();
+      fb.authM.onAuthStateChanged(fb.auth, async (user) => {
+        if (!user || user.isAnonymous) {
+          gsdeUid = null; gsdeProfile = null; gsdeOrders = null; gsdePendingCart = null; loggedInUser = null;
+          gsdeShowSignedOut(); gsdeRenderConsent(); return;
+        }
+        gsdeUid = user.uid;
+        if (gsdePendingSignup) return; // the sign-up handler loads the profile once it has been written
+        await gsdeLoadProfile(user);
+      });
+    } catch (e) { console.warn("GSDE: accounts unavailable", e); }
+  }
+  gsdeInitAccounts();
 
   // ---------- Wholesale & Partnership (demo, sends to the same WhatsApp number as regular orders) ----------
   let whSelectedCats = new Set();
@@ -5378,6 +5725,7 @@ setInterval(() => {
     }
     const { products, familyIcons, familySizeGuides, categoryIcons, deliveryLocations, uiLocalizationByLanguage } = result;
     PRODUCTS = products;
+    if (typeof gsdeApplyPendingCart === "function") setTimeout(gsdeApplyPendingCart, 0);
     FAMILY_ICONS = familyIcons;
     FAMILY_SIZE_GUIDES = familySizeGuides;
     CATEGORY_ICONS = categoryIcons;
