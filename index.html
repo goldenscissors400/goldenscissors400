@@ -5312,6 +5312,81 @@ setInterval(() => {
     if (dropped) lines.splice(last + 1, 0, "… + " + dropped + " کاڵای تر — لیستی تەواوی داواکارییەکە لە سیستەمدا پاشەکەوت کراوە (ژمارە: " + orderNo + ")");
     return lines.join(sep);
   }
+
+  // ---- GSDE round29: order saving through the Orders Worker (Turnstile + daily limit) ----
+  const GSDE_ORDERS_URL = "https://gsde-orders.goldenscissors400.workers.dev/order";
+  const GSDE_TS_SITEKEY = "0x4AAAAAAFOcHoTtNGbhUIJo";
+  const GSDE_ORDERS_ON = GSDE_ORDERS_URL.indexOf("__") !== 0 && GSDE_TS_SITEKEY.indexOf("__") !== 0;
+  const GSDE_ORDER_MSG = {
+    en: { verify: "To save your order, please confirm that you are not a robot.", limit: "You have reached today's limit for saved orders. Your WhatsApp message is not affected; please contact us on WhatsApp for more orders." },
+    ar: { verify: "لحفظ طلبك، يرجى تأكيد أنك لست روبوتاً.", limit: "وصلتَ إلى الحد اليومي للطلبات المحفوظة. رسالة واتساب لا تتأثر؛ يرجى التواصل معنا عبر واتساب لمزيد من الطلبات." },
+    ku_sor: { verify: "بۆ پاشەکەوتکردنی داواکارییەکەت، تکایە پشتڕاست بکەرەوە کە ڕۆبۆت نیت.", limit: "گەیشتیتە سنووری ڕۆژانەی داواکارییە پاشەکەوتکراوەکان. نامەی واتساپەکەت کاریگەری نییە؛ تکایە بۆ داواکاری زیاتر لە ڕێگەی واتساپەوە پەیوەندیمان پێوە بکە." },
+    ku_bad: { verify: "بۆ پاراستنا داخازکرنا تە، تکایە پشتڕاست بکە کو تو ڕۆبۆت نینی.", limit: "تە گەهشتیە سنوورێ ڕۆژانە یێ داخازکرنێن هاتینە پاراستن. نامەیا واتساپێ ناهێتە کاریگەرکرن؛ تکایە بو داخازکرنێن زێدەتر ب ڕێکا واتساپێ پەیوەندیێ دگەل مە بکە." }
+  };
+  function gsdeOrderMsg(k) {
+    let l = "en"; try { l = (typeof wLang === "function") ? wLang() : (typeof currentLang !== "undefined" ? currentLang : "en"); } catch (e) {}
+    return (GSDE_ORDER_MSG[l] || GSDE_ORDER_MSG.en)[k];
+  }
+  function gsdeTsLoad() {
+    if (window.__gsTs) return window.__gsTs;
+    window.__gsTs = new Promise((res, rej) => {
+      if (window.turnstile) return res(window.turnstile);
+      const s = document.createElement("script");
+      s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"; s.async = true;
+      s.onload = () => res(window.turnstile); s.onerror = () => { window.__gsTs = null; rej(new Error("turnstile load")); };
+      document.head.appendChild(s);
+    });
+    return window.__gsTs;
+  }
+  // visible=false: Cloudflare shows nothing unless it needs a tick; visible=true: explicit "I am not a robot" box (4th+ order in 24 h).
+  function gsdeTsToken(visible) {
+    return gsdeTsLoad().then(ts => new Promise((resolve, reject) => {
+      const box = document.createElement("div");
+      box.style.cssText = visible
+        ? "position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px"
+        : "position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:100000";
+      const card = document.createElement("div");
+      if (visible) {
+        card.style.cssText = "background:#fff;color:#222;border-radius:12px;padding:20px;max-width:360px;text-align:center;line-height:1.6";
+        const p = document.createElement("p"); p.textContent = gsdeOrderMsg("verify"); p.style.margin = "0 0 12px"; card.appendChild(p);
+      }
+      const slot = document.createElement("div"); card.appendChild(slot); box.appendChild(card); document.body.appendChild(box);
+      let wid, timer;
+      const done = (fn, v) => { clearTimeout(timer); try { ts.remove(wid); } catch (e) {} box.remove(); fn(v); };
+      timer = setTimeout(() => done(reject, new Error("turnstile timeout")), visible ? 180000 : 30000);
+      wid = ts.render(slot, { sitekey: GSDE_TS_SITEKEY, appearance: visible ? "always" : "interaction-only",
+        callback: tok => done(resolve, tok), "error-callback": () => done(reject, new Error("turnstile error")), "expired-callback": () => done(reject, new Error("turnstile expired")) });
+    }));
+  }
+  async function gsdeOrderViaWorker(fb, user, base, priced) {
+    // Never throws to the caller; WhatsApp has already been opened. Returns true when the order was saved.
+    try {
+      const idToken = await user.getIdToken();
+      const order = { customerName: base.customerName, primaryContactNumber: base.primaryContactNumber, secondaryContactNumber: base.secondaryContactNumber,
+        delivery: base.delivery, items: priced, itemsText: base.itemsText, lineCount: base.lineCount, subtotal: base.subtotal, deliveryFee: base.deliveryFee,
+        orderNumber: base.orderNumber, channel: base.channel };
+      const post = async (visible) => {
+        const token = await gsdeTsToken(visible);
+        const r = await fetch(GSDE_ORDERS_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ order, idToken, token, visible }) });
+        let j = {}; try { j = await r.json(); } catch (e) {}
+        return j;
+      };
+      let visible = false, dropItems = false, j = {};
+      for (let n = 0; n < 3; n++) {
+        if (dropItems) order.items = []; // catalog price changed since the cart was built: keep the order text, drop priced lines
+        j = await post(visible);
+        if (j.ok) return true;
+        if (j.code === "need_visible" && !visible) { visible = true; continue; }
+        if (j.code === "invalid" && priced.length && !dropItems) { dropItems = true; continue; }
+        break;
+      }
+      if (j.ok) return true;
+      if (j.code === "limit") { try { showToast(gsdeOrderMsg("limit")); } catch (e) {} }
+      console.warn("GSDE order not saved:", j.code || "unknown");
+    } catch (e) { console.warn("GSDE order not saved", e); }
+    return false;
+  }
+
   async function gsdeSaveOrderCopy(o) {
     // v38: every submitted order is saved; guests use a silent anonymous session. Never blocks WhatsApp.
     if (!o.orderItems || o.orderItems.length === 0) return;
@@ -5336,6 +5411,7 @@ setInterval(() => {
       status: "submitted", paymentMethod: "cod", channel: "website-whatsapp",
       createdAt: fb.fsM.serverTimestamp(), erpReference: null
     };
+    if (GSDE_ORDERS_ON) { await gsdeOrderViaWorker(fb, user, base, priced); if (!user.isAnonymous) gsdeLoadOrders(); return; }
     const col = fb.fsM.collection(fb.db, "orders");
     try { await fb.fsM.addDoc(col, Object.assign({ items: priced }, base)); }
     catch (e) { console.warn("GSDE order copy: retry without item lines", e); await fb.fsM.addDoc(col, Object.assign({ items: [] }, base)); }
