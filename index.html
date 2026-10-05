@@ -213,6 +213,7 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
     background: linear-gradient(to top, rgba(17,17,17,0.8) 0%, rgba(17,17,17,0.15) 55%, transparent 100%);
   }
   .subcat-label { position: relative; z-index: 1; color: #fff; font-size: 13.5px; font-weight: 800; padding: 14px 10px; width: 100%; text-align: center; line-height: 1.3; }
+  .gs-oos-badge { position:absolute; top:8px; inset-inline-start:8px; z-index:2; background:#b3261e; color:#fff; font-size:11px; font-weight:800; padding:3px 9px; border-radius:6px; white-space:nowrap; line-height:1.3; }
   .subcat-noimg { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.55); color: var(--gold); font-size: 9px; padding: 4px 11px; border-radius: 999px; letter-spacing: 1px; font-family: 'Inter', sans-serif; white-space: nowrap; }
 
   /* ---- Product grid ---- */
@@ -1755,6 +1756,7 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
       cartSubtotalNoteKnown: "Delivery fee is set by area when the order is completed.",
       priceNotSpecified: "Price not specified",
       badgeOutOfStock: "Out of Stock",
+      tileOutOfStock: "Out of stock",
       badgeLowStock: "Low Stock",
       badgePreOrder: "Pre-Order",
       badgeComingSoon: "Coming Soon",
@@ -1959,6 +1961,7 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
       cartSubtotalNoteKnown: "تُحدَّد رسوم التوصيل حسب المنطقة عند إتمام الطلب.",
       priceNotSpecified: "السعر غير محدد",
       badgeOutOfStock: "نفدت الكمية",
+      tileOutOfStock: "نفدت الكمية",
       badgeLowStock: "كمية محدودة",
       badgePreOrder: "طلب مسبق",
       badgeComingSoon: "قريباً",
@@ -2163,6 +2166,7 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
       cartSubtotalNoteKnown: "کرێیا گەهاندنێ ب گورەی هەرێمێ دگەل تەواوکرنا داخازکرنێ تێتە دیارکرن.",
       priceNotSpecified: "نرخ نەهاتیە دیارکرن",
       badgeOutOfStock: "کۆتایی هات",
+      tileOutOfStock: "نەمایە",
       badgeLowStock: "کێم ماییە",
       badgePreOrder: "داخازکرنا پێشوەخت",
       badgeComingSoon: "بەم زوویانە",
@@ -2370,6 +2374,7 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
       cartSubtotalNoteKnown: "کرێی گەیاندن لەگەڵ تەواوکردنی داواکاری، بەپێی ناوچە، دیاری دەکرێت.",
       priceNotSpecified: "نرخ دیارنەکراوە",
       badgeOutOfStock: "کۆتایی هات",
+      tileOutOfStock: "نەماوە",
       badgeLowStock: "کەمی ماوە",
       badgePreOrder: "داواکردنی پێشوەخت",
       badgeComingSoon: "بەم زووانە",
@@ -4297,7 +4302,9 @@ setInterval(() => {
       const bg = sample
         ? ` style="background-image:url('${sample}');${blurCss}"`
         : ` style="background-image:url('${categoryPlaceholderBg(p.category)}'); background-size: 55% auto; background-repeat: no-repeat; background-position: center;${noSampleComingSoon ? ' filter: blur(var(--coming-soon-blur));' : ''}"`;
+      const gsAvail = colorAvailable(p, v.name);
       return `<div class="subcat-tile" ${bg} onclick="viewProduct('${p.id}', '${v.name}')">
+        ${gsAvail ? "" : `<div class="gs-oos-badge">${(TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang].tileOutOfStock) || TRANSLATIONS.en.tileOutOfStock}</div>`}
         ${sample ? "" : (noSampleComingSoon ? comingSoonOverlay("Coming Soon") : '<span class="subcat-noimg">PRODUCT PHOTO</span>')}
         <div class="subcat-label">${colorLabel(v.name)}</div>
       </div>`;
