@@ -383,6 +383,9 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
   .mini-stepper button { padding: 3px 9px; font-size: 12px; font-weight: 800; }
   .mini-stepper span { padding: 0 8px; font-size: 12px; font-weight: 700; }
   .remove-link { font-size: 11px; color: #b23; font-weight: 700; }
+  .ci-links { display: flex; gap: 8px; align-items: center; }
+  .ci-links .remove-link { margin-top: 8px !important; }
+  .ci-links .ci-edit { border-color: #1a1a1a !important; color: #1a1a1a !important; }
   .empty-cart { text-align: center; color: var(--gray); font-size: 13px; padding: 60px 20px; }
   .drawer-foot { padding: 18px 20px; border-top: 1px solid var(--line); }
   .subtotal-row { display: flex; justify-content: space-between; font-size: 14px; font-weight: 800; margin-bottom: 4px; }
@@ -395,6 +398,52 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
   .checkout-btn:disabled { background: #ccc; cursor: not-allowed; }
 
   /* ---- Checkout modal ---- */
+  .checkout-btn { background: var(--gold); color: #1a1a1a; }
+  /* iPhone Safari zooms the page when a field under 16px gets focus and never zooms back (order confirmation looked cut off) */
+  @media (max-width: 900px) { input, select, textarea { font-size: 16px !important; } }
+  .checkout-btn:hover { background: #d9a81c; }
+  .checkout-btn:disabled { background: #ccc; color: #666; }
+  .order-done-icon { font-size: clamp(34px, 7vh, 52px); line-height: 1; color: #1f7a4d; margin: 0 0 4px; }
+  .order-done-icon.fail { color: #b3261e; }
+  #orderDoneOverlay { padding: 10px; }
+  #orderDoneOverlay .modal { max-height: calc(100vh - 20px); max-height: calc(100dvh - 20px); overflow-y: auto; }
+  #orderDoneOverlay .details { text-align: center; padding: clamp(12px, 3vh, 26px) clamp(14px, 4vw, 26px); }
+  #orderDoneOverlay h3 { margin: 0 0 4px; font-size: clamp(16px, 2.6vh, 19px); }
+  #orderDoneOverlay .od-id { color: #777; font-size: 12px; margin: 0 0 clamp(6px, 1.2vh, 10px); }
+  #orderDoneOverlay .od-msg { font-size: clamp(12.5px, 1.9vh, 14px); line-height: 1.5; margin: 0 0 clamp(8px, 1.6vh, 14px); }
+  #orderDoneOverlay .checkout-btn { padding: clamp(9px, 1.6vh, 13px); }
+  #orderDoneOverlay .checkout-btn + .checkout-btn { margin-top: 8px; }
+  .od-sum { text-align: start; margin: 0 0 clamp(8px, 1.6vh, 14px); border: 1px solid #eee; border-radius: 10px; padding: 0 12px; background: #fafafa; }
+  .od-row { display: flex; justify-content: space-between; gap: 12px; padding: clamp(4px, 0.9vh, 8px) 0; border-bottom: 1px solid #eee; font-size: clamp(12px, 1.8vh, 13.5px); }
+  .od-row:last-child { border-bottom: 0; }
+  .od-row .k { color: #777; }
+  .od-row .v { font-weight: 700; text-align: end; overflow-wrap: anywhere; }
+  .od-row.total .k, .od-row.total .v { color: #1a1a1a; font-size: clamp(13px, 2vh, 15px); font-weight: 800; }
+  .od-note { font-size: clamp(11px, 1.6vh, 12.5px); line-height: 1.45; color: #777; margin: clamp(8px, 1.4vh, 12px) 0 0; }
+  .ck-acct { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); text-align: center; }
+  .ck-acct p { font-size: 13px; line-height: 1.7; margin: 0 0 10px; color: var(--ink); }
+  .ck-acct-btn { width: 100%; padding: 12px; border: 1.5px solid #1a1a1a; border-radius: 10px; background: #fff; color: #1a1a1a; font-weight: 800; font-size: 14px; cursor: pointer; font-family: inherit; }
+  .gs-signed-in .ck-acct { display: none; }
+  #ckAcctOverlay .details h3 { margin-top: 22px; }
+  #ckAcctOverlay .ca-sum { background: #faf8f4; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 13px; font-weight: 700; margin: 8px 0 12px; }
+  #ckAcctOverlay .ca-or { text-align: center; color: #888; font-size: 12px; margin: 10px 0; }
+  #ckAcctOverlay .ca-google { width: 100%; padding: 12px; border: 1.5px solid #ccc; border-radius: 10px; background: #fff; font-weight: 800; font-size: 14px; cursor: pointer; font-family: inherit; }
+  #ckAcctOverlay .ca-mk { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; margin: 8px 0; }
+  #ckAcctOverlay .ca-note { font-size: 11.5px; color: #666; line-height: 1.6; margin: 8px 0; }
+  #ckAcctOverlay .ca-sent { font-size: 14px; line-height: 1.8; text-align: center; padding: 10px 0; }
+  #ckAcctOverlay [data-st] { display: none; }
+  #ckAcctOverlay[data-state="form"] [data-st~="form"], #ckAcctOverlay[data-state="sent"] [data-st~="sent"], #ckAcctOverlay[data-state="confirm"] [data-st~="confirm"] { display: block; }
+  .gs-fly { position: fixed; left: 0; top: 0; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%; background: #f0b823; color: #1a1a1a; font-weight: 900; font-size: 22px; line-height: 38px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.35); z-index: 99999; pointer-events: none; }
+  @keyframes gs-blink { 0%, 100% { transform: scale(1); filter: none; } 50% { transform: scale(1.35); filter: drop-shadow(0 0 8px #f0b823) brightness(1.35); } }
+  .gs-blink { animation: gs-blink .6s ease-in-out 3; }
+  .gsde-home-welcome.gs-promo { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; text-align: start; line-height: 1.7; }
+  .gsde-home-welcome.gs-promo span { flex: 1 1 260px; }
+  .gsde-home-welcome.gs-promo button { flex: 0 0 auto; padding: 10px 18px; border: 1.5px solid #1a1a1a; border-radius: 10px; background: #1a1a1a; color: #f0b823; font-weight: 800; font-size: 14px; cursor: pointer; font-family: inherit; }
+  #caHomeFields { display: none; margin: 8px 0 12px; }
+  #ckAcctOverlay[data-mode="home"] #caHomeFields { display: block; }
+  #ckAcctOverlay[data-mode="home"] #caSum { display: none; }
+  #caHomeFields input { width: 100%; margin-bottom: 8px; }
+  #caHomeFields .phone-input-group input { margin-bottom: 0; }
   .overlay {
     display: none; position: fixed; inset: 0; z-index: 96; background: rgba(17,17,17,0.5);
     align-items: center; justify-content: center; padding: 20px; overflow-y: auto;
@@ -1361,7 +1410,7 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
     <div class="subtotal-row"><span data-i18n="checkoutItemsTotalLabel">کۆی کاڵاکان</span><span id="subtotalVal">0 IQD</span></div>
     <div class="delivery-note" id="subtotalNote"></div>
     <button class="checkout-btn" id="whatsappCheckout" disabled>
-      ✆ <span data-i18n="cartCheckoutBtn">تەواوکردنی داواکاری لە ڕێگەی واتساپ</span>
+      <span data-i18n="orderCompleteBtn">تەواوکردنی داواکاری</span>
     </button>
   </div>
 </div>
@@ -1372,7 +1421,7 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
     <div class="details">
       <button class="close-btn" id="closeCheckout">✕</button>
       <h3 data-i18n="checkoutTitle">زانیاری ناردن</h3>
-      <p class="desc" data-i18n="checkoutSubtitle">ئەم زانیاریانە دەنێردرێن بۆ واتساپی تیمی فرۆشتن بۆ وردەکاری ناردن و پارەدان</p>
+      <p class="desc" data-i18n="orderCheckoutHint">ئەم زانیاریانە دەنێردرێن بۆ واتساپی تیمی فرۆشتن بۆ وردەکاری ناردن و پارەدان</p>
       <div class="form-group"><label data-i18n="checkoutNameLabel">ناوی تەواو</label><input id="ckName" data-i18n-placeholder="loginNamePlaceholder" placeholder="ناوی تۆ"></div>
       <div class="form-group"><label data-i18n="loginShopLabel">ناوی دوکان یان مارکە (ئەگەر هەبێت)</label><input id="ckShop" data-i18n-placeholder="loginShopPlaceholder" placeholder="ئەگەر دوکان یان مارکەیەکت هەیە بینووسە"></div>
       <div class="form-group"><label data-i18n="checkoutPrimaryPhoneLabel">ژمارەی سەرەکی پەیوەندی *</label><div class="phone-input-group"><input class="phone-cc-input" id="ckPrimaryCC" value="+964" inputmode="tel" aria-label="Country calling code"><input id="ckPrimaryPhone" placeholder="7XX XXX XXXX" inputmode="tel"></div></div>
@@ -1397,8 +1446,54 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
         <div class="subtotal-row ck-total-final"><span data-i18n="checkoutGrandTotalLabel">کۆی گشتی</span><span id="ckGrandTotalVal">0 IQD</span></div>
       </div>
       <button class="checkout-btn" id="sendWhatsapp">
-        ✆ <span data-i18n="checkoutSendBtn">ناردن بۆ واتساپ</span>
+        <span data-i18n="orderPlaceBtn">ناردنی داواکاری</span>
       </button>
+      <div class="ck-acct" id="ckAcctBox">
+        <p id="ckAcctPromo"></p>
+        <button type="button" class="ck-acct-btn" id="ckAcctBtn" onclick="gsCkaOpen()"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER SUBMITTED (round30): shown only after the order is really saved; on failure it shows an error + WhatsApp fallback -->
+<div class="overlay" id="orderDoneOverlay">
+  <div class="modal" style="grid-template-columns:1fr; max-width:420px;">
+    <div class="details">
+      <div class="order-done-icon" id="odIcon">✔</div>
+      <h3 id="odTitle"></h3>
+      <p class="od-id" id="odId"></p>
+      <p class="od-msg" id="odMsg"></p>
+      <div class="od-sum" id="odSum"></div>
+      <button class="checkout-btn" id="odWa" style="display:none;"></button>
+      <button class="checkout-btn" id="odBack"></button>
+      <p class="od-note" id="odNote"></p>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT: create an account (round32) -->
+<div class="overlay" id="ckAcctOverlay" data-state="form">
+  <div class="modal" style="grid-template-columns:1fr; max-width:420px;">
+    <div class="details">
+      <button class="close-btn" onclick="gsCkaClose()">&#10005;</button>
+      <h3 id="caTitle"></h3>
+      <div data-st="form">
+        <div class="ca-sum" id="caSum"></div>
+        <div id="caHomeFields"><div class="form-group"><input id="caName" autocomplete="name"></div><div class="form-group"><div class="phone-input-group"><input class="phone-cc-input" id="caCC" value="+964" inputmode="tel" autocomplete="tel-country-code"><input id="caPhone" inputmode="tel" autocomplete="tel-national" placeholder="7XX XXX XXXX"></div></div></div>
+                <label class="ca-mk"><input type="checkbox" id="caMarketing"><span id="caMkLbl"></span></label>
+        <button type="button" class="ca-google" onclick="gsCkaGoogle()" id="caGoogleBtn"></button>
+        <div class="ca-or" id="caOr"></div>
+        <div class="form-group"><input id="caEmail" type="email" autocomplete="email" inputmode="email"></div>
+        <button type="button" class="checkout-btn" id="caSendBtn" onclick="gsCkaSubmit()"></button>
+        <p class="ca-note" id="caConsent"></p>
+      </div>
+      <div data-st="sent"><p class="ca-sent" id="caSent"></p></div>
+      <div data-st="confirm">
+        <p class="ca-note" id="caConfirmTxt"></p>
+        <div class="form-group"><input id="caConfirmEmail" type="email" autocomplete="email" inputmode="email"></div>
+        <button type="button" class="checkout-btn" id="caConfirmBtn" onclick="gsCkaConfirm()"></button>
+      </div>
     </div>
   </div>
 </div>
@@ -1756,6 +1851,19 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
       cartSubtotalNoteKnown: "Delivery fee is set by area when the order is completed.",
       priceNotSpecified: "Price not specified",
       badgeOutOfStock: "Out of Stock",
+      orderPlaceBtn: "Place order",
+      orderCheckoutHint: "When your order is sent, our sales team will confirm it with you through a WhatsApp message",
+      orderDoneTitle: "Your order has been submitted",
+      orderDoneMsg: "Our team will contact you on WhatsApp soon to confirm your order.",
+      orderBackShop: "Back to shop",
+      orderFailMsg: "We could not save your order. Please try again, or send it to us on WhatsApp.",
+      orderFailWaBtn: "Send on WhatsApp",
+      orderCompleteBtn: "Complete Order",
+      orderDoneContact: "Contact number",
+      orderDoneItems: "Items ordered",
+      orderDoneNote: "You may take a screenshot of this page and keep it for follow-up, or in case of any problem with your order.",
+      orderTryAgain: "Try again",
+      orderSending: "Sending your order…",
       tileOutOfStock: "Out of stock",
       badgeLowStock: "Low Stock",
       badgePreOrder: "Pre-Order",
@@ -1961,6 +2069,19 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
       cartSubtotalNoteKnown: "تُحدَّد رسوم التوصيل حسب المنطقة عند إتمام الطلب.",
       priceNotSpecified: "السعر غير محدد",
       badgeOutOfStock: "نفدت الكمية",
+      orderPlaceBtn: "إرسال الطلب",
+      orderCheckoutHint: "عند إرسال الطلب، سيؤكده فريق المبيعات معك عبر رسالة واتساب",
+      orderDoneTitle: "تم إرسال طلبك",
+      orderDoneMsg: "سيتواصل معك فريقنا عبر واتساب قريباً لتأكيد طلبك.",
+      orderBackShop: "العودة إلى المتجر",
+      orderFailMsg: "تعذّر حفظ طلبك. يرجى المحاولة مرة أخرى، أو إرساله إلينا عبر واتساب.",
+      orderFailWaBtn: "إرسال عبر واتساب",
+      orderCompleteBtn: "إتمام الطلب",
+      orderDoneContact: "رقم التواصل",
+      orderDoneItems: "عدد القطع المطلوبة",
+      orderDoneNote: "يمكنك أخذ لقطة شاشة (Screenshot) لهذه الصفحة والاحتفاظ بها للمتابعة، أو عند حدوث أي مشكلة في طلبك.",
+      orderTryAgain: "حاول مرة أخرى",
+      orderSending: "جارٍ إرسال طلبك…",
       tileOutOfStock: "نفدت الكمية",
       badgeLowStock: "كمية محدودة",
       badgePreOrder: "طلب مسبق",
@@ -2166,6 +2287,19 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
       cartSubtotalNoteKnown: "کرێیا گەهاندنێ ب گورەی هەرێمێ دگەل تەواوکرنا داخازکرنێ تێتە دیارکرن.",
       priceNotSpecified: "نرخ نەهاتیە دیارکرن",
       badgeOutOfStock: "کۆتایی هات",
+      orderPlaceBtn: "هنارتنا داخازییێ",
+      orderCheckoutHint: "دەمێ داخازی دهێتە هنارتن، تیمێ فرۆتنێ دێ برێکا نامەکا واتسابی داخازیێ پشتراستکەت",
+      orderDoneTitle: "داخازیا تە هاتە هنارتن",
+      orderDoneMsg: "تیما مە ب زوویی ب ڕێکا واتساپێ دێ پەیوەندیێ بتەکەن دا داخازکرنا تە پشتڕاست بکەن.",
+      orderBackShop: "بو ناڤ بازاری",
+      orderFailMsg: "نەهاتە پاراستن داخازکرنا تە. تکایە دووبارە هەوڵ بدە، یان ب ڕێکا واتساپێ بو مە بهنێرە.",
+      orderFailWaBtn: "هنارتن ب واتساپێ",
+      orderCompleteBtn: "تەمامکرنا داخازییێ",
+      orderDoneContact: "ژمارا پەیوەندیێ",
+      orderDoneItems: "ژمارا کاڵایێن هاتینە داخازکرن",
+      orderDoneNote: "ئەگەر تە بڤێت، سکرین شۆتەکێ ژ ڤێ پەڕێ بگرە و بپارێزە ژبو شوینکەفتنێ، یان ئەگەر هەر کێشەیەک د داخازیا تەدا چێبیت.",
+      orderTryAgain: "دووبارە هەوڵ بدە",
+      orderSending: "داخازکرنا تە دهێتە هنارتن…",
       tileOutOfStock: "نەمایە",
       badgeLowStock: "کێم ماییە",
       badgePreOrder: "داخازکرنا پێشوەخت",
@@ -2374,6 +2508,19 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
       cartSubtotalNoteKnown: "کرێی گەیاندن لەگەڵ تەواوکردنی داواکاری، بەپێی ناوچە، دیاری دەکرێت.",
       priceNotSpecified: "نرخ دیارنەکراوە",
       badgeOutOfStock: "کۆتایی هات",
+      orderPlaceBtn: "ناردنی داواکاری",
+      orderCheckoutHint: "کاتێک داواکارییەکە دەنێردرێت، تیمی فرۆشتن لە ڕێگەی نامەیەکی واتساپەوە پشتڕاستی دەکاتەوە",
+      orderDoneTitle: "داواکارییەکەت نێردرا",
+      orderDoneMsg: "تیمەکەمان بەم زووانە لە ڕێگەی واتساپەوە پەیوەندیت پێوە دەکات بۆ پشتڕاستکردنەوەی داواکارییەکەت.",
+      orderBackShop: "گەڕانەوە بۆ بازاڕ",
+      orderFailMsg: "نەتوانرا داواکارییەکەت پاشەکەوت بکرێت. تکایە دووبارە هەوڵ بدەرەوە، یان لە ڕێگەی واتساپەوە بۆمان بنێرە.",
+      orderFailWaBtn: "ناردن بە واتساپ",
+      orderCompleteBtn: "تەواوکردنی داواکاری",
+      orderDoneContact: "ژمارەی پەیوەندی",
+      orderDoneItems: "ژمارەی کاڵا داواکراوەکان",
+      orderDoneNote: "ئەگەر بتەوێت، سکرین شۆتێک لەم پەڕەیە بگرە و بیپارێزە بۆ بەدواداچوون، یان ئەگەر هەر کێشەیەک لە داواکارییەکەتدا ڕووبدات.",
+      orderTryAgain: "دووبارە هەوڵبدەرەوە",
+      orderSending: "داواکارییەکەت دەنێردرێت…",
       tileOutOfStock: "نەماوە",
       badgeLowStock: "کەمی ماوە",
       badgePreOrder: "داواکردنی پێشوەخت",
@@ -2656,6 +2803,8 @@ const HOME_MASTER_COLOR_LABELS = {
     if (opts.remember !== false) { gsdeLangPickedThisSession = true; }
     applyLanguageCore(lang, opts);
     if (typeof gsdeRenderConsent === "function") gsdeRenderConsent();
+    if (typeof gsCkaRender === "function") gsCkaRender();
+    if (typeof gsdeUpdateHomeWelcome === "function") gsdeUpdateHomeWelcome();
     if (opts.remember !== false && typeof gsdeQueueLangSave === "function") gsdeQueueLangSave();
   }
   function applyLanguageCore(lang, opts) {
@@ -3689,6 +3838,7 @@ const HOME_MASTER_COLOR_LABELS = {
 
   // ---------- Navigation ----------
   function showView(name) {
+    if (gsEditLine && name !== "product") { gsExitEdit(); } // leaving the product page without pressing Update = no change
     document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
     document.getElementById("view-" + name).classList.add("active");
     document.querySelectorAll("#mainnav button").forEach(b => b.classList.toggle("active", b.dataset.view === name));
@@ -4337,7 +4487,7 @@ setInterval(() => {
   }
   // How many units of this exact product+color+size are already sitting in the cart right now.
   function cartQtyFor(id, color, size) {
-    return cart.reduce((sum, c) => sum + ((c.id === id && c.color === color && c.size === size) ? c.qty : 0), 0);
+    return cart.reduce((sum, c) => sum + ((c !== gsEditLine && c.id === id && c.color === color && c.size === size) ? c.qty : 0), 0);
   }
   // Units still purchasable this moment = real stock minus whatever's already reserved in the cart.
   // Returns null (meaning "not tracked, treat as available") when the Master has no number for this
@@ -4674,6 +4824,7 @@ setInterval(() => {
   document.getElementById("backToShop").addEventListener("click", e => { e.preventDefault(); showView("shop"); });
 
   document.getElementById("modalAddCart").addEventListener("click", () => {
+    if (gsEditLine && gsApplyEdit()) return;
     if (!isCustomerPurchasable(modalState.product)) return;
     if (modalState.product.colors && modalState.product.colors.length && !modalState.color) { showToast(TRANSLATIONS[currentLang].colorFieldLabel || "Select a color"); return; }
     if (modalState.product.sizes && modalState.product.sizes.length && !modalState.size) { showToast(TRANSLATIONS[currentLang].sizeFieldLabel || "Select a size"); return; }
@@ -4825,6 +4976,7 @@ setInterval(() => {
     if (existing) { existing.qty += qty; } else { cart.push({ ...product, size, color, qty }); }
     renderCart();
     showToast(TRANSLATIONS[currentLang].toastAddedToCart.replace("{name}", productName(product)));
+    gsFlyToCart(document.getElementById("modalAddCart"), "#openCart");
   }
   // Shared by the cart drawer and the checkout WhatsApp message so the two totals
   // never drift apart — sums price × qty per line, and flags if any line has no
@@ -4836,6 +4988,78 @@ setInterval(() => {
       if (c.price != null) { total += c.price * c.qty; } else { hasUnknownPrice = true; }
     });
     return { total, hasUnknownPrice };
+  }
+  // ---- GSDE round31: edit a cart line on the website (same idea as the app) ----
+  var gsEditLine = null;
+  const GS_CART_EDIT_UI = {
+    en: { edit: "Edit", update: "Update cart", updated: "Cart updated" },
+    ar: { edit: "تعديل", update: "تحديث السلة", updated: "تم تحديث السلة" },
+    ku_bad: { edit: "دەستکاریکرن", update: "نویکرنا سەلکێ", updated: "سەلک هاتە نویکرن" },
+    ku_sor: { edit: "دەستکاری", update: "نوێکردنەوەی سەبەتە", updated: "سەبەتە نوێکرایەوە" }
+  };
+  function gsCartUi(k) { return (GS_CART_EDIT_UI[currentLang] || GS_CART_EDIT_UI.en)[k]; }
+  function gsExitEdit() {
+    gsEditLine = null;
+    const d = document.getElementById("modalDirectOrder"); if (d) d.style.display = "";
+    if (modalState && modalState.product) syncProductPurchaseButtons(modalState.product);
+  }
+  function editCartLine(i) {
+    const c = cart[i]; if (!c) return;
+    const p = PRODUCTS.find(x => x.id === c.id); if (!p) return;
+    gsEditLine = c;
+    closeDrawer();
+    if (usesColorFirstMedia(p)) viewProduct(c.id, c.color); else viewProduct(c.id);
+    modalState.color = c.color; modalState.size = c.size; modalState.qty = c.qty;
+    if (!usesColorFirstMedia(p)) {
+      document.querySelectorAll("#modalColors .opt-btn").forEach(b => b.classList.toggle("selected", b.textContent.trim() === String(colorLabel(c.color)).trim()));
+    }
+    renderSizeOptions(p); // marks the size and clamps the quantity (this line itself is not counted against the stock)
+    const a = document.getElementById("modalAddCart"), d = document.getElementById("modalDirectOrder");
+    if (a && !a.disabled) a.textContent = gsCartUi("update");
+    if (d) d.style.display = "none";
+  }
+  function gsApplyEdit() {
+    const p = modalState.product, line = gsEditLine, idx = cart.indexOf(line);
+    if (!p || idx < 0 || p.id !== line.id) { gsEditLine = null; return false; } // not the same product any more -> normal add
+    if (!isCustomerPurchasable(p)) return true;
+    if (p.colors && p.colors.length && !modalState.color) { showToast(TRANSLATIONS[currentLang].colorFieldLabel || "Select a color"); return true; }
+    if (p.sizes && p.sizes.length && !modalState.size) { showToast(TRANSLATIONS[currentLang].sizeFieldLabel || "Select a size"); return true; }
+    const remaining = modalState.size ? getRemainingStock(p, modalState.color, modalState.size) : null;
+    if (remaining !== null && remaining <= 0) return true;
+    const qty = (remaining !== null) ? Math.min(modalState.qty, remaining) : modalState.qty;
+    if (qty <= 0) return true;
+    const twin = cart.find(c => c !== line && c.id === p.id && c.size === modalState.size && c.color === modalState.color);
+    if (twin) { twin.qty += qty; cart.splice(idx, 1); } else { cart[idx] = { ...p, size: modalState.size, color: modalState.color, qty }; }
+    gsExitEdit();
+    renderCart();
+    showToast(gsCartUi("updated"));
+    showView("shop");
+    document.getElementById("cartDrawer").classList.add("active"); document.getElementById("drawerOverlay").classList.add("active");
+    return true;
+  }
+  // ---- GSDE round33: show the customer where the added item went ----
+  function gsFlyToCart(srcEl, targetSel) {
+    try {
+      const tgt = [...document.querySelectorAll(targetSel)].find(e => e.getClientRects().length);
+      if (!tgt) return;
+      tgt.classList.remove("gs-blink"); void tgt.offsetWidth; tgt.classList.add("gs-blink");
+      setTimeout(() => tgt.classList.remove("gs-blink"), 2000);
+      const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const b = tgt.getBoundingClientRect();
+      if (reduce || !tgt.animate || b.bottom < 0 || b.top > innerHeight) return;
+      let a = srcEl && srcEl.getBoundingClientRect ? srcEl.getBoundingClientRect() : null;
+      const x0 = a ? a.left + a.width / 2 : innerWidth / 2, y0 = a ? a.top + a.height / 2 : innerHeight * 0.7;
+      const x1 = b.left + b.width / 2, y1 = b.top + b.height / 2;
+      const d = document.createElement("div"); d.className = "gs-fly"; d.textContent = "+";
+      document.body.appendChild(d);
+      const mx = (x0 + x1) / 2, my = Math.min(y0, y1) - 70; // arc: up first, then down into the cart
+      const anim = d.animate([
+        { transform: `translate(${x0}px,${y0}px) scale(1)`, opacity: 1 },
+        { transform: `translate(${mx}px,${my}px) scale(1.1)`, opacity: 1, offset: .45 },
+        { transform: `translate(${x1}px,${y1}px) scale(.3)`, opacity: .85 }
+      ], { duration: 850, easing: "ease-in-out" });
+      anim.onfinish = anim.oncancel = () => d.remove();
+    } catch (e) { /* decoration only: never block adding to the cart */ }
   }
   function renderCart() { renderCartCore(); if (typeof gsdeQueueCartSave === "function") gsdeQueueCartSave(); }
   function renderCartCore() {
@@ -4861,7 +5085,7 @@ setInterval(() => {
               <div class="mini-stepper">
                 <button onclick="changeQty(${i}, -1)">−</button><span>${c.qty}</span><button onclick="changeQty(${i}, 1)">+</button>
               </div>
-              <span class="remove-link" onclick="removeItem(${i})">${t.cartRemoveLink}</span>
+              <span class="ci-links"><span class="remove-link ci-edit" onclick="editCartLine(${i})">${gsCartUi("edit")}</span><span class="remove-link" onclick="removeItem(${i})">${t.cartRemoveLink}</span></span>
             </div>
           </div>
         </div>`).join("");
@@ -4998,7 +5222,7 @@ setInterval(() => {
     document.getElementById("checkoutOverlay").classList.remove("active");
     directCheckoutItems = null;
   });
-  document.getElementById("sendWhatsapp").addEventListener("click", () => {
+  document.getElementById("sendWhatsapp").addEventListener("click", async () => {
     const name = document.getElementById("ckName").value.trim();
     const shopName = document.getElementById("ckShop").value.trim();
     // MOBILE-09 SS7 contact-number model (mirrors checkout_screen.dart on mobile): Primary Contact
@@ -5091,13 +5315,26 @@ setInterval(() => {
     msg += `*شێوازی گەیاندن:* ${DELIVERY_METHOD_KU[delivery] || delivery}`;
     if (note) msg += `%0A%0A*تێبینی:* ${note}`;
 
-    try { gsdeSaveOrderCopy({ orderNumber: gsdeOrderNo, orderItems, itemsTotal, hasUnknownPrice, deliveryFee, deliveryLocationLabel, name, primaryPhone, secondaryPhone, city }).catch(e => console.warn("GSDE order copy skipped", e)); } catch (e) { console.warn("GSDE order copy skipped", e); }
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${gsdeWaText(gsdeClampWa(msg, "%0A", gsdeOrderNo))}`;
-    window.open(url, "_blank");
-    document.getElementById("checkoutOverlay").classList.remove("active");
-    directCheckoutItems = null;
-    closeDrawer();
-    showToast(tCk.toastGoingToWhatsapp);
+    if (window.__gsdeOrderBusy) return; // double-click guard
+    window.__gsdeOrderBusy = true;
+    const gsBtn = document.getElementById("sendWhatsapp"), gsLbl = gsBtn.querySelector("span"), gsOldLbl = gsLbl ? gsLbl.textContent : "";
+    const gsSum = { name, phone: primaryCC + " " + primaryPhone.replace(/^0+/, ""), count: orderItems.reduce((n, c) => n + (c.qty | 0), 0), subtotal: itemsTotal, fee: deliveryFee, total: itemsTotal + deliveryFee };
+    const gsWasDirect = !!directCheckoutItems; // read BEFORE the await: the customer may close the form while it saves
+    gsBtn.disabled = true; if (gsLbl) gsLbl.textContent = tCk.orderSending || TRANSLATIONS.en.orderSending;
+    let gsSaved = false;
+    try {
+      const gsSave = gsdeSaveOrderCopy({ orderNumber: gsdeOrderNo, orderItems, itemsTotal, hasUnknownPrice, deliveryFee, deliveryLocationLabel, name, primaryPhone, secondaryPhone, city });
+      gsSaved = (await Promise.race([gsSave, new Promise(r => setTimeout(() => r(false), 200000))])) === true; // never hangs forever
+    } catch (e) { console.warn("GSDE order not saved", e); }
+    finally { gsBtn.disabled = false; if (gsLbl) gsLbl.textContent = gsOldLbl; window.__gsdeOrderBusy = false; }
+    if (gsSaved) {
+      document.getElementById("checkoutOverlay").classList.remove("active");
+      closeDrawer();
+      if (!gsWasDirect) { cart = []; renderCart(); }
+      directCheckoutItems = null;
+    } // on failure the form, cart and direct item stay as they are, so "Try again" works without retyping
+    gsdeShowOrderDone(gsSaved, gsdeOrderNo, url, gsSum);
   });
 
   // ---------- Account -- GSDE MOBILE-09 parity (2026-08-20) ----------
@@ -5149,7 +5386,7 @@ setInterval(() => {
     return gsdeFbPromise;
   }
   function gsdeE164(local) { const d = String(local || "").replace(/\D/g, "").replace(/^964/, "").replace(/^0+/, ""); return d ? "+964" + d : ""; }
-  function gsdeLocalPhone(e) { return String(e || "").replace(/^\+964/, ""); }
+  function gsdeLocalPhone(e) { e = String(e || ""); return /^\+(?!964)/.test(e) ? "" : e.replace(/^\+964/, ""); }
   function gsdeEmailLang(fb) { fb.auth.languageCode = currentLang === "ar" ? "ar" : "en"; }
 
   function gsdeAuthError(e) {
@@ -5198,7 +5435,7 @@ setInterval(() => {
       const ref = fb.fsM.doc(fb.db, "accounts", user.uid);
       let snap = await fb.fsM.getDoc(ref);
       if (!snap.exists()) {
-        await fb.fsM.setDoc(ref, gsdeNewProfile(fb, user, gsdeMethodOf(user)));
+        await fb.fsM.setDoc(ref, gsdeNewProfile(fb, user, gsdeMethodOf(user), gsCkaTakeExtras()));
         snap = await fb.fsM.getDoc(ref);
       }
       p = snap.data();
@@ -5318,10 +5555,10 @@ setInterval(() => {
   const GSDE_TS_SITEKEY = "0x4AAAAAAFOcHoTtNGbhUIJo";
   const GSDE_ORDERS_ON = GSDE_ORDERS_URL.indexOf("__") !== 0 && GSDE_TS_SITEKEY.indexOf("__") !== 0;
   const GSDE_ORDER_MSG = {
-    en: { verify: "To save your order, please confirm that you are not a robot.", limit: "You have reached today's limit for saved orders. Your WhatsApp message is not affected; please contact us on WhatsApp for more orders." },
-    ar: { verify: "لحفظ طلبك، يرجى تأكيد أنك لست روبوتاً.", limit: "وصلتَ إلى الحد اليومي للطلبات المحفوظة. رسالة واتساب لا تتأثر؛ يرجى التواصل معنا عبر واتساب لمزيد من الطلبات." },
-    ku_sor: { verify: "بۆ پاشەکەوتکردنی داواکارییەکەت، تکایە پشتڕاست بکەرەوە کە ڕۆبۆت نیت.", limit: "گەیشتیتە سنووری ڕۆژانەی داواکارییە پاشەکەوتکراوەکان. نامەی واتساپەکەت کاریگەری نییە؛ تکایە بۆ داواکاری زیاتر لە ڕێگەی واتساپەوە پەیوەندیمان پێوە بکە." },
-    ku_bad: { verify: "بۆ پاراستنا داخازکرنا تە، تکایە پشتڕاست بکە کو تو ڕۆبۆت نینی.", limit: "تە گەهشتیە سنوورێ ڕۆژانە یێ داخازکرنێن هاتینە پاراستن. نامەیا واتساپێ ناهێتە کاریگەرکرن؛ تکایە بو داخازکرنێن زێدەتر ب ڕێکا واتساپێ پەیوەندیێ دگەل مە بکە." }
+    en: { verify: "To save your order, please confirm that you are not a robot.", limit: "You have reached today's limit for online orders. Please contact us on WhatsApp for more orders." },
+    ar: { verify: "لحفظ طلبك، يرجى تأكيد أنك لست روبوتاً.", limit: "وصلتَ إلى الحد اليومي للطلبات عبر الإنترنت. يرجى التواصل معنا عبر واتساب لتقديم المزيد من الطلبات." },
+    ku_sor: { verify: "بۆ پاشەکەوتکردنی داواکارییەکەت، تکایە پشتڕاست بکەرەوە کە ڕۆبۆت نیت.", limit: "گەیشتیتە سنووری ڕۆژانەی داواکاری ئۆنلاین. تکایە بۆ داواکاری زیاتر لە ڕێگەی واتساپەوە پەیوەندیمان پێوە بکە." },
+    ku_bad: { verify: "بۆ پاراستنا داخازکرنا تە، تکایە پشتڕاست بکە کو تو ڕۆبۆت نینی.", limit: "تو گەهشتیە سنوورێ ڕۆژانە یێ داخازکرنێن ئۆنلاین. تکایە بو داخازکرنێن زێدەتر ب ڕێکا واتساپێ پەیوەندیێ دگەل مە بکە." }
   };
   function gsdeOrderMsg(k) {
     let l = "en"; try { l = (typeof wLang === "function") ? wLang() : (typeof currentLang !== "undefined" ? currentLang : "en"); } catch (e) {}
@@ -5359,7 +5596,7 @@ setInterval(() => {
     }));
   }
   async function gsdeOrderViaWorker(fb, user, base, priced) {
-    // Never throws to the caller; WhatsApp has already been opened. Returns true when the order was saved.
+    // Never throws to the caller. Returns true only when the order was saved.
     try {
       const idToken = await user.getIdToken();
       const order = { customerName: base.customerName, primaryContactNumber: base.primaryContactNumber, secondaryContactNumber: base.secondaryContactNumber,
@@ -5367,7 +5604,7 @@ setInterval(() => {
         orderNumber: base.orderNumber, channel: base.channel };
       const post = async (visible) => {
         const token = await gsdeTsToken(visible);
-        const r = await fetch(GSDE_ORDERS_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ order, idToken, token, visible }) });
+        const r = await fetch(GSDE_ORDERS_URL, { method: "POST", signal: (typeof AbortSignal !== "undefined" && AbortSignal.timeout) ? AbortSignal.timeout(25000) : undefined, headers: { "content-type": "application/json" }, body: JSON.stringify({ order, idToken, token, visible }) });
         let j = {}; try { j = await r.json(); } catch (e) {}
         return j;
       };
@@ -5387,13 +5624,46 @@ setInterval(() => {
     return false;
   }
 
+  // ---- GSDE round30: order submitted / not saved window (the website had no confirmation screen) ----
+  function gsdeShowOrderDone(ok, orderNo, waUrl, sum) {
+    const T = TRANSLATIONS[currentLang] || TRANSLATIONS.en, E = TRANSLATIONS.en;
+    const tx = k => T[k] || E[k] || "";
+    try { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); } catch (e) {}
+    document.getElementById("odIcon").textContent = ok ? "✔" : "!";
+    document.getElementById("odIcon").className = "order-done-icon" + (ok ? "" : " fail");
+    document.getElementById("odTitle").textContent = ok ? tx("orderDoneTitle") : "";
+    document.getElementById("odTitle").style.display = ok ? "" : "none";
+    document.getElementById("odId").textContent = ok ? (tx("orderIdPrefix").trim() + " " + orderNo) : "";
+    const sumEl = document.getElementById("odSum"); sumEl.textContent = ""; sumEl.style.display = (ok && sum) ? "" : "none";
+    if (ok && sum) {
+      const iqd = n => (Number(n) || 0).toLocaleString("en-US") + " IQD";
+      [[tx("checkoutNameLabel"), sum.name, ""], [tx("orderDoneContact"), sum.phone, ""], [tx("orderDoneItems"), String(sum.count), ""],
+       [tx("checkoutItemsTotalLabel"), iqd(sum.subtotal), ""], [tx("checkoutDeliveryFeeLabel"), iqd(sum.fee), ""], [tx("checkoutGrandTotalLabel"), iqd(sum.total), " total"]]
+      .forEach(r => { const row = document.createElement("div"); row.className = "od-row" + r[2];
+        const k = document.createElement("span"); k.className = "k"; k.textContent = r[0];
+        const v = document.createElement("span"); v.className = "v"; v.textContent = r[1]; v.dir = "auto";
+        row.append(k, v); sumEl.appendChild(row); });
+    }
+    document.getElementById("odNote").textContent = ok ? tx("orderDoneNote") : "";
+    document.getElementById("odNote").style.display = ok ? "" : "none";
+    document.getElementById("odId").style.display = ok ? "" : "none";
+    document.getElementById("odMsg").textContent = ok ? tx("orderDoneMsg") : tx("orderFailMsg");
+    const wa = document.getElementById("odWa");
+    wa.style.display = ok ? "none" : "";
+    wa.textContent = tx("orderFailWaBtn");
+    wa.onclick = () => { window.open(waUrl, "_blank"); };
+    const back = document.getElementById("odBack");
+    back.textContent = ok ? tx("orderBackShop") : tx("orderTryAgain");
+    back.onclick = () => { document.getElementById("orderDoneOverlay").classList.remove("active"); if (ok) { try { showView("shop"); } catch (e) {} } window.scrollTo({ top: 0, behavior: "smooth" }); };
+    document.getElementById("orderDoneOverlay").classList.add("active");
+  }
   async function gsdeSaveOrderCopy(o) {
     // v38: every submitted order is saved; guests use a silent anonymous session. Never blocks WhatsApp.
-    if (!o.orderItems || o.orderItems.length === 0) return;
+    if (!o.orderItems || o.orderItems.length === 0) return false;
     const fb = await gsdeFb();
     try { if (fb.auth.authStateReady) await fb.auth.authStateReady(); } catch (e) {}
     let user = fb.auth.currentUser;
-    if (!user) { try { user = (await fb.authM.signInAnonymously(fb.auth)).user; } catch (e) { console.warn("GSDE guest order not saved", e); return; } }
+    if (!user) { try { user = (await fb.authM.signInAnonymously(fb.auth)).user; } catch (e) { console.warn("GSDE guest order not saved", e); return false; } }
     const all = o.orderItems.map(c => ({ productId: String(c.id), name: productName(c), size: c.size || null, color: c.color || null, qty: c.qty | 0, unitPrice: typeof c.price === "number" ? c.price : null }));
     const placedAs = user.isAnonymous ? "guest" : "account";
     const fmt = i => `${i.qty}× ${i.name}${i.size ? " / " + i.size : ""}${i.color ? " / " + i.color : ""}${typeof i.unitPrice === "number" ? " @" + i.unitPrice : " (price on request)"}`;
@@ -5408,16 +5678,144 @@ setInterval(() => {
       itemsText: Array.from(all.map(fmt).join(" | ")).slice(0, 20000).join(""), lineCount: all.length, placedAs,
       subtotal: o.itemsTotal, deliveryFee: o.deliveryFee, total: o.itemsTotal + o.deliveryFee,
       orderNumber: o.orderNumber || null,
-      status: "submitted", paymentMethod: "cod", channel: "website-whatsapp",
+      status: "submitted", paymentMethod: "cod", channel: "website",
       createdAt: fb.fsM.serverTimestamp(), erpReference: null
     };
-    if (GSDE_ORDERS_ON) { await gsdeOrderViaWorker(fb, user, base, priced); if (!user.isAnonymous) gsdeLoadOrders(); return; }
+    if (GSDE_ORDERS_ON) { const gsOk = await gsdeOrderViaWorker(fb, user, base, priced); if (!user.isAnonymous) gsdeLoadOrders(); return gsOk === true; }
     const col = fb.fsM.collection(fb.db, "orders");
     try { await fb.fsM.addDoc(col, Object.assign({ items: priced }, base)); }
     catch (e) { console.warn("GSDE order copy: retry without item lines", e); await fb.fsM.addDoc(col, Object.assign({ items: [] }, base)); }
     if (!user.isAnonymous) gsdeLoadOrders();
+    return true;
   }
 
+  // ---- GSDE round32: create an account from the checkout form ----
+  var GS_CKA = {
+    en: { promo: "Want your orders saved, and to be the first to hear about offers and new products? Create an account with the name and number you entered.", promoHome: "Create an account to save your orders and be the first to hear about offers and new products.", btn: "Create an account", title: "Create an account",
+      fill: "Please enter your name and contact number first.", mk: "Send me offers and new products (optional)", google: "Continue with Google", or: "or use another email", email: "Your email address",
+      send: "Create account", sent: "Almost done! We sent a confirmation link to {email}. Open your mailbox (check Spam / Junk too), click the link to finish creating your account, then come back to this page.", done: "Your account is ready",
+      confirmTxt: "To finish creating your account, please confirm the email address the link was sent to.", confirm: "Confirm", badEmail: "Please enter a valid email address." },
+    ar: { promo: "تريد حفظ طلباتك وأن تكون أول من يعرف بالعروض والمنتجات الجديدة؟ أنشئ حساباً بنفس الاسم ورقم الهاتف الذي أدخلتَه.", promoHome: "أنشئ حساباً لحفظ طلباتك وتكون أول من يعرف بالعروض والمنتجات الجديدة.", btn: "إنشاء حساب", title: "إنشاء حساب",
+      fill: "يرجى إدخال الاسم ورقم التواصل أولاً.", mk: "أرسلوا لي العروض والمنتجات الجديدة (اختياري)", google: "المتابعة مع Google", or: "أو استخدم بريداً آخر", email: "بريدك الإلكتروني",
+      send: "إنشاء الحساب", sent: "اقتربنا من الانتهاء! أرسلنا رابط التأكيد إلى {email}. افتح بريدك (وتحقق من مجلد الرسائل غير المرغوبة أيضاً) واضغط على الرابط لإكمال إنشاء حسابك، ثم عد إلى هذه الصفحة.", done: "تم تجهيز حسابك",
+      confirmTxt: "لإكمال إنشاء حسابك، يرجى تأكيد البريد الإلكتروني الذي أُرسل إليه الرابط.", confirm: "تأكيد", badEmail: "يرجى إدخال بريد إلكتروني صحيح." },
+    ku_bad: { promo: "تە دڤێت داخازیێن تە بێنە پاراستن، و تو یێ ئێکەم بی ئەوێ ب ئۆفەر و بەرهەمێن نوی ببیت؟ ب هەمان ناڤ و ژمارا تە نڤیسی هەژمارەکێ دروست بکە.", promoHome: "هەژمارەکێ دروست بکە دا داخازیێن تە بهێنە پاراستن و تو ئێکەم بی ئەوێ ب ئۆفەر و بەرهەمێن نوی ئاگەهداردبیت.", btn: "دروستکرنا هەژمارێ", title: "دروستکرنا هەژمارێ",
+      fill: " تکایە ناڤ و ژمارا پەیوەندیێ ئێکەم بنڤیسە.", mk: "ئۆفەر و بەرهەمێن نوی بۆ من بهنێرن (ئارەزوومەندانە)", google: "بەردەوام بە ب Google", or: "یان ئیمەیلەکا دی بکاربینە", email: "ئیمەیلا تە",
+      send: "دروستکرنا هەژمارێ", sent: "نێزیکە تەمام ببیت! مە لینکێ پشتڕاستکرنێ بۆ {email} نارد. سندوقا ئیمەیلا خۆ ڤەکە (و فۆڵدەرێ Spam ژی ببینە) و کلیک لسەر لینکی بکە دا هەژمارا تە تەمام ببیت، پاشی بزڤڕە ڤێ پەرێ.", done: "هەژمارا تە ئامادەیە",
+      confirmTxt: "دا هەژمارا تە تەمام ببیت، تکایە ئەو ئیمەیلا لینک بۆ هاتیە نارن پشتڕاست بکە.", confirm: "پشتڕاستکرن", badEmail: "تکایە ئیمەیلەکا دروست بنڤیسە." },
+    ku_sor: { promo: "دەتەوێت داواکارییەکانت بپارێزرێن و یەکەم کەس بیت لە ئۆفەر و بەرهەمە نوێکان ئاگادار ببیتەوە؟ بە هەمان ناو و ژمارەی نووسیوتە هەژمارێک دروست بکە.", promoHome: "هەژمارێک دروست بکە بۆ پاراستنی داواکارییەکانت و یەکەم کەس بیت لە ئۆفەر و بەرهەمە نوێکان ئاگادار ببیتەوە.", btn: "دروستکردنی هەژمار", title: "دروستکردنی هەژمار",
+      fill: "تکایە سەرەتا ناو و ژمارەی پەیوەندی بنووسە.", mk: "ئۆفەر و بەرهەمە نوێکانم بۆ بنێرن (ئارەزوومەندانە)", google: "بەردەوام بە لەگەڵ Google", or: "یان ئیمەیڵێکی تر بەکاربهێنە", email: "ئیمەیڵەکەت",
+      send: "دروستکردنی هەژمار", sent: "نزیکە تەواو ببێت! لینکی پشتڕاستکردنەوەمان بۆ {email} نارد. سندوقی ئیمەیڵەکەت بکەرەوە (و بەشی Spam یش ببینە) و کلیک لەسەر لینکەکە بکە بۆ تەواوکردنی هەژمارەکەت، پاشان بگەڕێوە بۆ ئەم پەڕەیە.", done: "هەژمارەکەت ئامادەیە",
+      confirmTxt: "بۆ تەواوکردنی هەژمارەکەت، تکایە ئەو ئیمەیڵە پشتڕاست بکەرەوە کە لینکەکەی بۆ نێردرا.", confirm: "پشتڕاستکردنەوە", badEmail: "تکایە ئیمەیڵێکی دروست بنووسە." }
+  };
+  function gsCka(k) { return ((GS_CKA[currentLang] || GS_CKA.en)[k]) || GS_CKA.en[k]; }
+  function gsCkaRender() {
+    const set = (id, k) => { const el = document.getElementById(id); if (el) el.textContent = gsCka(k); };
+    set("ckAcctPromo", "promo"); set("ckAcctBtn", "btn"); set("caTitle", "title"); set("caMkLbl", "mk"); set("caGoogleBtn", "google"); set("caOr", "or");
+    set("caSendBtn", "send"); set("caConfirmTxt", "confirmTxt"); set("caConfirmBtn", "confirm");
+    const nm = document.getElementById("caName"); if (nm) nm.placeholder = TRANSLATIONS[currentLang].checkoutNameLabel || "";
+    ["caEmail", "caConfirmEmail"].forEach(id => { const el = document.getElementById(id); if (el) el.placeholder = gsCka("email"); });
+    const c = document.getElementById("caConsent");
+    if (c) {
+      const t = TRANSLATIONS[currentLang], hasPrivacy = typeof POLICIES !== "undefined" && POLICIES["GS-POL-02"];
+      const terms = `<a role="button" tabindex="0" onclick="openPolicyModal('GS-POL-01')">${escapeHtml(t.acctTermsLink)}</a>`;
+      const privacy = hasPrivacy ? `<a role="button" tabindex="0" onclick="openPolicyModal('GS-POL-02')">${escapeHtml(t.acctPrivacyLink)}</a>` : escapeHtml(t.acctPrivacyLink);
+      c.innerHTML = (t.acctConsentNote || "").replace("{terms}", terms).replace("{privacy}", privacy);
+    }
+  }
+  // ---- GSDE round34: home banner for visitors without an account ----
+  function gsCkaValid() {
+    const x = gsCkaExtras();
+    if (!x.displayName || x.primaryPhone.replace(/\D/g, "").length < 9) { showToast(gsCka("fill")); return false; }
+    return true;
+  }
+  function gsCkaExtrasHome() {
+    const cc = (document.getElementById("caCC").value.trim() || "+964").replace(/\D/g, "");
+    const digits = document.getElementById("caPhone").value.replace(/\D/g, "").replace(/^0+/, "");
+    return { displayName: document.getElementById("caName").value.trim(), shopName: "", primaryPhone: digits ? ("+" + cc + digits) : "",
+      marketingConsent: !!document.getElementById("caMarketing").checked, at: Date.now() };
+  }
+  function gsCkaOpenHome() {
+    gsCkaRender();
+    const o = document.getElementById("ckAcctOverlay");
+    o.dataset.mode = "home"; o.setAttribute("data-state", "form"); o.classList.add("active");
+  }
+  function gsCkaExtras() {
+    if (document.getElementById("ckAcctOverlay").dataset.mode === "home") return gsCkaExtrasHome();
+    const cc = (document.getElementById("ckPrimaryCC").value.trim() || "+964");
+    const digits = document.getElementById("ckPrimaryPhone").value.replace(/\D/g, "").replace(/^0+/, "");
+    return { displayName: document.getElementById("ckName").value.trim(), shopName: document.getElementById("ckShop").value.trim(),
+      primaryPhone: digits ? ("+" + cc.replace(/\D/g, "") + digits) : "", marketingConsent: !!document.getElementById("caMarketing").checked, at: Date.now() };
+  }
+  function gsCkaStore(extras, email) {
+    try { localStorage.setItem("gsde_su_extras", JSON.stringify(extras)); if (email) localStorage.setItem("gsde_su_email", email); } catch (e) { /* storage blocked: the account is still created, just without the pre-filled fields */ }
+  }
+  function gsCkaTakeExtras() { // used once, only if fresh (1 hour), by the profile creation
+    try { const j = localStorage.getItem("gsde_su_extras"); if (!j) return null; localStorage.removeItem("gsde_su_extras"); const x = JSON.parse(j); return (x && Date.now() - x.at < 3600000) ? x : null; } catch (e) { return null; }
+  }
+  function gsCkaOpen() {
+    const x = gsCkaExtras();
+    if (!x.displayName || x.primaryPhone.replace(/\D/g, "").length < 9) { showToast(gsCka("fill")); return; }
+    gsCkaRender();
+    document.getElementById("ckAcctOverlay").dataset.mode = "checkout";
+    document.getElementById("caSum").textContent = x.displayName + "  ·  " + x.primaryPhone.replace(/^\+(\d{3})/, "+$1 ");
+    document.getElementById("ckAcctOverlay").setAttribute("data-state", "form");
+    document.getElementById("ckAcctOverlay").classList.add("active");
+  }
+  function gsCkaClose() { document.getElementById("ckAcctOverlay").classList.remove("active"); }
+  async function gsCkaGoogle(hint) {
+    if (!gsCkaValid()) return;
+    const x = gsCkaExtras(); gsCkaStore(x);
+    try {
+      const fb = await gsdeFb(), prov = new fb.authM.GoogleAuthProvider();
+      if (hint) prov.setCustomParameters({ login_hint: hint });
+      await fb.authM.signInWithPopup(fb.auth, prov);
+    } catch (e) { gsdeAuthError(e); }
+  }
+  async function gsCkaSubmit() {
+    if (!gsCkaValid()) return;
+    const email = document.getElementById("caEmail").value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast(gsCka("badEmail")); return; }
+    if (/@(gmail|googlemail)\.com$/i.test(email)) { gsCkaGoogle(email); return; }
+    const btn = document.getElementById("caSendBtn"); btn.disabled = true;
+    try {
+      const x = gsCkaExtras(); gsCkaStore(x, email);
+      const fb = await gsdeFb(); gsdeEmailLang(fb);
+      await fb.authM.sendSignInLinkToEmail(fb.auth, email, { url: location.origin + location.pathname, handleCodeInApp: true });
+      document.getElementById("caSent").textContent = gsCka("sent").replace("{email}", email);
+      document.getElementById("ckAcctOverlay").setAttribute("data-state", "sent");
+    } catch (e) { gsdeAuthError(e); }
+    finally { btn.disabled = false; }
+  }
+  async function gsCkaFinish(email) {
+    const fb = await gsdeFb();
+    await fb.authM.signInWithEmailLink(fb.auth, email, location.href);
+    try { localStorage.removeItem("gsde_su_email"); } catch (e) {}
+    try { history.replaceState(null, "", location.pathname); } catch (e) {}
+  }
+  async function gsCkaConfirm() {
+    const email = document.getElementById("caConfirmEmail").value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast(gsCka("badEmail")); return; }
+    try { await gsCkaFinish(email); } catch (e) { gsdeAuthError(e); }
+  }
+  async function gsdeEmailLinkReturn() { // the visitor opened the confirmation link from the email
+    try {
+      const fb = await gsdeFb();
+      if (!fb.authM.isSignInWithEmailLink(fb.auth, location.href)) return;
+      let email = ""; try { email = localStorage.getItem("gsde_su_email") || ""; } catch (e) {}
+      if (email) { await gsCkaFinish(email); return; }
+      gsCkaRender(); // opened on another device: ask for the email once
+      document.getElementById("ckAcctOverlay").setAttribute("data-state", "confirm");
+      document.getElementById("ckAcctOverlay").classList.add("active");
+    } catch (e) { gsdeAuthError(e); }
+  }
+  function gsdeSyncSignedIn(user) {
+    const real = !!(user && !user.isAnonymous);
+    document.body.classList.toggle("gs-signed-in", real); window.gsAuthReady = true;
+    if (real) { const o = document.getElementById("ckAcctOverlay"); if (o && o.classList.contains("active")) { o.classList.remove("active"); showToast(gsCka("done")); } }
+  }
+  document.addEventListener("DOMContentLoaded", gsCkaRender);
+  gsCkaRender();
   async function gsdeAuthGoogle() {
     try {
       const fb = await gsdeFb();
@@ -5500,14 +5898,22 @@ setInterval(() => {
   }
   function gsdeUpdateHomeWelcome() {
     let el = document.getElementById("gsdeHomeWelcome");
-    if (!loggedInUser || !loggedInUser.name) { if (el) el.remove(); return; }
+    if (!loggedInUser || !loggedInUser.name) {
+      if (!window.gsAuthReady) { if (el) el.remove(); return; } // wait until sign-in state is known (no flicker for signed-in users)
+      if (!el) { const host0 = document.getElementById("homeBannerHost"); if (!host0) return;
+        el = document.createElement("div"); el.id = "gsdeHomeWelcome"; host0.parentNode.insertBefore(el, host0); }
+      el.className = "gsde-home-welcome gs-promo"; el.textContent = "";
+      const sp = document.createElement("span"); sp.textContent = gsCka("promoHome");
+      const bt = document.createElement("button"); bt.type = "button"; bt.textContent = gsCka("btn"); bt.onclick = gsCkaOpenHome;
+      el.appendChild(sp); el.appendChild(bt); return;
+    }
     if (!el) {
       const host = document.getElementById("homeBannerHost"); if (!host) return;
       el = document.createElement("div"); el.id = "gsdeHomeWelcome"; el.className = "gsde-home-welcome";
       host.parentNode.insertBefore(el, host);
     }
     const first = String(loggedInUser.name).split(" ")[0];
-    el.textContent = TRANSLATIONS[currentLang].welcomePrefix + first;
+    el.className = "gsde-home-welcome"; el.textContent = TRANSLATIONS[currentLang].welcomePrefix + first;
   }
   function gsdeRenderWelcome(t) {
     let card = document.getElementById("acctWelcomeCard");
@@ -5627,6 +6033,7 @@ setInterval(() => {
     try {
       const fb = await gsdeFb();
       fb.authM.onAuthStateChanged(fb.auth, async (user) => {
+        gsdeSyncSignedIn(user);
         if (!user || user.isAnonymous) {
           gsdeUid = null; gsdeProfile = null; gsdeOrders = null; gsdePendingCart = null; loggedInUser = null;
           gsdeShowSignedOut(); gsdeRenderConsent(); gsdeUpdateHomeWelcome(); return;
@@ -5638,6 +6045,7 @@ setInterval(() => {
     } catch (e) { console.warn("GSDE: accounts unavailable", e); }
   }
   gsdeInitAccounts();
+  gsdeEmailLinkReturn();
 
   // ---------- Wholesale & Partnership (demo, sends to the same WhatsApp number as regular orders) ----------
   let whSelectedCats = new Set();
