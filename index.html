@@ -1458,7 +1458,8 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
 
 <!-- ORDER SUBMITTED (round30): shown only after the order is really saved; on failure it shows an error + WhatsApp fallback -->
 <div class="overlay" id="orderDoneOverlay">
-  <div class="modal" style="grid-template-columns:1fr; max-width:420px;">
+  <div class="modal" style="grid-template-columns:1fr; max-width:420px; position:relative;">
+    <button class="close-btn" id="odClose" type="button" aria-label="Close" style="position:absolute; top:10px; inset-inline-end:10px; z-index:2;">&#10005;</button>
     <div class="details">
       <div class="order-done-icon" id="odIcon">✔</div>
       <h3 id="odTitle"></h3>
@@ -5655,6 +5656,7 @@ setInterval(() => {
     const back = document.getElementById("odBack");
     back.textContent = ok ? tx("orderBackShop") : tx("orderTryAgain");
     back.onclick = () => { document.getElementById("orderDoneOverlay").classList.remove("active"); if (ok) { try { showView("shop"); } catch (e) {} } window.scrollTo({ top: 0, behavior: "smooth" }); };
+    document.getElementById("odClose").onclick = () => { document.getElementById("orderDoneOverlay").classList.remove("active"); window.scrollTo({ top: 0, behavior: "smooth" }); };
     document.getElementById("orderDoneOverlay").classList.add("active");
   }
   async function gsdeSaveOrderCopy(o) {
