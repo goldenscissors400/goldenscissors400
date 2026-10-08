@@ -448,6 +448,22 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
     #gsPromoBar[hidden] { display: none; }
     #gsPromoBar .gs-pb-link { background: #1a1a1a; color: #f0b823; text-decoration: none; border-radius: 9px; padding: 7px 16px; font-size: 13px; }
   }
+  /* round37: catalog loading state + horizontal-scroll hints */
+  .gs-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 48px 16px; color: #6b6b6b; font-weight: 700; grid-column: 1 / -1; text-align: center; }
+  .gs-loading .gs-spin { width: 34px; height: 34px; border-radius: 50%; border: 3px solid rgba(0,0,0,.1); border-top-color: var(--gold, #d4a017); animation: gsSpin .8s linear infinite; }
+  @keyframes gsSpin { to { transform: rotate(360deg); } }
+  .gs-hs { position: relative; }
+  .gs-hs-fade { position: absolute; top: 0; bottom: 8px; width: 40px; pointer-events: none; opacity: 0; transition: opacity .2s; z-index: 2; }
+  .gs-hs-fade.s { inset-inline-start: 0; background: linear-gradient(to var(--gs-hs-s, left), rgba(250,249,246,0), var(--bg, #faf9f6) 85%); }
+  .gs-hs-fade.e { inset-inline-end: 0; background: linear-gradient(to var(--gs-hs-e, right), rgba(250,249,246,0), var(--bg, #faf9f6) 85%); }
+  .gs-hs-btn { position: absolute; top: calc(50% - 4px); transform: translateY(-50%); width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(0,0,0,.08); background: #fff; color: #1a1a1a; box-shadow: 0 2px 8px rgba(0,0,0,.22); display: none; align-items: center; justify-content: center; padding: 0; cursor: pointer; z-index: 3; }
+  .gs-hs-btn svg { width: 16px; height: 16px; }
+  .gs-hs-btn.s { inset-inline-start: 2px; } .gs-hs-btn.e { inset-inline-end: 2px; }
+  .gs-hs.more-s .gs-hs-fade.s, .gs-hs.more-e .gs-hs-fade.e { opacity: 1; }
+  .gs-hs.more-s .gs-hs-btn.s, .gs-hs.more-e .gs-hs-btn.e { display: flex; }
+  .gs-hs.more-e .gs-hs-btn.e { animation: gsNudge 1.6s ease-in-out 2; }
+  @keyframes gsNudge { 0%,100% { margin-inline-end: 0; } 50% { margin-inline-end: -4px; } }
+  .gs-hs.rtl .gs-hs-btn svg { transform: scaleX(-1); }
   .gsde-home-welcome.gs-promo { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; text-align: start; line-height: 1.7; }
   .gsde-home-welcome.gs-promo span { flex: 1 1 260px; }
   .gsde-home-welcome.gs-promo button { flex: 0 0 auto; padding: 10px 18px; border: 1.5px solid #1a1a1a; border-radius: 10px; background: #1a1a1a; color: #f0b823; font-weight: 800; font-size: 14px; cursor: pointer; font-family: inherit; }
@@ -4217,6 +4233,13 @@ setInterval(() => {
     return raw.map(sc => ({ key: sc, code: null, label: subcategoryLabel(sc), icon: CATEGORY_ICONS[sc] || null }));
   }
   function renderShopCore() {
+    if (!window.gsCatalogReady) {
+      document.getElementById("shopFilters").innerHTML = "";
+      const sw = document.getElementById("shopSubFilters"); if (sw) sw.style.display = "none";
+      document.getElementById("shopGrid").innerHTML = gsLoadingHtml();
+      if (typeof gsHsAll === "function") gsHsAll();
+      return;
+    }
     const ALL_CATEGORIES = getAllCategories();
     const filters = [{ key: "all", label: TRANSLATIONS[currentLang].allFilterLabel }, ...ALL_CATEGORIES.map(c => ({ key: c, label: categoryLabel(c) }))];
     document.getElementById("shopFilters").innerHTML = filters.map(f =>
@@ -4321,6 +4344,33 @@ setInterval(() => {
         : list.map(p => productCard(p, null, true)).join("");
     }
   }
+  // ---- round37: catalog loading state + horizontal-scroll hints ----
+  const GS_LOADING_TEXT = {en: "Loading products…", ar: "جارٍ تحميل المنتجات…", ku_bad: "بەرهەم دهێنە بارکرن…", ku_sor: "بەرهەمەکان بار دەکرێن…"};
+  function gsLoadingHtml() { const t = GS_LOADING_TEXT[currentLang] || GS_LOADING_TEXT.en; return '<div class="gs-loading"><span class="gs-spin"></span><span>' + t + '</span></div>'; }
+  function gsHsUpdate(w) {
+    const row = w && w.querySelector(".gs-hs-row"); if (!row) return;
+    const max = row.scrollWidth - row.clientWidth, pos = Math.abs(row.scrollLeft), vis = row.offsetParent !== null && getComputedStyle(row).display !== "none";
+    w.classList.toggle("more-s", vis && max > 4 && pos > 4);
+    w.classList.toggle("more-e", vis && max > 4 && pos < max - 4);
+    const rtl = getComputedStyle(row).direction === "rtl";
+    w.style.setProperty("--gs-hs-s", rtl ? "right" : "left"); w.style.setProperty("--gs-hs-e", rtl ? "left" : "right"); w.classList.toggle("rtl", rtl);
+  }
+  function gsHsAll() { document.querySelectorAll(".gs-hs").forEach(gsHsUpdate); }
+  function gsHsWrap(id) {
+    const row = document.getElementById(id); if (!row || row.parentNode.classList.contains("gs-hs")) return;
+    const w = document.createElement("div"); w.className = "gs-hs"; row.parentNode.insertBefore(w, row); w.appendChild(row); row.classList.add("gs-hs-row");
+    w.insertAdjacentHTML("beforeend", '<span class="gs-hs-fade s"></span><span class="gs-hs-fade e"></span>' +
+      '<button type="button" class="gs-hs-btn s" aria-label="&lsaquo;"><span style="display:flex;transform:rotate(180deg)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span></button>' +
+      '<button type="button" class="gs-hs-btn e" aria-label="&rsaquo;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></button>');
+    const go = (dir) => { const rtl = getComputedStyle(row).direction === "rtl"; row.scrollBy({ left: dir * (rtl ? -1 : 1) * Math.max(120, row.clientWidth * 0.7), behavior: "smooth" }); };
+    w.querySelector(".gs-hs-btn.s").addEventListener("click", () => go(-1));
+    w.querySelector(".gs-hs-btn.e").addEventListener("click", () => go(1));
+    row.addEventListener("scroll", () => gsHsUpdate(w), { passive: true });
+    if (window.ResizeObserver) new ResizeObserver(() => gsHsUpdate(w)).observe(row);
+    if (window.MutationObserver) new MutationObserver(() => setTimeout(() => gsHsUpdate(w), 30)).observe(row, { childList: true });
+  }
+  ["shopFilters", "shopSubFilters"].forEach(gsHsWrap);
+  window.addEventListener("resize", gsHsAll);
   // round 18: result title + scroll-to-result on phones
   function gsdeIsPhone() { return window.matchMedia("(max-width:640px)").matches; }
   function gsdeSyncHeaderHeight() { const h = document.querySelector("header"); if (h) document.documentElement.style.setProperty("--gsde-hdr", h.offsetHeight + "px"); }
@@ -4350,7 +4400,7 @@ setInterval(() => {
       window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
     }));
   }
-  function renderShop() { renderShopCore(); gsdeUpdateShopHead(); }
+  function renderShop() { renderShopCore(); gsdeUpdateShopHead(); if (typeof gsHsAll === "function") { requestAnimationFrame(gsHsAll); setTimeout(gsHsAll, 80); } }
   function setFilter(key) { activeFilter = key; activeSubFilter = null; renderShop(); gsdeScrollToShopResult(); }
   function setSubFilter(key) { activeSubFilter = key; renderShop(); gsdeScrollToShopResult(); }
   // Delegated (not per-element) because homeCategoryLinks is now rendered dynamically by renderHome().
@@ -6341,6 +6391,7 @@ setInterval(() => {
     }
     const { products, familyIcons, familySizeGuides, categoryIcons, deliveryLocations, uiLocalizationByLanguage } = result;
     PRODUCTS = products;
+    window.gsCatalogReady = true;
     if (typeof gsdeApplyPendingCart === "function") setTimeout(gsdeApplyPendingCart, 0);
     FAMILY_ICONS = familyIcons;
     FAMILY_SIZE_GUIDES = familySizeGuides;
