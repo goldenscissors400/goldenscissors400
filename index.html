@@ -4367,6 +4367,7 @@ setInterval(() => {
     w.querySelector(".gs-hs-btn.e").addEventListener("click", () => go(1));
     row.addEventListener("scroll", () => gsHsUpdate(w), { passive: true });
     if (window.ResizeObserver) new ResizeObserver(() => gsHsUpdate(w)).observe(row);
+    if (window.MutationObserver) new MutationObserver(() => setTimeout(() => gsHsUpdate(w), 30)).observe(row, { childList: true });
   }
   ["shopFilters", "shopSubFilters"].forEach(gsHsWrap);
   window.addEventListener("resize", gsHsAll);
@@ -4399,7 +4400,7 @@ setInterval(() => {
       window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
     }));
   }
-  function renderShop() { renderShopCore(); gsdeUpdateShopHead(); if (typeof gsHsAll === "function") requestAnimationFrame(gsHsAll); }
+  function renderShop() { renderShopCore(); gsdeUpdateShopHead(); if (typeof gsHsAll === "function") { requestAnimationFrame(gsHsAll); setTimeout(gsHsAll, 80); } }
   function setFilter(key) { activeFilter = key; activeSubFilter = null; renderShop(); gsdeScrollToShopResult(); }
   function setSubFilter(key) { activeSubFilter = key; renderShop(); gsdeScrollToShopResult(); }
   // Delegated (not per-element) because homeCategoryLinks is now rendered dynamically by renderHome().
