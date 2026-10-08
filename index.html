@@ -436,6 +436,18 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
   .gs-fly { position: fixed; left: 0; top: 0; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%; background: #f0b823; color: #1a1a1a; font-weight: 900; font-size: 22px; line-height: 38px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,.35); z-index: 99999; pointer-events: none; }
   @keyframes gs-blink { 0%, 100% { transform: scale(1); filter: none; } 50% { transform: scale(1.35); filter: drop-shadow(0 0 8px #f0b823) brightness(1.35); } }
   .gs-blink { animation: gs-blink .6s ease-in-out 3; }
+  /* round36 sign-up strip (all pages) */
+  #gsPromoBar { position: sticky; top: var(--gsde-hdr, 72px); z-index: 45; padding: 8px 12px 6px; background: var(--bg, #fff); }
+  #gsPromoBar .gs-pb-card { padding: 8px 14px; padding-inline-end: 44px; border-radius: 12px; background: #fff8e6; border: 1px solid #e8cf8a; color: #6b520f; font-weight: 700; font-size: 12.5px; line-height: 1.6; position: relative; text-align: start; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+  #gsPromoBar[hidden] { display: none; }
+  #gsPromoBar .gs-pb-link { color: #8a6410; text-decoration: underline; cursor: pointer; white-space: nowrap; background: none; border: 0; padding: 0; font: inherit; font-weight: 800; }
+  #gsPromoBar .gs-pb-x { position: absolute; inset-inline-end: 8px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; border-radius: 50%; border: 0; background: rgba(0,0,0,.08); color: #6b520f; font-size: 16px; line-height: 24px; text-align: center; cursor: pointer; padding: 0; }
+  @media (min-width: 700px) {
+    #gsPromoBar { padding: 10px 24px 6px; }
+    #gsPromoBar .gs-pb-card { font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 14px; }
+    #gsPromoBar[hidden] { display: none; }
+    #gsPromoBar .gs-pb-link { background: #1a1a1a; color: #f0b823; text-decoration: none; border-radius: 9px; padding: 7px 16px; font-size: 13px; }
+  }
   .gsde-home-welcome.gs-promo { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; text-align: start; line-height: 1.7; }
   .gsde-home-welcome.gs-promo span { flex: 1 1 260px; }
   .gsde-home-welcome.gs-promo button { flex: 0 0 auto; padding: 10px 18px; border: 1.5px solid #1a1a1a; border-radius: 10px; background: #1a1a1a; color: #f0b823; font-weight: 800; font-size: 14px; cursor: pointer; font-family: inherit; }
@@ -890,7 +902,7 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
   .shop-result-head{display:none;}
   @media (hover:none){.subcat-tile:hover{transform:none;}}
   @media (max-width:640px){
-    .shop-filterbar{position:sticky;top:var(--gsde-hdr,72px);z-index:40;background:var(--bg);margin:0 -16px 6px;padding:8px 16px 6px;box-shadow:0 6px 10px -8px rgba(0,0,0,.25);}
+    .shop-filterbar{position:sticky;top:calc(var(--gsde-hdr,72px) + var(--gs-pb-h,0px));z-index:40;background:var(--bg);margin:0 -16px 6px;padding:8px 16px 6px;box-shadow:0 6px 10px -8px rgba(0,0,0,.25);}
     .shop-filterbar .chips{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding-bottom:6px;margin-bottom:0;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
     .shop-filterbar .chips::-webkit-scrollbar,.shop-filterbar .subcat-grid::-webkit-scrollbar{display:none;}
     .shop-filterbar .chip{flex:0 0 auto;white-space:nowrap;padding:10px 18px;min-height:40px;}
@@ -1032,6 +1044,7 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
     </button>
   </div>
 </header>
+<div id="gsPromoBar" hidden><div class="gs-pb-card"><span class="gs-pb-main"><span class="gs-pb-text"></span> <button type="button" class="gs-pb-link"></button></span><button type="button" class="gs-pb-x" aria-label="×">×</button></div></div>
 
 <main>
 
@@ -3216,7 +3229,19 @@ const HOME_MASTER_COLOR_LABELS = {
 
   // Maps one live Firestore product document into the PRODUCTS[] shape this
   // file expects. Only fields actually read anywhere in this file are set.
-  function gsdeTransformProduct(p) {
+    // round36: stock already promised to confirmed orders (written by the orders Worker into products/{id}.stockAdjustments;
+  // a new Inventory publish clears it). Key format MUST equal stockKey() in tools/gsde_orders_worker/worker.js.
+  function gsStockAdj(p, color, size) {
+    const a = p && p.stockAdjustments; if (!a) return 0;
+    const k = "k_" + (String(color == null || color === "" ? "_" : color) + "__" + String(size == null || size === "" ? "_" : size)).replace(/[^A-Za-z0-9_]/g, "_");
+    const n = a[k]; return typeof n === "number" && n > 0 ? n : 0;
+  }
+  function gsAvail(p, totalStock) {
+    const base = (p.website && p.website.availability) || "Out of Stock", a = p.stockAdjustments;
+    if (!a || !Object.keys(a).some(k => a[k] > 0) || (base !== "In Stock" && base !== "Low Stock")) return base;
+    return totalStock <= 0 ? "Out of Stock" : (totalStock <= 5 ? "Low Stock" : base);
+  }
+function gsdeTransformProduct(p) {
     const specs = (p.canonical && p.canonical.specifications) || {};
     const liveVariants = p.variants || [];
     const colors = (specs.colors && specs.colors.length)
@@ -3234,7 +3259,7 @@ const HOME_MASTER_COLOR_LABELS = {
     const variants = colors.map(color => {
       const sizeStock = {};
       liveVariants.filter(v => v.color === color).forEach(v => {
-        if (typeof v.stock === "number") sizeStock[v.size] = v.stock;
+        if (typeof v.stock === "number") sizeStock[v.size] = Math.max(0, v.stock - gsStockAdj(p, v.color, v.size));
       });
       // GSDE FIX (2026-09-17, per explicit CEO bug report with screenshots: a color's gallery/tile
       // photo was showing ANOTHER color's images too -- e.g. "White" pulling in "Yellow" photos).
@@ -3259,7 +3284,7 @@ const HOME_MASTER_COLOR_LABELS = {
     // total-stock gate honestly from the real per-variant numbers instead of
     // trusting an unpopulated field.
     const totalStock = liveVariants.reduce(
-      (sum, v) => sum + (typeof v.stock === "number" ? v.stock : 0), 0
+      (sum, v) => sum + (typeof v.stock === "number" ? Math.max(0, v.stock - gsStockAdj(p, v.color, v.size)) : 0), 0
     );
 
     const features = {};
@@ -3304,7 +3329,7 @@ const HOME_MASTER_COLOR_LABELS = {
       stock: totalStock,
       care,
       websiteStatus: (p.website && p.website.status) || (p.isActive ? "Active" : "Inactive"),
-      availability: (p.website && p.website.availability) || "Out of Stock",
+      availability: gsAvail(p, totalStock),
       // GSDE FIX (2026-09-10, found during CEO live review): viewProduct()'s
       // detail-page gallery only reads variants[].images when a product has
       // MORE than one color (usesColorFirstMedia() requires
@@ -3843,6 +3868,7 @@ const HOME_MASTER_COLOR_LABELS = {
     document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
     document.getElementById("view-" + name).classList.add("active");
     document.querySelectorAll("#mainnav button").forEach(b => b.classList.toggle("active", b.dataset.view === name));
+    if (typeof gsPromoBarUpdate === "function") gsPromoBarUpdate();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   document.querySelectorAll("#mainnav button").forEach(b => b.addEventListener("click", () => {
@@ -5693,19 +5719,19 @@ setInterval(() => {
 
   // ---- GSDE round32: create an account from the checkout form ----
   var GS_CKA = {
-    en: { promo: "Want your orders saved, and to be the first to hear about offers and new products? Create an account with the name and number you entered.", promoHome: "Create an account to save your orders and be the first to hear about offers and new products.", btn: "Create an account", title: "Create an account",
+    en: { promoBar: "Save your orders and hear about offers first.", barLink: "Create an account", promo: "Want your orders saved, and to be the first to hear about offers and new products? Create an account with the name and number you entered.", promoHome: "Create an account to save your orders and be the first to hear about offers and new products.", btn: "Create an account", title: "Create an account",
       fill: "Please enter your name and contact number first.", mk: "Send me offers and new products (optional)", google: "Continue with Google", or: "or use another email", email: "Your email address",
       send: "Create account", sent: "Almost done! We sent a confirmation link to {email}. Open your mailbox (check Spam / Junk too), click the link to finish creating your account, then come back to this page.", done: "Your account is ready",
       confirmTxt: "To finish creating your account, please confirm the email address the link was sent to.", confirm: "Confirm", badEmail: "Please enter a valid email address." },
-    ar: { promo: "تريد حفظ طلباتك وأن تكون أول من يعرف بالعروض والمنتجات الجديدة؟ أنشئ حساباً بنفس الاسم ورقم الهاتف الذي أدخلتَه.", promoHome: "أنشئ حساباً لحفظ طلباتك وتكون أول من يعرف بالعروض والمنتجات الجديدة.", btn: "إنشاء حساب", title: "إنشاء حساب",
+    ar: { promoBar: "أنشئ حساباً لحفظ طلباتك وتكون أول من يعرف بالعروض.", barLink: "إنشاء حساب", promo: "تريد حفظ طلباتك وأن تكون أول من يعرف بالعروض والمنتجات الجديدة؟ أنشئ حساباً بنفس الاسم ورقم الهاتف الذي أدخلتَه.", promoHome: "أنشئ حساباً لحفظ طلباتك وتكون أول من يعرف بالعروض والمنتجات الجديدة.", btn: "إنشاء حساب", title: "إنشاء حساب",
       fill: "يرجى إدخال الاسم ورقم التواصل أولاً.", mk: "أرسلوا لي العروض والمنتجات الجديدة (اختياري)", google: "المتابعة مع Google", or: "أو استخدم بريداً آخر", email: "بريدك الإلكتروني",
       send: "إنشاء الحساب", sent: "اقتربنا من الانتهاء! أرسلنا رابط التأكيد إلى {email}. افتح بريدك (وتحقق من مجلد الرسائل غير المرغوبة أيضاً) واضغط على الرابط لإكمال إنشاء حسابك، ثم عد إلى هذه الصفحة.", done: "تم تجهيز حسابك",
       confirmTxt: "لإكمال إنشاء حسابك، يرجى تأكيد البريد الإلكتروني الذي أُرسل إليه الرابط.", confirm: "تأكيد", badEmail: "يرجى إدخال بريد إلكتروني صحيح." },
-    ku_bad: { promo: "تە دڤێت داخازیێن تە بێنە پاراستن، و تو یێ ئێکەم بی ئەوێ ب ئۆفەر و بەرهەمێن نوی ببیت؟ ب هەمان ناڤ و ژمارا تە نڤیسی هەژمارەکێ دروست بکە.", promoHome: "هەژمارەکێ دروست بکە دا داخازیێن تە بهێنە پاراستن و تو ئێکەم بی ئەوێ ب ئۆفەر و بەرهەمێن نوی ئاگەهداردبیت.", btn: "دروستکرنا هەژمارێ", title: "دروستکرنا هەژمارێ",
+    ku_bad: { promoBar: "داخازیێن خو بپارێزە و ئاگەهدار ببە ب ئۆفەران", barLink: "هەژمارەکێ دروست بکە", promo: "تە دڤێت داخازیێن تە بێنە پاراستن، و تو یێ ئێکەم بی ئەوێ ب ئۆفەر و بەرهەمێن نوی ببیت؟ ب هەمان ناڤ و ژمارا تە نڤیسی هەژمارەکێ دروست بکە.", promoHome: "هەژمارەکێ دروست بکە دا داخازیێن تە بهێنە پاراستن و تو ئێکەم بی ئەوێ ب ئۆفەر و بەرهەمێن نوی ئاگەهداردبیت.", btn: "دروستکرنا هەژمارێ", title: "دروستکرنا هەژمارێ",
       fill: " تکایە ناڤ و ژمارا پەیوەندیێ ئێکەم بنڤیسە.", mk: "ئۆفەر و بەرهەمێن نوی بۆ من بهنێرن (ئارەزوومەندانە)", google: "بەردەوام بە ب Google", or: "یان ئیمەیلەکا دی بکاربینە", email: "ئیمەیلا تە",
       send: "دروستکرنا هەژمارێ", sent: "نێزیکە تەمام ببیت! مە لینکێ پشتڕاستکرنێ بۆ {email} نارد. سندوقا ئیمەیلا خۆ ڤەکە (و فۆڵدەرێ Spam ژی ببینە) و کلیک لسەر لینکی بکە دا هەژمارا تە تەمام ببیت، پاشی بزڤڕە ڤێ پەرێ.", done: "هەژمارا تە ئامادەیە",
       confirmTxt: "دا هەژمارا تە تەمام ببیت، تکایە ئەو ئیمەیلا لینک بۆ هاتیە نارن پشتڕاست بکە.", confirm: "پشتڕاستکرن", badEmail: "تکایە ئیمەیلەکا دروست بنڤیسە." },
-    ku_sor: { promo: "دەتەوێت داواکارییەکانت بپارێزرێن و یەکەم کەس بیت لە ئۆفەر و بەرهەمە نوێکان ئاگادار ببیتەوە؟ بە هەمان ناو و ژمارەی نووسیوتە هەژمارێک دروست بکە.", promoHome: "هەژمارێک دروست بکە بۆ پاراستنی داواکارییەکانت و یەکەم کەس بیت لە ئۆفەر و بەرهەمە نوێکان ئاگادار ببیتەوە.", btn: "دروستکردنی هەژمار", title: "دروستکردنی هەژمار",
+    ku_sor: { promoBar: "داواکارییەکانت بپارێزە و یەکەم کەس بە لە ئۆفەرەکان ئاگادار ببیتەوە:", barLink: "هەژمارێک دروست بکە", promo: "دەتەوێت داواکارییەکانت بپارێزرێن و یەکەم کەس بیت لە ئۆفەر و بەرهەمە نوێکان ئاگادار ببیتەوە؟ بە هەمان ناو و ژمارەی نووسیوتە هەژمارێک دروست بکە.", promoHome: "هەژمارێک دروست بکە بۆ پاراستنی داواکارییەکانت و یەکەم کەس بیت لە ئۆفەر و بەرهەمە نوێکان ئاگادار ببیتەوە.", btn: "دروستکردنی هەژمار", title: "دروستکردنی هەژمار",
       fill: "تکایە سەرەتا ناو و ژمارەی پەیوەندی بنووسە.", mk: "ئۆفەر و بەرهەمە نوێکانم بۆ بنێرن (ئارەزوومەندانە)", google: "بەردەوام بە لەگەڵ Google", or: "یان ئیمەیڵێکی تر بەکاربهێنە", email: "ئیمەیڵەکەت",
       send: "دروستکردنی هەژمار", sent: "نزیکە تەواو ببێت! لینکی پشتڕاستکردنەوەمان بۆ {email} نارد. سندوقی ئیمەیڵەکەت بکەرەوە (و بەشی Spam یش ببینە) و کلیک لەسەر لینکەکە بکە بۆ تەواوکردنی هەژمارەکەت، پاشان بگەڕێوە بۆ ئەم پەڕەیە.", done: "هەژمارەکەت ئامادەیە",
       confirmTxt: "بۆ تەواوکردنی هەژمارەکەت، تکایە ئەو ئیمەیڵە پشتڕاست بکەرەوە کە لینکەکەی بۆ نێردرا.", confirm: "پشتڕاستکردنەوە", badEmail: "تکایە ئیمەیڵێکی دروست بنووسە." }
@@ -5813,7 +5839,7 @@ setInterval(() => {
   }
   function gsdeSyncSignedIn(user) {
     const real = !!(user && !user.isAnonymous);
-    document.body.classList.toggle("gs-signed-in", real); window.gsAuthReady = true;
+    document.body.classList.toggle("gs-signed-in", real); window.gsAuthReady = true; if (typeof gsPromoBarUpdate === "function") gsPromoBarUpdate();
     if (real) { const o = document.getElementById("ckAcctOverlay"); if (o && o.classList.contains("active")) { o.classList.remove("active"); showToast(gsCka("done")); } }
   }
   document.addEventListener("DOMContentLoaded", gsCkaRender);
@@ -5898,17 +5924,26 @@ setInterval(() => {
     (window.crypto || window.msCrypto).getRandomValues(r);
     return "GSW-" + p2(d.getFullYear() % 100) + p2(d.getMonth() + 1) + p2(d.getDate()) + "-" + Array.from(r, x => A[x % A.length]).join("");
   }
+  // ---- round36: sign-up strip (all pages) ----
+  function gsPromoBarH() { const b = document.getElementById("gsPromoBar"); document.documentElement.style.setProperty("--gs-pb-h", ((b && !b.hidden) ? b.offsetHeight : 0) + "px"); }
+  function gsPromoBarUpdate() {
+    const bar = document.getElementById("gsPromoBar"); if (!bar) return;
+    let off = false; try { off = sessionStorage.getItem("gs_promo_off") === "1"; } catch (e) {}
+    const acct = document.getElementById("view-account");
+    const show = !!window.gsAuthReady && !(typeof loggedInUser !== "undefined" && loggedInUser && loggedInUser.name) && !off && !(acct && acct.classList.contains("active"));
+    bar.hidden = !show; if (!show) { gsPromoBarH(); return; }
+    bar.querySelector(".gs-pb-text").textContent = gsCka("promoBar"); bar.querySelector(".gs-pb-link").textContent = gsCka("barLink"); gsPromoBarH();
+  }
+  (function () {
+    const bar = document.getElementById("gsPromoBar"); if (!bar) return;
+    bar.querySelector(".gs-pb-link").addEventListener("click", () => gsCkaOpenHome());
+    bar.querySelector(".gs-pb-x").addEventListener("click", () => { try { sessionStorage.setItem("gs_promo_off", "1"); } catch (e) {} bar.hidden = true; gsPromoBarH(); });
+    if (window.ResizeObserver) new ResizeObserver(gsPromoBarH).observe(bar); window.addEventListener("resize", gsPromoBarH);
+  })();
   function gsdeUpdateHomeWelcome() {
+    gsPromoBarUpdate();
     let el = document.getElementById("gsdeHomeWelcome");
-    if (!loggedInUser || !loggedInUser.name) {
-      if (!window.gsAuthReady) { if (el) el.remove(); return; } // wait until sign-in state is known (no flicker for signed-in users)
-      if (!el) { const host0 = document.getElementById("homeBannerHost"); if (!host0) return;
-        el = document.createElement("div"); el.id = "gsdeHomeWelcome"; host0.parentNode.insertBefore(el, host0); }
-      el.className = "gsde-home-welcome gs-promo"; el.textContent = "";
-      const sp = document.createElement("span"); sp.textContent = gsCka("promoHome");
-      const bt = document.createElement("button"); bt.type = "button"; bt.textContent = gsCka("btn"); bt.onclick = gsCkaOpenHome;
-      el.appendChild(sp); el.appendChild(bt); return;
-    }
+    if (!loggedInUser || !loggedInUser.name) { if (el) el.remove(); return; } // signed-out visitors: the strip (gsPromoBar) replaces the old Home box
     if (!el) {
       const host = document.getElementById("homeBannerHost"); if (!host) return;
       el = document.createElement("div"); el.id = "gsdeHomeWelcome"; el.className = "gsde-home-welcome";
