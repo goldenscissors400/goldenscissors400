@@ -965,6 +965,64 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
   .gsde-home-welcome{margin:10px 14px 0;padding:9px 14px;border-radius:12px;background:#fff8e6;border:1px solid #e8cf8a;color:#6b520f;font-weight:700;font-size:14px;text-align:center}
   .acct-welcome{position:relative;background:linear-gradient(135deg,#fff8e6,#fdf0d5);border:1px solid #e8cf8a;border-radius:16px;padding:16px 40px 16px 16px;margin:10px 0 14px}.acct-welcome h3{margin:0 0 6px;font-size:16px;color:var(--gold-dark,#8a6a12)}.acct-welcome p{margin:0;font-size:13px;line-height:1.6;color:#444}.acct-welcome button{position:absolute;top:8px;inset-inline-end:10px;border:0;background:none;font-size:20px;line-height:1;cursor:pointer;color:#8a6a12}
   .order-row .acct-sub{font-size:12px;color:var(--gray,#777);margin-top:2px}
+  /* round38: marketing announcement strip (same box as the information ticker) */
+  .info-ticker.ann{align-items:center;justify-content:center;text-align:center;max-height:78px;}
+  .info-ticker.ann .ann-row{display:inline-flex;align-items:center;justify-content:center;gap:10px;max-width:100%;}
+  .info-ticker.ann .ann-ic{flex:none;display:inline-flex;color:var(--goldDeep,var(--gold-dark,#c9971a));}
+  .info-ticker.ann .ann-ic svg{width:24px;height:24px;}
+  .info-ticker.ann .ann-clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-width:0;}
+  .info-ticker.ann .ann-tx{font-size:19px;font-weight:800;line-height:1.4;color:var(--text,var(--ink,#1c1c1c));overflow-wrap:anywhere;}
+  .info-ticker.ann .ann-w{display:inline-block;white-space:pre;}
+  .info-ticker.ann.rise-in .ann-row{animation:annRiseIn .65s cubic-bezier(.2,.8,.2,1) both;}
+  .info-ticker.ann.rise-out .ann-row{animation:annRiseOut .35s ease-in both;}
+  .info-ticker.ann.words-in .ann-ic{animation:annPop .45s cubic-bezier(.3,1.6,.5,1) both;}
+  .info-ticker.ann.words-in .ann-w{animation:annWIn .5s cubic-bezier(.2,.8,.2,1) both;}
+  .info-ticker.ann.words-out .ann-row{animation:annFdOut .3s ease both;}
+  .info-ticker.ann.zoom-in .ann-row{animation:annZoomIn .6s cubic-bezier(.2,.8,.2,1) both;}
+  .info-ticker.ann.zoom-in .ann-tx{background:linear-gradient(100deg,currentColor 40%,#EFB921 50%,currentColor 60%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:annShine 1.6s .5s ease both;}
+  .info-ticker.ann.zoom-out .ann-row{animation:annZoomOut .35s ease-in both;}
+  @keyframes annRiseIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+  @keyframes annRiseOut{to{opacity:0;transform:translateY(-22px)}}
+  @keyframes annPop{from{opacity:0;transform:scale(.3) rotate(-20deg)}to{opacity:1;transform:none}}
+  @keyframes annWIn{from{opacity:0;transform:translateY(10px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+  @keyframes annFdOut{to{opacity:0}}
+  @keyframes annZoomIn{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:none}}
+  @keyframes annZoomOut{to{opacity:0;transform:scale(1.08)}}
+  @keyframes annShine{from{background-position:100% 0}to{background-position:0 0}}
+  .info-ticker.ann.rtl.zoom-in .ann-tx{animation-name:annShineR;}
+  @keyframes annShineR{from{background-position:0 0}to{background-position:100% 0}}
+  @media (max-width:360px){.info-ticker.ann .ann-tx{font-size:17px;}}
+  /* round39: menu (CEO 2026-10-12) */
+  #mainnav [data-view="account"], #mainnav [data-view="wholesale"], #mainnav [data-view="about"] { display: none !important; }
+  .gm-ic { width: 22px; height: 22px; flex: none; display: inline-block; }
+  .gm-ov { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 2147483000; opacity: 0; transition: opacity .25s; }
+  .gm-dr { position: fixed; top: 0; bottom: 0; inset-inline-start: 0; width: min(320px, 86vw); background: #fff; z-index: 2147483001; display: flex; flex-direction: column; overflow-y: auto; color: #1c1c1c; transform: translateX(-104%); transition: transform .28s cubic-bezier(.2,.8,.2,1); box-shadow: 0 0 30px rgba(0,0,0,.25); }
+  [dir="rtl"] .gm-dr { transform: translateX(104%); }
+  .gm-ov { pointer-events: none; visibility: hidden; } .gm-dr { visibility: hidden; transition: transform .28s cubic-bezier(.2,.8,.2,1), visibility 0s linear .28s; }
+  .gm-open .gm-ov { opacity: 1; pointer-events: auto; visibility: visible; } .gm-open .gm-dr { transform: none; visibility: visible; transition: transform .28s cubic-bezier(.2,.8,.2,1); }
+  .gm-acc { background: #111; color: #fff; padding: 18px 16px; display: flex; gap: 12px; align-items: center; cursor: pointer; }
+  .gm-av { width: 48px; height: 48px; border-radius: 50%; background: #EFB921; color: #111; display: flex; align-items: center; justify-content: center; flex: none; }
+  .gm-acc .gm-t1 { font-weight: 800; font-size: 16px; } .gm-acc .gm-t2 { font-size: 12px; color: #EFB921; text-decoration: underline; margin-top: 3px; }
+  .gm-x { margin-inline-start: auto; background: transparent; border: 0; color: #fff; padding: 6px; cursor: pointer; display: flex; }
+  .gm-it { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid #f0ede6; font-size: 15px; font-weight: 700; cursor: pointer; background: #fff; color: #1c1c1c; text-align: start; width: 100%; border-left: 0; border-right: 0; border-top: 0; font-family: inherit; }
+  .gm-it:active { background: #faf6ea; }
+  .gm-it > .gm-ic { color: #c9971a; }
+  .gm-ch { margin-inline-start: auto; color: #b9b5ab; display: flex; }
+  [dir="rtl"] .gm-ch svg { transform: scaleX(-1); }
+  .gm-sub { margin-inline-start: auto; font-size: 13px; color: #6b6b6b; font-weight: 600; }
+  .gm-wa { background: #e9fbef; }
+  .gm-wa .gm-wi { width: 38px; height: 38px; border-radius: 50%; background: #25D366; color: #fff; display: flex; align-items: center; justify-content: center; flex: none; }
+  .gm-wa .gm-ws { font-size: 11px; font-weight: 600; color: #2f7a4a; margin-top: 2px; }
+  .gm-wa .gm-ch { color: #25a35a; }
+  [dir="rtl"] .gm-wa .gm-ch svg { transform: none; }
+  #view-account .acct-h, .about-policies-heading { scroll-margin-top: calc(var(--gsde-hdr, 72px) + var(--gs-pb-h, 0px) + 12px); }
+  #gsMenuBtn.gm-here { color: var(--gold); }
+  .gm-dn svg { transform: rotate(90deg) !important; }
+  .gm-langs { background: #faf7ee; border-bottom: 1px solid #f0ede6; padding: 4px 0; }
+  .gm-lang { display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 18px 11px 30px; background: transparent; border: 0; font: inherit; font-size: 14px; font-weight: 700; color: #1c1c1c; cursor: pointer; text-align: start; }
+  [dir="rtl"] .gm-lang { padding: 11px 30px 11px 18px; }
+  .gm-lang svg { width: 30px; height: 18px; border-radius: 3px; flex: none; box-shadow: 0 0 0 1px rgba(0,0,0,.08); }
+  .gm-lang.on { color: #b8860b; } .gm-ok { margin-inline-start: auto; color: #b8860b; font-weight: 900; }
   @media (prefers-reduced-motion:reduce){.hb-slide *,.info-ticker *{animation:none!important}.hb-slide.out{visibility:hidden}}
 
   .hb-wrap{margin:16px auto 10px;max-width:980px;}
@@ -3547,6 +3605,8 @@ function gsdeTransformProduct(p) {
     // caller can merge it into TRANSLATIONS and re-render before the first paint of live data.
     const uiLocalizationByLanguage = (siteConfig && siteConfig.uiLocalization && siteConfig.uiLocalization.byLanguage) || null;
 
+    // round38: published marketing announcements (non-critical; absent = the product ticker keeps running)
+    window.GS_ANNOUNCEMENTS = (siteConfig && siteConfig.announcements && Array.isArray(siteConfig.announcements.items)) ? siteConfig.announcements.items : [];
     return { websiteMode: "live", products, familyIcons, familySizeGuides, categoryIcons, deliveryLocations, uiLocalizationByLanguage };
   }
 
@@ -4153,9 +4213,66 @@ function tkSwap(el, it) {
   el.classList.remove("tk-in"); el.classList.add("tk-out");
   setTimeout(() => { const e2 = document.getElementById("infoTicker"); if (e2) tkApply(e2, it); }, 330);
 }
+// ---- round38: marketing announcement strip (site_config/current.announcements, CEO 2026-10-12) ----
+// Motion per ROUND: round 1 = rise up, round 2 = zoom + gold shine, round 3 = word by word, then again.
+const GS_ANN_MS = 4800, GS_ANN_MOTIONS = ["rise", "zoom", "words"];
+const GS_ANN_ICONS = {"delivery": "<path d=\"M3 6h11v9H3z\"/><path d=\"M14 9h4l3 3v3h-7\"/><circle cx=\"7\" cy=\"17.5\" r=\"1.8\"/><circle cx=\"17\" cy=\"17.5\" r=\"1.8\"/>", "quality": "<path d=\"M6 4h12l3 5-9 11L3 9z\"/><path d=\"M3 9h18\"/><path d=\"M9.5 4 8 9l4 11 4-11-1.5-5\"/>", "award": "<circle cx=\"12\" cy=\"9\" r=\"5.5\"/><path d=\"M8.6 13.4 7.5 21l4.5-2.4 4.5 2.4-1.1-7.6\"/>", "help": "<path d=\"M4 20l1.4-4A8 8 0 1 1 8.5 19z\"/><path d=\"M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01\"/>", "sale": "<path d=\"M3 12V4h8l10 10-8 8z\"/><circle cx=\"7.5\" cy=\"8\" r=\"1.5\"/>", "gift": "<path d=\"M4 10h16v4H4z\"/><path d=\"M6 14v7h12v-7M12 10v11\"/><path d=\"M12 10C10 6 6 6 6 8.3S12 10 12 10zM12 10c2-4 6-4 6-1.7S12 10 12 10z\"/>", "star": "<path d=\"M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z\"/>", "phone": "<path d=\"M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2\"/>", "new": "<path d=\"M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z\"/><path d=\"M19 16v4M17 18h4\"/>", "announce": "<path d=\"M4 10v4h3l7 4V6L7 10z\"/><path d=\"M17.5 9a4 4 0 0 1 0 6\"/><path d=\"M7 14l1.5 5h2.5l-1-4.5\"/>"};
+let gsAnnState = { key: "", step: 0, nextAt: 0 };
+function gsAnnLang() { return typeof wLang === "function" ? wLang() : currentLang; }
+function gsAnnEsc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); }
+function gsAnnToday() {
+  try {
+    const p = {}; new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Baghdad", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date()).forEach(x => { p[x.type] = x.value; });
+    if (/^\d{4}$/.test(p.year) && /^\d{2}$/.test(p.month) && /^\d{2}$/.test(p.day)) return p.year + "-" + p.month + "-" + p.day;
+  } catch (e) {}
+  return new Date(Date.now() + 3 * 3600e3).toISOString().slice(0, 10);
+}
+function gsAnnList() {
+  const all = window.GS_ANNOUNCEMENTS; if (!Array.isArray(all) || !all.length) return [];
+  const d = gsAnnToday(), L = gsAnnLang();
+  return all.filter(a => a && a.text && typeof a.text[L] === "string" && a.text[L].trim() && (!a.start || d >= a.start) && (!a.end || d <= a.end));
+}
+// In RTL text, consecutive words without Arabic letters (e.g. "Golden Store", "30%") stay in one piece so they keep their order.
+function gsAnnWords(txt, rtl) {
+  const words = txt.split(" ").filter(Boolean);
+  if (!rtl) return words;
+  const out = [];
+  words.forEach(w => { const latin = !/[\u0600-\u06FF]/.test(w); if (latin && out.length && out[out.length - 1].latin) out[out.length - 1].w += " " + w; else out.push({ w, latin }); });
+  return out.map(x => x.w);
+}
+function gsAnnReduced() { return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); }
+function gsAnnShow(el, list, step, animate) {
+  const n = list.length, a = list[step % n], m = GS_ANN_MOTIONS[Math.floor(step / n) % 3], L = gsAnnLang(), rtl = L !== "en";
+  const txt = a.text[L].trim();
+  const body = m === "words" ? gsAnnWords(txt, rtl).map((w, k, arr) => '<span class="ann-w" style="animation-delay:' + (0.15 + k * 0.12).toFixed(2) + 's">' + gsAnnEsc(w + (k < arr.length - 1 ? " " : "")) + "</span>").join("") : gsAnnEsc(txt);
+  el.className = "info-ticker ann" + (rtl ? " rtl" : "");
+  el.setAttribute("dir", rtl ? "rtl" : "ltr");
+  el.innerHTML = '<div class="ann-row"><span class="ann-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + (GS_ANN_ICONS[a.icon] || GS_ANN_ICONS.star) + '</svg></span><span class="ann-clamp"><span class="ann-tx">' + body + "</span></span></div>";
+  if (animate && !gsAnnReduced()) { void el.offsetWidth; el.classList.add(m + "-in"); }
+}
+function gsAnnTick(el) {
+  const list = gsAnnList();
+  if (!list.length) {
+    if (el.classList.contains("ann")) { el.className = "info-ticker"; el.removeAttribute("dir"); el.innerHTML = '<div class="it-label"></div><div class="it-text"></div>'; tkShown = -1; tkNextAt = 0; }
+    gsAnnState = { key: "", step: 0, nextAt: 0 };
+    return false;
+  }
+  const L = gsAnnLang(), key = L + "|" + list.map(a => a.text[L]).join("|"), now = Date.now();
+  if (key !== gsAnnState.key) { gsAnnState = { key, step: 0, nextAt: now + GS_ANN_MS }; gsAnnShow(el, list, 0, true); return true; }
+  if (!el.classList.contains("ann")) { gsAnnShow(el, list, gsAnnState.step, true); return true; }
+  if (now >= gsAnnState.nextAt) {
+    const n = list.length, prev = GS_ANN_MOTIONS[Math.floor(gsAnnState.step / n) % 3];
+    gsAnnState.step++; gsAnnState.nextAt = now + GS_ANN_MS;
+    const step = gsAnnState.step;
+    if (gsAnnReduced()) { gsAnnShow(el, list, step, false); return true; }
+    el.classList.remove("rise-in", "zoom-in", "words-in"); el.classList.add(prev + "-out");
+    setTimeout(() => { const e2 = document.getElementById("infoTicker"); const l2 = gsAnnList(); if (e2 && l2.length && gsAnnState.step === step) gsAnnShow(e2, l2, step, true); }, 360);
+  }
+  return true;
+}
 function tickerHtml() { return `<div class="info-ticker" id="infoTicker"><div class="it-label"></div><div class="it-text"></div></div>`; }
 setInterval(() => {
-  const el = document.getElementById("infoTicker"); if (!el || typeof PRODUCTS === "undefined" || !PRODUCTS.length) return;
+  const el = document.getElementById("infoTicker"); if (el && gsAnnTick(el)) return; if (!el || typeof PRODUCTS === "undefined" || !PRODUCTS.length) return;
   const now = Date.now();
   if (tkLang !== currentLang || !tkItems.length) { tkLang = currentLang; tkItems = buildTickerItems(); tkIdx = 0; tkNextAt = 0; tkShown = -1; }
   if (!tkItems.length) return;
@@ -6467,6 +6584,79 @@ function gsdeInteractionQa() {
   });
 }
 
+// ---- round39: menu + WhatsApp contact (CEO 2026-10-12) ----
+const GS_MENU_T = {"en": {"menu": "Menu", "welcome": "Welcome", "signin": "Sign in or create an account", "hello": "Hello, {name}", "acc": "My account", "accSub": "Sign in, orders, saved details", "orders": "My orders", "whole": "Wholesale and distributors", "about": "About us", "pol": "Policies", "lang": "Language", "set": "Settings", "setSub": "Language, sound", "waC": "Contact us on WhatsApp", "waS": "Chat with our team", "close": "Close"}, "ar": {"menu": "القائمة", "welcome": "أهلاً بك", "signin": "سجّل الدخول أو أنشئ حساباً", "hello": "مرحباً، {name}", "acc": "حسابي", "accSub": "تسجيل الدخول، الطلبات، بياناتك", "orders": "طلباتي", "whole": "الجملة والموزعون", "about": "من نحن", "pol": "السياسات", "lang": "اللغة", "set": "الإعدادات", "setSub": "اللغة، الصوت", "waC": "تواصل معنا عبر واتساب", "waS": "تحدّث مع فريقنا", "close": "إغلاق"}, "ku_sor": {"menu": "لیست", "welcome": "بەخێربێیت", "signin": "چوونەژوورەوە یان دروستکردنی هەژمار", "hello": "سڵاو، {name}", "acc": "هەژماری من", "accSub": "چوونەژوورەوە، داواکاری، زانیاری", "orders": "داواکارییەکانم", "whole": "فرۆشی کۆ و دابەشکاران", "about": "دەربارەی ئێمە", "pol": "سیاسەتەکان", "lang": "زمان", "set": "ڕێکخستنەکان", "setSub": "زمان، دەنگ", "waC": "پەیوەندیمان پێوە بکە لە واتسئاپ", "waS": "قسە لەگەڵ تیمەکەمان بکە", "close": "داخستن"}, "ku_bad": {"menu": "لیست", "welcome": "بخێرهاتی", "signin": "چوونەژوور یان دروستکرنا هەژمارێ", "hello": "سلاڤ، {name}", "acc": "هەژمارا من", "accSub": "چوونەژوور، داخوازی، زانیاری", "orders": "داخوازیێن من", "whole": "فرۆتنا کۆ و دابەشکەر", "about": "دەربارەی مە", "pol": "سیاسەت", "lang": "زمان", "set": "رێکخستن", "setSub": "زمان، دەنگ", "waC": "پەیوەندیێ ب مە بکە ل واتسئاپێ", "waS": "ئاخفتنێ دگەل تیما مە بکە", "close": "گرتن"}};
+const GS_MENU_I = {"menu": "<line x1=\"4\" y1=\"6\" x2=\"20\" y2=\"6\"/><line x1=\"4\" y1=\"12\" x2=\"20\" y2=\"12\"/><line x1=\"4\" y1=\"18\" x2=\"20\" y2=\"18\"/>", "user": "<circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M5 20c1-4 4-6 7-6s6 2 7 6\"/>", "account": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/><path d=\"M6.5 18c1.4-2 3.3-3 5.5-3s4.1 1 5.5 3\"/>", "orders": "<path d=\"M6 3h12v18l-3-2-3 2-3-2-3 2z\"/><path d=\"M9 8h6M9 12h6\"/>", "store": "<path d=\"M3 9l2-5h14l2 5\"/><path d=\"M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z\"/><path d=\"M5 13v8h14v-8\"/><path d=\"M10 21v-5h4v5\"/>", "info": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 11v5M12 8h.01\"/>", "file": "<path d=\"M14 3H6v18h12V7z\"/><path d=\"M14 3v4h4M9 12h6M9 16h6\"/>", "lang": "<path d=\"M4 5h8M8 3v2c0 4-2 7-5 8\"/><path d=\"M6 9c1 2 3 3.5 6 4\"/><path d=\"M12 21l4-9 4 9M13.5 18h5\"/>", "settings": "<circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z\"/>", "chev": "<path d=\"M9 6l6 6-6 6\"/>", "x": "<path d=\"M6 6l12 12M18 6L6 18\"/>", "ext": "<path d=\"M14 4h6v6M20 4l-9 9\"/><path d=\"M18 14v5H5V6h5\"/>", "wa": "<path d=\"M4 20l1.3-3.9A8 8 0 1 1 8.6 19z\"/><path d=\"M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.5-2-1-1 .8c-.9-.4-1.6-1.1-2-2l.8-1-1-2z\"/>"};
+const GS_MENU_WA = (typeof COMPANY_CHANNEL_CONFIG !== "undefined" && COMPANY_CHANNEL_CONFIG.webOrderWhatsApp) || "9647504006200";
+function gsMenuT(k) { const L = typeof wLang === "function" ? wLang() : currentLang; return (GS_MENU_T[L] && GS_MENU_T[L][k]) || GS_MENU_T.en[k] || k; }
+function gsMenuIc(n, cls) { return '<svg class="' + (cls || "gm-ic") + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + GS_MENU_I[n] + "</svg>"; }
+function gsMenuEsc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); }
+function gsMenuWhatsApp() { window.open("https://wa.me/" + GS_MENU_WA, "_blank"); }
+function gsMenuWaRow(onclick) {
+  return '<div class="gm-it gm-wa" role="button" tabindex="0" onclick="' + onclick + '"><span class="gm-wi">' + gsMenuIc("wa") + '</span><div><div>' + gsMenuEsc(gsMenuT("waC")) + '</div><div class="gm-ws">' + gsMenuEsc(gsMenuT("waS")) + '</div></div><span class="gm-ch">' + gsMenuIc("ext") + "</span></div>";
+}
+function gsMenuLbl(k) { const tr = (typeof TRANSLATIONS !== "undefined" && TRANSLATIONS[currentLang]) || {}; return tr[k] || ""; }
+function gsMenuRow(ic, label, act, extra) {
+  return '<button type="button" class="gm-it" data-gm="' + act + '">' + gsMenuIc(ic) + "<span>" + gsMenuEsc(label) + "</span>" + (extra || '<span class="gm-ch">' + gsMenuIc("chev") + "</span>") + "</button>";
+}
+function gsMenuBuild() {
+  const dr = document.getElementById("gsMenuDrawer"); if (!dr) return;
+  const u = (typeof loggedInUser !== "undefined" && loggedInUser) ? loggedInUser : null;
+  const langLbl = ((document.getElementById("langSwitchLabel") || {}).textContent || "").trim();
+  dr.innerHTML =
+    '<div class="gm-acc" data-gm="account"><span class="gm-av">' + gsMenuIc("user") + '</span><div><div class="gm-t1">' + gsMenuEsc(u && u.name ? gsMenuT("hello").replace("{name}", u.name) : gsMenuT("welcome")) + '</div>' +
+    (u ? "" : '<div class="gm-t2">' + gsMenuEsc(gsMenuT("signin")) + "</div>") + '</div><button type="button" class="gm-x" data-gm="close" aria-label="' + gsMenuEsc(gsMenuT("close")) + '">' + gsMenuIc("x") + "</button></div>" +
+    gsMenuRow("account", gsMenuLbl("navAccount") || gsMenuT("acc"), "account") +
+    gsMenuRow("orders", gsMenuT("orders"), "orders") +
+    gsMenuRow("store", gsMenuLbl("navWholesale") || gsMenuT("whole"), "wholesale") +
+    gsMenuRow("info", gsMenuLbl("navAbout") || gsMenuT("about"), "about") +
+    gsMenuRow("file", gsMenuLbl("policiesHeading") || gsMenuT("pol"), "policies") +
+    gsMenuWaRow("gsMenuClose();gsMenuWhatsApp()") +
+    gsMenuRow("lang", gsMenuT("lang"), "lang", '<span class="gm-sub">' + gsMenuEsc(langLbl) + '</span><span class="gm-ch gm-dn">' + gsMenuIc("chev") + "</span>") +
+    (gsMenuLangOpen ? '<div class="gm-langs">' + [...document.querySelectorAll("#langMenu button[data-lang]")].map(b => {
+      const f = b.querySelector("svg.lang-flag"), n = b.querySelector("span");
+      return '<button type="button" class="gm-lang' + (b.dataset.lang === currentLang ? " on" : "") + '" data-gm="setlang" data-l="' + gsMenuEsc(b.dataset.lang) + '">' + (f ? f.outerHTML : "") + "<span>" + gsMenuEsc(n ? n.textContent : b.dataset.lang) + "</span>" + (b.dataset.lang === currentLang ? '<span class="gm-ok">✓</span>' : "") + "</button>";
+    }).join("") + "</div>" : "");
+}
+let gsMenuLangOpen = false;
+function gsMenuSetOpen(open) {
+  document.body.classList.toggle("gm-open", open);
+  document.documentElement.style.overflow = open ? "hidden" : "";
+  const b = document.getElementById("gsMenuBtn"); if (b) { b.classList.toggle("active", open); b.setAttribute("aria-expanded", open ? "true" : "false"); }
+  if (!open) { const cur = document.querySelector(".view.active"); const v = cur ? cur.id.replace("view-", "") : ""; document.querySelectorAll("#mainnav button[data-view]").forEach(x => x.classList.toggle("active", x.dataset.view === v)); gsMenuHere(); }
+}
+function gsMenuHere() { const b = document.getElementById("gsMenuBtn"); const cur = document.querySelector(".view.active"); if (b) b.classList.toggle("gm-here", !!cur && ["view-account", "view-wholesale", "view-about"].includes(cur.id)); }
+function gsMenuOpen() { gsMenuLangOpen = false; gsMenuBuild(); gsMenuSetOpen(true); }
+function gsMenuClose() { gsMenuSetOpen(false); }
+function gsMenuScrollTo(sel) { setTimeout(() => { const el = document.querySelector(sel); if (el && el.offsetParent !== null) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 450); }
+function gsMenuAct(a, el) {
+  if (a === "close") { gsMenuClose(); return; }
+  if (a === "lang") { gsMenuLangOpen = !gsMenuLangOpen; gsMenuBuild(); return; }
+  if (a === "setlang") { const b = document.querySelector('#langMenu button[data-lang="' + el.dataset.l + '"]'); if (b) b.click(); const m = document.getElementById("langMenu"); if (m) m.classList.remove("open"); const lb = document.getElementById("langSwitchBtn"); if (lb) lb.setAttribute("aria-expanded", "false"); gsMenuLangOpen = false; gsMenuBuild(); return; }
+  gsMenuClose();
+  if (a === "account") showView("account");
+  else if (a === "orders") { showView("account"); gsMenuScrollTo('#view-account [data-i18n="acctOrdersTitle"]'); }
+  else if (a === "wholesale") { showView("wholesale"); if (typeof backToWholesaleLanding === "function") backToWholesaleLanding(); }
+  else if (a === "about") showView("about");
+  else if (a === "policies") { showView("about"); gsMenuScrollTo(".about-policies-heading"); }
+}
+function gsMenuLabelRefresh() { const s = document.querySelector("#gsMenuBtn .gm-lbl"); if (s) s.textContent = gsMenuT("menu"); const b = document.getElementById("gsMenuBtn"); if (b) b.setAttribute("aria-label", gsMenuT("menu")); }
+(function gsMenuInit() {
+  const nav = document.getElementById("mainnav"); if (!nav || document.getElementById("gsMenuBtn")) return;
+  const btn = document.createElement("button");
+  btn.type = "button"; btn.id = "gsMenuBtn"; btn.setAttribute("aria-haspopup", "true"); btn.setAttribute("aria-expanded", "false");
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + GS_MENU_I.menu + '</svg><span class="gm-lbl"></span>';
+  btn.addEventListener("click", () => document.body.classList.contains("gm-open") ? gsMenuClose() : gsMenuOpen());
+  nav.appendChild(btn);
+  const ov = document.createElement("div"); ov.className = "gm-ov"; ov.addEventListener("click", gsMenuClose);
+  const dr = document.createElement("nav"); dr.className = "gm-dr"; dr.id = "gsMenuDrawer"; dr.setAttribute("aria-label", "Menu");
+  dr.addEventListener("click", e => { const t = e.target.closest("[data-gm]"); if (t) gsMenuAct(t.dataset.gm, t); });
+  document.body.appendChild(ov); document.body.appendChild(dr);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && document.body.classList.contains("gm-open")) gsMenuClose(); });
+  gsMenuLabelRefresh();
+  if (typeof showView === "function") { const _sv = showView; showView = function () { const r = _sv.apply(this, arguments); try { gsMenuHere(); } catch (e) {} return r; }; }
+  if (typeof applyLanguage === "function") { const _al = applyLanguage; applyLanguage = function () { const r = _al.apply(this, arguments); try { gsMenuLabelRefresh(); if (document.body.classList.contains("gm-open")) gsMenuBuild(); } catch (e) {} return r; }; }
+})();
 </script>
 </body>
 </html>
