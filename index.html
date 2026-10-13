@@ -1032,6 +1032,13 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
   @media (max-width:1100px){#featuredGrid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:620px;}}
   @media (max-width:430px){#featuredGrid{gap:12px;}}
 </style>
+<script>
+/* GSDE round40: ask the image-cache Worker for the width each place needs (originals in Drive are untouched). */
+window.gsImg = window.gsImg || function (u, w) {
+  if (!u || typeof u !== "string" || u.indexOf("gsde-image-cache") < 0 || !w) return u;
+  return /[?&]sz=w\d+/.test(u) ? u.replace(/([?&]sz=)w\d+/, "$1w" + w) : u + (u.indexOf("?") >= 0 ? "&" : "?") + "sz=w" + w;
+};
+</script>
 </head>
 <body>
 
@@ -4093,7 +4100,7 @@ function gsdeTransformProduct(p) {
     // and drop the "PRODUCT PHOTO" caption (misleading here, since it isn't this product's photo);
     // the big COMING SOON badge alone is the right signal in that case.
     const imgInner = repImg
-      ? `<img class="${blurClass.trim()}" src="${repImg}" alt="${productName(p)}">`
+      ? `<img class="${blurClass.trim()}" src="${gsImg(repImg, 600)}" loading="lazy" decoding="async" alt="${productName(p)}">`
       : `<div class="img-placeholder-bg${showCenterComingSoon ? ' gsde-coming-soon-blur' : ''}" style="background-image:url('${categoryPlaceholderBg(p.category)}')">${showCenterComingSoon ? '' : '<span class="placeholder-caption">PRODUCT PHOTO</span>'}${comingSoonOverlay(showCenterComingSoon ? effAvail : null)}</div>`;
     const avail = showCenterComingSoon ? null : availabilityBadge(effAvail);
     const isComingSoon = effAvail === "Coming Soon";
@@ -4408,9 +4415,9 @@ setInterval(() => {
         // cover`; the generic brand-logo/placeholder fallback keeps the `55% auto` inset sizing so a
         // small logo doesn't stretch.
         const bg = subIcon
-          ? ` style="background-image:url('${subIcon}')"`
+          ? ` style="background-image:url('${gsImg(subIcon, 600)}')"`
           : (sampleImg
-            ? ` style="background-image:url('${sampleImg}')"`
+            ? ` style="background-image:url('${gsImg(sampleImg, 600)}')"`
             : ` style="background-image:url('${categoryPlaceholderBg(activeFilter)}'); background-size: 55% auto; background-repeat: no-repeat; background-position: center;${hasVisibleProduct ? '' : ' filter: blur(var(--coming-soon-blur));'}"`);
         return `<div class="subcat-tile ${activeSubFilter===sc?'active':''}"${bg} onclick="setSubFilter('${sc}')">
           ${sampleImg || subIcon ? "" : (hasVisibleProduct ? '<span class="subcat-noimg">PRODUCT PHOTO</span>' : comingSoonOverlay("Coming Soon"))}
@@ -4546,7 +4553,7 @@ setInterval(() => {
       // GSDE FIX (2026-09-16): same family-photo-fallback fix as the grid card -- see the note
       // above productCard()'s imgInner for why this must be blurred and the caption dropped.
       big.innerHTML = item
-        ? `<img class="${modalBlurClass.trim()}" src="${item}" alt="">`
+        ? `<img class="${modalBlurClass.trim()}" src="${gsImg(item, 1200)}" data-full="${gsImg(item, 1600)}" alt="">`
         : `<div class="img-placeholder-bg${modalAvail === "Coming Soon" ? ' gsde-coming-soon-blur' : ''}" style="background-image:url('${categoryPlaceholderBg(modalCat)}')">${modalAvail === "Coming Soon" ? '' : '<span class="placeholder-caption">PRODUCT PHOTO</span>'}${comingSoonOverlay(modalAvail)}</div>`;
     }
     document.querySelectorAll("#modalThumbs .thumb-wrap").forEach(t => t.classList.remove("active"));
@@ -4588,7 +4595,7 @@ setInterval(() => {
           const thumbSrc = isVideo ? item.poster : item;
           const thumbBlurClass = (!isVideo && thumbSrc && galleryAvail === "Coming Soon") ? " gsde-coming-soon-blur" : "";
           const playIco = isVideo ? `<span class="play-ico">▶</span>` : "";
-          return `<span class="thumb-wrap ${i===0?'active':''}" onclick="setModalImage(${i}, this)"><img class="${thumbBlurClass.trim()}" src="${thumbSrc}">${playIco}</span>`;
+          return `<span class="thumb-wrap ${i===0?'active':''}" onclick="setModalImage(${i}, this)"><img class="${thumbBlurClass.trim()}" src="${gsImg(thumbSrc, 300)}" loading="lazy" decoding="async">${playIco}</span>`;
         }).join("")
       : "";
   }
@@ -4644,7 +4651,7 @@ setInterval(() => {
       // when there's no real photo for this color AND the product is Coming Soon.
       const noSampleComingSoon = !sample && variantEffAvail === "Coming Soon";
       const bg = sample
-        ? ` style="background-image:url('${sample}');${blurCss}"`
+        ? ` style="background-image:url('${gsImg(sample, 600)}');${blurCss}"`
         : ` style="background-image:url('${categoryPlaceholderBg(p.category)}'); background-size: 55% auto; background-repeat: no-repeat; background-position: center;${noSampleComingSoon ? ' filter: blur(var(--coming-soon-blur));' : ''}"`;
       const gsAvail = colorAvailable(p, v.name);
       return `<div class="subcat-tile" ${bg} onclick="viewProduct('${p.id}', '${v.name}')">
@@ -5271,7 +5278,7 @@ setInterval(() => {
     } else {
       wrap.innerHTML = cart.map((c, i) => `
         <div class="cart-item">
-          <div class="thumb" style="${c.img ? `background:url('${c.img}') center/cover;` : ''}"></div>
+          <div class="thumb" style="${c.img ? `background:url('${gsImg(c.img, 300)}') center/cover;` : ''}"></div>
           <div class="meta">
             <div class="name">${productName(c)}</div>
             <div class="variant">${[c.size ? `${t.cartSizePrefix} ${sizeLabel(c.size)}` : null, c.color ? `${t.cartColorPrefix} ${colorLabel(c.color)}` : null].filter(Boolean).join(" · ")}</div>
@@ -6321,9 +6328,9 @@ setInterval(() => {
       // `background-size: cover`), not sit inset at 55%. Inset sizing stays only for the generic
       // logo placeholder fallback.
       const bg = governedIcon
-        ? ` style="background-image:url('${governedIcon}')"`
+        ? ` style="background-image:url('${gsImg(governedIcon, 600)}')"`
         : (sampleImg
-          ? ` style="background-image:url('${sampleImg}')"`
+          ? ` style="background-image:url('${gsImg(sampleImg, 600)}')"`
           : ` style="background-image:url('${categoryPlaceholderBg(c)}'); background-size: 55% auto; background-repeat: no-repeat; background-position: center;"`);
       const active = whSelectedCats.has(c) ? "active" : "";
       return `<div class="subcat-tile ${active}"${bg} onclick="toggleWhCategory('${c}')">
@@ -6657,6 +6664,10 @@ function gsMenuLabelRefresh() { const s = document.querySelector("#gsMenuBtn .gm
   if (typeof showView === "function") { const _sv = showView; showView = function () { const r = _sv.apply(this, arguments); try { gsMenuHere(); } catch (e) {} return r; }; }
   if (typeof applyLanguage === "function") { const _al = applyLanguage; applyLanguage = function () { const r = _al.apply(this, arguments); try { gsMenuLabelRefresh(); if (document.body.classList.contains("gm-open")) gsMenuBuild(); } catch (e) {} return r; }; }
 })();
+</script>
+<script>
+/* GSDE round40: hi-res copy only when the customer zooms */
+(function(){ new MutationObserver(function(ms){ ms.forEach(function(m){ var st=m.target; if(st.classList && st.classList.contains('zoom-stage') && st.classList.contains('zoomed')){ var im=st.querySelector('img[data-full]'); if(im && !im.dataset.hi){ im.dataset.hi='1'; im.src=im.dataset.full; } } }); }).observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['class']}); })();
 </script>
 </body>
 </html>
