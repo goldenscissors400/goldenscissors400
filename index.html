@@ -44,6 +44,18 @@ Brand logo fileId 10JqFUMmsIBM28whO9MJERDvW3zKgXiq0 modified 2026-08-04T13:04:57
 <!-- GSDE REVIEW v24: direct-order checkout, IQD-empty-cart consistency, rectangular delete action; derived from v19. Previous note:  exact-color discovery-card binding + QTKst011 Yellow canonical Drive assets; derived from v18. Previous note:  derived from approved v15 baseline; adds Brand-logo source enforcement, discovery-surface eligibility/color cards, live Home Master option localization, and customer-state rules. -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>/* GSDE round42: set language direction + reserve sign-up strip space before first paint */
+(function(){try{var d=document.documentElement,L=null,m=document.cookie.match(/(?:^|; )gs_lang_pref=([^;]*)/);if(m)L=decodeURIComponent(m[1]);
+if(L!=="en"&&L!=="ar"&&L!=="ku_sor"&&L!=="ku_bad"){L=null;var c=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||""];
+for(var i=0;i<c.length;i++){var t=(c[i]||"").toLowerCase();if(!t)continue;if(t.indexOf("en")===0){L="en";break}if(t.indexOf("ar")===0){L="ar";break}
+if(t.indexOf("ckb")===0||t.indexOf("ku")===0){L="ku_sor";break}if(t.indexOf("kmr")===0){L="ku_bad";break}}}
+if(L){d.lang=(L==="en")?"en":(L==="ar"?"ar":"ku");d.dir=(L==="en")?"ltr":"rtl"}}catch(e){}
+try{if(!localStorage.getItem("gs_was_in")&&sessionStorage.getItem("gs_promo_off")!=="1"){var h=parseInt(localStorage.getItem("gs_pb_h"),10);
+if(h>0&&h<200)document.documentElement.style.setProperty("--gs-pb-res",h+"px");document.documentElement.classList.add("gs-pb-r");
+setTimeout(function(){document.documentElement.classList.remove("gs-pb-r")},12000)}}catch(e){}})();</script>
+<style>html.gs-pb-r #gsPromoBar[hidden]{display:block;visibility:hidden;height:var(--gs-pb-res,72px);padding:0;overflow:hidden;position:static}
+@media (min-width:700px){html.gs-pb-r #gsPromoBar[hidden]{height:var(--gs-pb-res,60px)}}</style>
+
 <title>Golden Store | دوکانی ئۆنلاین</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1071,6 +1083,7 @@ window.gsImg = window.gsImg || function (u, w) {
          directly via CEO chat; Content source = Brand, Responsibility = AI). Links to #view-about,
          whose content is sourced from Brand Master, not invented here. -->
     <button data-view="about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="16" x2="12" y2="11.5"/><circle cx="12" cy="8" r="0.6" fill="currentColor" stroke="none"/></svg><span data-i18n="navAbout">دەربارەی ئێمە</span></button>
+    <button type="button" id="gsMenuBtn" aria-label="Menu" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg><span class="gm-lbl"></span></button>
   </nav>
   <div class="header-top-right">
     <div class="lang-switch" id="langSwitch">
@@ -3965,11 +3978,11 @@ function gsdeTransformProduct(p) {
     if (gsEditLine && name !== "product") { gsExitEdit(); } // leaving the product page without pressing Update = no change
     document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
     document.getElementById("view-" + name).classList.add("active");
-    document.querySelectorAll("#mainnav button").forEach(b => b.classList.toggle("active", b.dataset.view === name));
+    document.querySelectorAll("#mainnav button[data-view]").forEach(b => b.classList.toggle("active", b.dataset.view === name));
     if (typeof gsPromoBarUpdate === "function") gsPromoBarUpdate();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
-  document.querySelectorAll("#mainnav button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("#mainnav button[data-view]").forEach(b => b.addEventListener("click", () => {
     showView(b.dataset.view);
     if (b.dataset.view === "wholesale") backToWholesaleLanding();
   }));
@@ -6028,7 +6041,7 @@ setInterval(() => {
   }
   function gsdeSyncSignedIn(user) {
     const real = !!(user && !user.isAnonymous);
-    document.body.classList.toggle("gs-signed-in", real); window.gsAuthReady = true; if (typeof gsPromoBarUpdate === "function") gsPromoBarUpdate();
+    document.body.classList.toggle("gs-signed-in", real); try { if (real) localStorage.setItem("gs_was_in", "1"); else localStorage.removeItem("gs_was_in"); } catch (e) {} window.gsAuthReady = true; if (typeof gsPromoBarUpdate === "function") gsPromoBarUpdate();
     if (real) { const o = document.getElementById("ckAcctOverlay"); if (o && o.classList.contains("active")) { o.classList.remove("active"); showToast(gsCka("done")); } }
   }
   document.addEventListener("DOMContentLoaded", gsCkaRender);
@@ -6114,13 +6127,13 @@ setInterval(() => {
     return "GSW-" + p2(d.getFullYear() % 100) + p2(d.getMonth() + 1) + p2(d.getDate()) + "-" + Array.from(r, x => A[x % A.length]).join("");
   }
   // ---- round36: sign-up strip (all pages) ----
-  function gsPromoBarH() { const b = document.getElementById("gsPromoBar"); document.documentElement.style.setProperty("--gs-pb-h", ((b && !b.hidden) ? b.offsetHeight : 0) + "px"); }
+  function gsPromoBarH() { const b = document.getElementById("gsPromoBar"); document.documentElement.style.setProperty("--gs-pb-h", ((b && !b.hidden) ? b.offsetHeight : 0) + "px"); try { if (b && !b.hidden && b.offsetHeight > 0) localStorage.setItem("gs_pb_h", String(b.offsetHeight)); } catch (e) {} }
   function gsPromoBarUpdate() {
     const bar = document.getElementById("gsPromoBar"); if (!bar) return;
     let off = false; try { off = sessionStorage.getItem("gs_promo_off") === "1"; } catch (e) {}
     const acct = document.getElementById("view-account");
     const show = !!window.gsAuthReady && !(typeof loggedInUser !== "undefined" && loggedInUser && loggedInUser.name) && !off && !(acct && acct.classList.contains("active"));
-    bar.hidden = !show; if (!show) { gsPromoBarH(); return; }
+    bar.hidden = !show; if (window.gsAuthReady || off) document.documentElement.classList.remove("gs-pb-r"); if (!show) { gsPromoBarH(); return; }
     bar.querySelector(".gs-pb-text").textContent = gsCka("promoBar"); bar.querySelector(".gs-pb-link").textContent = gsCka("barLink"); gsPromoBarH();
   }
   (function () {
@@ -6664,12 +6677,13 @@ function gsMenuAct(a, el) {
 }
 function gsMenuLabelRefresh() { const s = document.querySelector("#gsMenuBtn .gm-lbl"); if (s) s.textContent = gsMenuT("menu"); const b = document.getElementById("gsMenuBtn"); if (b) b.setAttribute("aria-label", gsMenuT("menu")); }
 (function gsMenuInit() {
-  const nav = document.getElementById("mainnav"); if (!nav || document.getElementById("gsMenuBtn")) return;
-  const btn = document.createElement("button");
+  const nav = document.getElementById("mainnav"); if (!nav) return;
+  const preBtn = document.getElementById("gsMenuBtn"); if (preBtn && preBtn.dataset.gmInit) return;
+  const btn = preBtn || document.createElement("button"); btn.dataset.gmInit = "1";
   btn.type = "button"; btn.id = "gsMenuBtn"; btn.setAttribute("aria-haspopup", "true"); btn.setAttribute("aria-expanded", "false");
   btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + GS_MENU_I.menu + '</svg><span class="gm-lbl"></span>';
   btn.addEventListener("click", () => document.body.classList.contains("gm-open") ? gsMenuClose() : gsMenuOpen());
-  nav.appendChild(btn);
+  if (!preBtn) nav.appendChild(btn);
   const ov = document.createElement("div"); ov.className = "gm-ov"; ov.addEventListener("click", gsMenuClose);
   const dr = document.createElement("nav"); dr.className = "gm-dr"; dr.id = "gsMenuDrawer"; dr.setAttribute("aria-label", "Menu");
   dr.addEventListener("click", e => { const t = e.target.closest("[data-gm]"); if (t) gsMenuAct(t.dataset.gm, t); });
