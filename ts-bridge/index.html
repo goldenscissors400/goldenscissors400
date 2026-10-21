@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Golden Scissors - verification</title>
+<!--
+  GSDE BAQ-117 (2026-10-21): Turnstile bridge for the iOS app.
+  The iOS app page runs on capacitor://localhost, where Cloudflare Turnstile cannot run
+  (Turnstile supports only http:// and https:// pages). The app shows THIS https page in a
+  small iframe; it runs the same Turnstile widget as the website and sends the one-time token
+  back to the app with postMessage. Tokens are sent ONLY to the app's own origins.
+  Not linked from the website; no data is collected or stored here.
+  Source of truth: golden-scissors-app repo, tools/ts_bridge/index.html.
+-->
+<style>
+  html,body{margin:0;padding:0;background:transparent;overflow:hidden}
+  body{display:flex;align-items:center;justify-content:center;min-height:100vh}
+</style>
+</head>
+<body>
+<div id="slot"></div>
+<script>
+(function () {
+  "use strict";
+  var SITEKEY = "0x4AAAAAAFOcHoTtNGbhUIJo";
+  var APP_ORIGINS = ["capacitor://localhost", "ionic://localhost", "https://localhost"];
+
+  function parentOrigin() {
+    try {
+      var ao = window.location.ancestorOrigins;
+      if (ao && ao.length) return ao[0];
+    } catch (e) {}
+    try {
+      if (document.referrer) return new URL(document.referrer).origin;
+    } catch (e) {}
+    return "";
+  }
+  var target = parentOrigin();
+  var allowed = window.parent !== window && APP_ORIGINS.indexOf(target) >= 0;
+
+  function send(msg) {
+    if (!allowed) return;
+    msg.gsTs = msg.gsTs || "event";
+    try { window.parent.postMessage(msg, target); } catch (e) {}
+  }
+  if (!allowed) return; // opened directly or framed by another site: do nothing
+
+  var visible = /[?&]v=1(&|$)/.test(window.location.search);
+  window.gsdeTsReady = function () {
+    try {
+      window.turnstile.render("#slot", {
+        sitekey: SITEKEY,
+        appearance: visible ? "always" : "interaction-only",
+        "before-interactive-callback": function () { send({ gsTs: "interactive" }); },
+        callback: function (tok) { send({ gsTs: "token", token: tok }); },
+        "error-callback": function (code) { send({ gsTs: "error", code: String(code || "") }); return true; },
+        "expired-callback": function () { send({ gsTs: "expired" }); },
+        "timeout-callback": function () { send({ gsTs: "error", code: "timeout" }); }
+      });
+      send({ gsTs: "ready" });
+    } catch (e) { send({ gsTs: "error", code: "render" }); }
+  };
+  var s = document.createElement("script");
+  s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=gsdeTsReady";
+  s.async = true;
+  s.onerror = function () { send({ gsTs: "error", code: "load" }); };
+  document.head.appendChild(s);
+})();
+</script>
+</body>
+</html>
